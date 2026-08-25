@@ -138,26 +138,6 @@ export default function Navbar() {
                 </Link>
 
 
-                {/* =================================================
-                    SEARCH
-                ================================================= */}
-
-                <button
-                  aria-label="Search"
-                  className="
-                    w-[36px]
-                    h-[36px]
-                    flex
-                    items-center
-                    justify-center
-                    text-[#1A1A1A]
-                    hover:text-[#E85D2C]
-                    transition-colors
-                  "
-                >
-                  <SearchIcon />
-                </button>
-
 
                 {/* =================================================
                     MENU
@@ -516,33 +496,6 @@ function BagIcon() {
     >
       <path d="M6 8.5h12l1 12H5l1-12Z" />
       <path d="M9 8.5V6a3 3 0 0 1 6 0v2.5" />
-    </svg>
-  )
-}
-
-
-/* =========================================================
-   SEARCH ICON
-========================================================= */
-
-function SearchIcon() {
-  return (
-    <svg
-      width="21"
-      height="21"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      strokeLinecap="round"
-    >
-      <circle
-        cx="10.8"
-        cy="10.8"
-        r="6.5"
-      />
-
-      <path d="m16 16 5 5" />
     </svg>
   )
 }

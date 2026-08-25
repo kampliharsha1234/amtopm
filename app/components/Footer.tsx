@@ -471,7 +471,7 @@ export default function Footer() {
                         text-[11px]
                         text-[#FBF8F3]
                         outline-none
-                        placeholder:text-[#6B6B6B]
+                        placeholder:text-[#B8B2AA]
                       "
                     />
 

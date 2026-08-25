@@ -18,186 +18,207 @@ export interface Product {
 
 export const products: Product[] = [
   {
-    id: 'sports-spf',
-    name: 'Sports SPF 70+',
-    tagline: 'Sweat-proof sun protection',
-    price: 899,
+    id: 'gentle-daily-cleanser',
+    name: 'Gentle Daily Cleanser',
+    tagline: 'Cleanse gently. Protect your barrier.',
+    price: 499,
     description:
-      'High-performance sunscreen that stays on through sweat and movement. Perfect for active lifestyles.',
-    category: 'am',
-    concern: ['SPF', 'Barrier'],
-    skinType: ['All'],
-    keyBenefits: [
-      'SPF 70+ broad spectrum protection',
-      'Sweat-proof and water-resistant',
-      'No white cast',
-      'Non-comedogenic'
-    ],
-    ingredients: [
-      'Zinc Oxide',
-      'Titanium Dioxide',
-      'Niacinamide',
-      'Vitamin E'
-    ],
-    howToUse:
-      'Apply generously 15 minutes before sun exposure. Reapply every 2 hours or after swimming/sweating.',
-    image: '/images/products/sports-spf.png',
-    inStock: true
-  },
-
-  {
-    id: 'barrier-serum',
-    name: 'Barrier Repair Serum',
-    tagline: 'Restore and strengthen your skin barrier',
-    price: 1199,
-    description:
-      'A powerhouse serum that repairs and strengthens your skin barrier with ceramides and peptides.',
-    category: 'pm',
-    concern: ['Barrier', 'Acne'],
-    skinType: ['Dry', 'Sensitive', 'Combination'],
-    keyBenefits: [
-      'Strengthens skin barrier',
-      'Reduces redness and irritation',
-      'Improves skin texture',
-      'Hydrates deeply'
-    ],
-    ingredients: [
-      'Ceramides',
-      'Peptides',
-      'Niacinamide',
-      'Squalane'
-    ],
-    howToUse:
-      'Apply 2-3 drops to clean skin in the evening. Follow with moisturizer.',
-    image: '/images/products/barrier-serum.png',
-    inStock: true
-  },
-
-  {
-    id: 'dark-spot-corrector',
-    name: 'Dark Spot Corrector',
-    tagline: 'Fade hyperpigmentation effectively',
-    price: 999,
-    description:
-      'Targets dark spots and uneven skin tone with a blend of brightening ingredients.',
+      'A dermatologist-inspired daily cleanser built with a sulfate-free syndet cleansing system, humectants, barrier-support ingredients, and soothing actives. It cleanses away dirt, excess oil, sunscreen residue, and daily impurities without leaving skin feeling stripped.',
     category: 'both',
-    concern: ['Dark Spots', 'Acne'],
-    skinType: ['All'],
+    concern: [
+      'Daily Cleansing',
+      'Barrier',
+      'Dryness',
+      'Sensitivity',
+      'Dehydration',
+      'Excess Oil'
+    ],
+    skinType: [
+      'Dry',
+      'Oily',
+      'Combination',
+      'Sensitive',
+      'Normal',
+      'Acne-Prone'
+    ],
     keyBenefits: [
-      'Fades dark spots and hyperpigmentation',
-      'Brightens skin tone',
-      'Reduces acne marks',
-      'Gentle enough for daily use'
+      'Gentle daily cleansing',
+      'Helps remove dirt, excess oil and sunscreen residue',
+      'Supports the skin barrier',
+      'Helps maintain skin hydration',
+      'Helps reduce post-cleanse tightness',
+      'Supports balanced-looking skin',
+      'Leaves skin feeling clean, soft and comfortable'
     ],
     ingredients: [
-      'Tranexamic Acid',
-      'Azelaic Acid',
-      'Niacinamide',
-      'Vitamin C'
+      'Disodium Laureth Sulfosuccinate',
+      'Cocamidopropyl Betaine',
+      'Sodium Cocoyl Isethionate',
+      'Glycerin 3%',
+      'Niacinamide 2.5–3%',
+      'Panthenol 1%',
+      'Allantoin 0.2%',
+      'Zinc PCA 0.2–0.3%'
     ],
     howToUse:
-      'Apply to clean, dry skin on affected areas. Use AM and PM for best results.',
-    image: '/images/products/dark-spot-corrector.png',
+      'Wet your face with water. Take a small amount of cleanser and gently massage over the face. Rinse thoroughly and pat dry. Use daily as part of your morning and evening routine.',
+    image: '/images/products/gentle-daily-cleanser.png',
     inStock: true
   },
 
   {
-    id: 'acne-treatment',
-    name: 'Acne Treatment Gel',
-    tagline: 'Clear breakouts without irritation',
-    price: 749,
+    id: 'anti-acne-facewash',
+    name: 'Anti Acne Face Wash',
+    tagline: 'Clear pores. Balance oil. Support your skin.',
+    price: 499,
     description:
-      'A gentle yet effective acne treatment that clears breakouts while soothing the skin.',
-    category: 'pm',
-    concern: ['Acne'],
-    skinType: ['Oily', 'Combination', 'Sensitive'],
+      'A dermatologist-inspired daily acne cleanser combining pore-cleansing Salicylic Acid, surface-exfoliating Mandelic Acid, oil-balancing ingredients, antioxidant support, and soothing botanicals for oily and acne-prone skin.',
+    category: 'both',
+    concern: [
+      'Acne',
+      'Oily Skin',
+      'Blackheads',
+      'Whiteheads',
+      'Post-Acne Marks',
+      'Excess Sebum',
+      'Enlarged Pores'
+    ],
+    skinType: [
+      'Oily',
+      'Combination',
+      'Acne-Prone'
+    ],
     keyBenefits: [
-      'Clears existing breakouts',
-      'Prevents future acne',
-      'Reduces redness and inflammation',
-      'Does not strip the skin'
+      'Helps remove excess oil',
+      'Helps keep pores clear',
+      'Helps reduce the appearance of blackheads and whiteheads',
+      'Supports smoother-looking skin',
+      'Helps improve the appearance of post-acne marks',
+      'Supports balanced-looking skin',
+      'Provides antioxidant and soothing support'
     ],
     ingredients: [
-      'Azelaic Acid',
-      'Niacinamide',
-      'Zinc PCA',
-      'Salicylic Acid'
+      'Salicylic Acid 2%',
+      'Mandelic Acid 1%',
+      'Niacinamide 3%',
+      'Zinc PCA 0.5%',
+      'Green Tea Extract 2%',
+      'Licorice Root Extract 0.5%'
     ],
     howToUse:
-      'Apply a thin layer to affected areas in the evening. Start with every other night.',
-    image: '/images/products/acne-treatment.png',
+      'Wet your face with water. Apply a small amount of cleanser and gently massage over the face, avoiding the eye area. Rinse thoroughly and pat dry. Use as part of your daily cleansing routine. If irritation occurs, reduce frequency.',
+    image: '/images/products/anti-acne-facewash.png',
     inStock: true
   },
 
   {
-    id: 'morning-dew-moisturizer',
-    name: 'Morning Dew Moisturizer',
-    tagline: 'Lightweight hydration for daytime',
-    price: 849,
+    id: 'barrier-repair-moisturizer',
+    name: 'Barrier Repair Moisturizer',
+    tagline: 'Replenish. Repair. Strengthen.',
+    price: 499,
     description:
-      'A refreshing, lightweight moisturizer that hydrates without feeling heavy or greasy.',
+      'A dermatologist-inspired daily moisturizer designed to support the skin barrier with Triple Ceramides, Niacinamide, Panthenol, Glycerin, Sodium Hyaluronate, Squalane, and Allantoin while maintaining a lightweight, non-greasy feel.',
+    category: 'both',
+    concern: [
+      'Barrier',
+      'Dryness',
+      'Dehydration',
+      'Sensitivity',
+      'Tightness',
+      'Post-Acne Treatment Dryness',
+      'Irritation'
+    ],
+    skinType: [
+      'Dry',
+      'Normal',
+      'Combination',
+      'Oily',
+      'Sensitive',
+      'Acne-Prone'
+    ],
+    keyBenefits: [
+      'Helps strengthen the skin moisture barrier',
+      'Provides long-lasting hydration',
+      'Helps reduce the feeling of dryness and tightness',
+      'Supports moisture retention',
+      'Helps soothe and improve skin comfort',
+      'Leaves skin soft and smooth',
+      'Lightweight, non-greasy moisturization'
+    ],
+    ingredients: [
+      'Ceramide Complex NP/AP/EOP 0.5%',
+      'Niacinamide 3%',
+      'Panthenol 1%',
+      'Glycerin 4%',
+      'Sodium Hyaluronate 0.1%',
+      'Squalane 2%',
+      'Caprylic/Capric Triglyceride 3%',
+      'Allantoin 0.3%'
+    ],
+    howToUse:
+      'Apply an appropriate amount to clean skin after cleansing. Gently massage until absorbed. Use morning and evening, or whenever your skin needs hydration and barrier support.',
+    image: '/images/products/barrier_repair_moisturizer.png',
+    inStock: true
+  },
+
+  {
+    id: 'sunscreen',
+    name: 'Broad Spectrum Sunscreen SPF 50 PA++++',
+    tagline: 'Advanced daily UV protection.',
+    price: 499,
+    description:
+      'A dermatologist-inspired daily sunscreen formulated with three advanced photostable UV filters for broad-spectrum UVA and UVB protection, supported by Niacinamide, Panthenol, Allantoin, and Vitamin E for hydration, comfort, and antioxidant support.',
     category: 'am',
-    concern: ['Barrier'],
-    skinType: ['All'],
+    concern: [
+      'UV Exposure',
+      'Sunburn',
+      'Photoaging',
+      'Hyperpigmentation',
+      'Uneven Skin Tone',
+      'Daily Environmental Exposure'
+    ],
+    skinType: [
+      'Oily',
+      'Combination',
+      'Dry',
+      'Normal',
+      'Sensitive'
+    ],
     keyBenefits: [
-      'Lightweight hydration',
-      'Non-greasy finish',
-      'Prepares skin for makeup',
-      'Contains antioxidants'
+      'Broad-spectrum UVA and UVB protection',
+      'Supports daily sun protection',
+      'Helps protect against UV-induced pigmentation',
+      'Supports skin barrier function',
+      'Provides hydration support',
+      'Helps soothe and maintain skin comfort',
+      'Provides antioxidant support',
+      'Designed for daily wear'
     ],
     ingredients: [
-      'Hyaluronic Acid',
-      'Niacinamide',
-      'Green Tea Extract',
-      'Vitamin E'
+      'Uvinul A Plus 5–7%',
+      'Uvinul T150 2–4%',
+      'Tinosorb S 5%',
+      'Niacinamide 2%',
+      'Panthenol 1%',
+      'Allantoin 0.2%',
+      'Vitamin E 0.5%'
     ],
     howToUse:
-      'Apply to clean skin in the morning. Follow with SPF if going outdoors.',
-    image: '/images/products/morning-dew-moisturizer.png',
-    inStock: true
-  },
-
-  {
-    id: 'night-repair-cream',
-    name: 'Night Repair Cream',
-    tagline: 'Deep overnight restoration',
-    price: 1099,
-    description:
-      'A rich night cream that works while you sleep to repair and rejuvenate your skin.',
-    category: 'pm',
-    concern: ['Barrier'],
-    skinType: ['Dry', 'Combination', 'Normal'],
-    keyBenefits: [
-      'Deep overnight hydration',
-      'Repairs while you sleep',
-      'Improves skin elasticity',
-      'Wake up with plump, glowing skin'
-    ],
-    ingredients: [
-      'Peptides',
-      'Ceramides',
-      'Squalane',
-      'Shea Butter'
-    ],
-    howToUse:
-      'Apply as the last step of your evening routine. Massage gently into skin.',
-    image: '/images/products/night-repair-cream.png',
+      'Apply generously and evenly to the face and exposed areas as the final step of your morning skincare routine. Apply before sun exposure and reapply as needed during prolonged sun exposure.',
+    image: '/images/products/sunscreen.png',
     inStock: true
   }
 ]
 
-
 export const getProductById = (id: string) => {
   return products.find(product => product.id === id)
 }
-
 
 export const getProductsByConcern = (concern: string) => {
   return products.filter(product =>
     product.concern.includes(concern)
   )
 }
-
 
 export const getProductsBySkinType = (skinType: string) => {
   return products.filter(

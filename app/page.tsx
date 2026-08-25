@@ -100,7 +100,7 @@ function HeroCarousel({
   return (
     <section className="bg-[#F7F2EB] px-4 pb-5 pt-3 sm:px-6 sm:pb-8 sm:pt-5">
 
-      <div className="relative mx-auto w-full max-w-7xl overflow-hidden rounded-[18px]">
+      <div className="relative mx-auto w-full max-w-[1600px] overflow-hidden rounded-[18px]">
 
         {/* ==================================================
             MAIN HERO
