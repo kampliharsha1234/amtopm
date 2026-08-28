@@ -17,19 +17,18 @@ export default function CartPage() {
   const total = subtotal + shipping
 
   /* ============================================================
-     WAIT FOR CART TO LOAD FROM LOCAL STORAGE
+     WAIT FOR CART TO LOAD
   ============================================================ */
 
   if (!hydrated) {
     return (
       <main className="min-h-screen overflow-x-hidden bg-[#F7F2EB] text-[#1A1A1A]">
-
         <section className="flex min-h-[72vh] items-center justify-center px-5 pb-16 pt-32 sm:px-8 sm:pt-36">
           <div className="w-full max-w-[520px] text-center">
 
             <div className="mx-auto h-5 w-5 animate-spin rounded-full border-2 border-[#E8DFD3] border-t-[#E85D2C]" />
 
-            <p className="mt-5 text-[9px] font-medium uppercase tracking-[0.25em] text-[#6B6B6B]">
+            <p className="mt-5 text-[10px] font-medium uppercase tracking-[0.25em] text-[#6B6B6B]">
               Loading your bag
             </p>
 
@@ -37,7 +36,6 @@ export default function CartPage() {
         </section>
 
         <Footer />
-
       </main>
     )
   }
@@ -51,38 +49,59 @@ export default function CartPage() {
       <main className="min-h-screen overflow-x-hidden bg-[#F7F2EB] text-[#1A1A1A]">
 
         <section className="flex min-h-[72vh] items-center justify-center px-5 pb-16 pt-32 sm:px-8 sm:pt-36">
-
           <div className="w-full max-w-[520px] text-center">
 
-            <p className="text-[9px] font-medium uppercase tracking-[0.3em] text-[#E85D2C]">
-              YOUR AM · PM ROUTINE
+            <p className="text-[10px] font-medium lowercase tracking-[0.25em] text-[#E85D2C]">
+              amtopm
             </p>
 
-            <h1 className="mt-3 font-serif text-[48px] leading-[0.88] tracking-[-0.055em] sm:text-[68px]">
+            <h1
+              className="
+                mt-4
+                font-sans
+                text-[42px]
+                font-bold
+                leading-[0.94]
+                tracking-[-0.04em]
+                sm:text-[56px]
+              "
+            >
               Your bag is
               <br />
-              <span className="italic text-[#E85D2C]">
+              <span className="font-fahkwang font-normal italic text-[#E85D2C]">
                 waiting.
               </span>
             </h1>
 
-            <p className="mx-auto mt-4 max-w-[340px] text-[11px] leading-[1.6] text-[#6B6B6B] sm:text-[12px]">
-              Start building your AM and PM routine with skincare that actually makes sense.
+            <p className="mx-auto mt-5 max-w-[360px] text-[14px] font-light leading-[1.6] text-[#6B6B6B]">
+              Start building your skincare routine.
             </p>
 
             <Link
               href="/shop"
-              className="mt-7 inline-flex min-h-[46px] items-center justify-center bg-[#1A1A1A] px-7 text-[9px] font-medium uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#E85D2C]"
+              className="
+                mt-7
+                inline-flex
+                min-h-[46px]
+                items-center
+                justify-center
+                rounded-full
+                bg-[#1A1A1A]
+                px-7
+                text-[14px]
+                font-medium
+                text-white
+                transition-all
+                hover:bg-[#E85D2C]
+              "
             >
-              Shop skincare
+              Shop skincare →
             </Link>
 
           </div>
-
         </section>
 
         <Footer />
-
       </main>
     )
   }
@@ -94,25 +113,35 @@ export default function CartPage() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#F7F2EB] text-[#1A1A1A]">
 
-      {/* PAGE HEADER */}
+      {/* ========================================================
+          PAGE HEADER
+      ======================================================== */}
 
       <section className="px-5 pb-8 pt-32 sm:px-8 sm:pb-10 sm:pt-36">
-
         <div className="mx-auto max-w-7xl">
 
-          <p className="text-[9px] font-medium uppercase tracking-[0.3em] text-[#E85D2C]">
-            AM · PM · EVERY DAY
+          <p className="text-[10px] font-medium lowercase tracking-[0.25em] text-[#E85D2C]">
+            amtopm
           </p>
 
-          <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
 
             <div>
 
-              <h1 className="font-serif text-[50px] leading-[0.85] tracking-[-0.055em] sm:text-[70px]">
+              <h1
+                className="
+                  font-sans
+                  text-[42px]
+                  font-bold
+                  leading-[0.9]
+                  tracking-[-0.04em]
+                  sm:text-[56px]
+                "
+              >
                 Your bag.
               </h1>
 
-              <p className="mt-3 text-[10px] text-[#6B6B6B] sm:text-[11px]">
+              <p className="mt-3 text-[14px] font-light text-[#6B6B6B]">
                 {items.length}{' '}
                 {items.length === 1 ? 'product' : 'products'}{' '}
                 in your routine
@@ -122,7 +151,17 @@ export default function CartPage() {
 
             <Link
               href="/shop"
-              className="w-fit text-[8px] font-medium uppercase tracking-[0.18em] text-[#E85D2C] transition-colors hover:text-[#D14E20]"
+              className="
+                w-fit
+                rounded-full
+                px-4
+                py-2
+                text-[14px]
+                font-medium
+                text-[#E85D2C]
+                transition-all
+                hover:bg-[#FCE6D9]
+              "
             >
               Continue shopping →
             </Link>
@@ -130,27 +169,36 @@ export default function CartPage() {
           </div>
 
         </div>
-
       </section>
 
 
-      {/* CART CONTENT */}
+      {/* ========================================================
+          CART CONTENT
+      ======================================================== */}
 
-      <section className="px-4 pb-14 sm:px-6 sm:pb-20">
+      <section className="px-4 pb-48 sm:px-6 sm:pb-52">
 
         <div className="mx-auto max-w-7xl">
 
-          <div className="grid gap-5 lg:grid-cols-[1fr_360px] lg:gap-8">
+          <div className="grid gap-6 lg:grid-cols-[1fr_360px] lg:gap-8">
 
-            {/* CART ITEMS */}
+            {/* ==================================================
+                CART ITEMS
+            ================================================== */}
 
-            <div className="space-y-2.5 sm:space-y-3">
+            <div className="space-y-3">
 
               {items.map((item) => (
 
                 <div
                   key={item.id}
-                  className="border border-[#E8DFD3] bg-[#FBF8F3] p-3 sm:p-4"
+                  className="
+                    border
+                    border-[#E8DFD3]
+                    bg-[#FBF8F3]
+                    p-3
+                    sm:p-4
+                  "
                 >
 
                   <div className="flex gap-3 sm:gap-5">
@@ -159,15 +207,23 @@ export default function CartPage() {
 
                     <Link
                       href={`/shop/${item.id}`}
-                      className="relative h-[96px] w-[86px] shrink-0 overflow-hidden bg-[#E8DFD3] sm:h-[125px] sm:w-[112px]"
+                      className="
+                        relative
+                        h-[96px]
+                        w-[86px]
+                        shrink-0
+                        overflow-hidden
+                        rounded-[18px]
+                        bg-[#E8DFD3]
+                        sm:h-[125px]
+                        sm:w-[112px]
+                      "
                     >
-
                       <img
                         src={item.image}
                         alt={item.name}
                         className="h-full w-full object-cover"
                       />
-
                     </Link>
 
 
@@ -179,16 +235,26 @@ export default function CartPage() {
 
                         <Link
                           href={`/shop/${item.id}`}
-                          className="block font-serif text-[19px] leading-[0.95] tracking-[-0.03em] transition-colors hover:text-[#E85D2C] sm:text-[25px]"
+                          className="
+                            block
+                            font-sans
+                            text-[18px]
+                            font-semibold
+                            leading-[1.05]
+                            tracking-[-0.02em]
+                            transition-colors
+                            hover:text-[#E85D2C]
+                            sm:text-[21px]
+                          "
                         >
                           {item.name}
                         </Link>
 
-                        <p className="mt-1 line-clamp-1 text-[8px] leading-relaxed text-[#6B6B6B] sm:text-[10px]">
+                        <p className="mt-1 line-clamp-1 text-[14px] font-light leading-relaxed text-[#6B6B6B]">
                           {item.product.tagline}
                         </p>
 
-                        <p className="mt-2 text-[12px] font-medium text-[#E85D2C] sm:text-[14px]">
+                        <p className="mt-2 text-[14px] font-semibold text-[#E85D2C]">
                           ₹{item.price}
                         </p>
 
@@ -199,7 +265,15 @@ export default function CartPage() {
 
                       <div className="mt-3 flex items-center justify-between gap-2 sm:mt-4">
 
-                        <div className="flex h-[31px] items-center border border-[#E8DFD3] bg-[#F7F2EB]">
+                        <div className="
+                          flex
+                          h-[34px]
+                          items-center
+                          rounded-full
+                          border
+                          border-[#E8DFD3]
+                          bg-[#F7F2EB]
+                        ">
 
                           <button
                             type="button"
@@ -210,12 +284,34 @@ export default function CartPage() {
                                 item.quantity - 1
                               )
                             }
-                            className="flex h-full w-[30px] items-center justify-center text-[14px] text-[#1A1A1A] transition-colors hover:text-[#E85D2C]"
+                            className="
+                              flex
+                              h-full
+                              w-[32px]
+                              items-center
+                              justify-center
+                              rounded-full
+                              text-[16px]
+                              text-[#1A1A1A]
+                              transition-colors
+                              hover:text-[#E85D2C]
+                            "
                           >
                             −
                           </button>
 
-                          <span className="flex h-full w-[28px] items-center justify-center border-x border-[#E8DFD3] text-[9px] font-medium">
+                          <span className="
+                            flex
+                            h-full
+                            min-w-[28px]
+                            items-center
+                            justify-center
+                            border-x
+                            border-[#E8DFD3]
+                            px-2
+                            text-[10px]
+                            font-medium
+                          ">
                             {item.quantity}
                           </span>
 
@@ -228,7 +324,18 @@ export default function CartPage() {
                                 item.quantity + 1
                               )
                             }
-                            className="flex h-full w-[30px] items-center justify-center text-[14px] text-[#1A1A1A] transition-colors hover:text-[#E85D2C]"
+                            className="
+                              flex
+                              h-full
+                              w-[32px]
+                              items-center
+                              justify-center
+                              rounded-full
+                              text-[16px]
+                              text-[#1A1A1A]
+                              transition-colors
+                              hover:text-[#E85D2C]
+                            "
                           >
                             +
                           </button>
@@ -237,8 +344,22 @@ export default function CartPage() {
 
                         <button
                           type="button"
-                          onClick={() => removeFromCart(item.id)}
-                          className="text-[7px] font-medium uppercase tracking-[0.15em] text-[#8A837B] transition-colors hover:text-[#E85D2C] sm:text-[8px]"
+                          onClick={() =>
+                            removeFromCart(item.id)
+                          }
+                          className="
+                            rounded-full
+                            px-3
+                            py-1.5
+                            text-[10px]
+                            font-medium
+                            uppercase
+                            tracking-[0.12em]
+                            text-[#8A837B]
+                            transition-all
+                            hover:bg-[#FCE6D9]
+                            hover:text-[#E85D2C]
+                          "
                         >
                           Remove
                         </button>
@@ -248,11 +369,11 @@ export default function CartPage() {
                     </div>
 
 
-                    {/* DESKTOP TOTAL */}
+                    {/* DESKTOP ITEM TOTAL */}
 
-                    <div className="hidden shrink-0 text-right sm:block">
+                    <div className="hidden shrink-0 pt-1 text-right sm:block">
 
-                      <p className="text-[14px] font-medium">
+                      <p className="text-[14px] font-semibold">
                         ₹{item.price * item.quantity}
                       </p>
 
@@ -261,11 +382,11 @@ export default function CartPage() {
                   </div>
 
 
-                  {/* MOBILE TOTAL */}
+                  {/* MOBILE ITEM TOTAL */}
 
-                  <div className="mt-2 flex justify-end border-t border-[#E8DFD3] pt-2 sm:hidden">
+                  <div className="mt-3 flex justify-end border-t border-[#E8DFD3] pt-2 sm:hidden">
 
-                    <p className="text-[10px] font-medium">
+                    <p className="text-[11px] font-semibold">
                       ₹{item.price * item.quantity}
                     </p>
 
@@ -278,11 +399,19 @@ export default function CartPage() {
             </div>
 
 
-            {/* ORDER SUMMARY */}
+            {/* ==================================================
+                ORDER SUMMARY
+            ================================================== */}
 
             <aside className="h-fit lg:sticky lg:top-[105px]">
 
-              <div className="border border-[#E8DFD3] bg-[#FBF8F3] p-5 sm:p-6">
+              <div className="
+                border
+                border-[#E8DFD3]
+                bg-[#FBF8F3]
+                p-5
+                sm:p-6
+              ">
 
                 {/* SUMMARY HEADER */}
 
@@ -290,17 +419,24 @@ export default function CartPage() {
 
                   <div>
 
-                    <p className="text-[8px] font-medium uppercase tracking-[0.25em] text-[#E85D2C]">
-                      YOUR ROUTINE
+                    <p className="text-[9px] font-medium lowercase tracking-[0.2em] text-[#E85D2C]">
+                      amtopm
                     </p>
 
-                    <h2 className="mt-2 font-serif text-[28px] leading-none tracking-[-0.04em]">
-                      Order summary
+                    <h2 className="
+                      mt-2
+                      font-sans
+                      text-[24px]
+                      font-semibold
+                      leading-none
+                      tracking-[-0.02em]
+                    ">
+                      Order Summary
                     </h2>
 
                   </div>
 
-                  <span className="text-[9px] text-[#8A837B]">
+                  <span className="text-[10px] font-light text-[#8A837B]">
                     {items.length}{' '}
                     {items.length === 1 ? 'item' : 'items'}
                   </span>
@@ -308,41 +444,61 @@ export default function CartPage() {
                 </div>
 
 
-                {/* SUMMARY */}
+                {/* SUMMARY DETAILS */}
 
                 <div className="mt-7 space-y-3">
 
-                  <div className="flex justify-between text-[10px]">
+                  <div className="flex justify-between text-[14px]">
 
-                    <span className="text-[#6B6B6B]">
+                    <span className="font-light text-[#6B6B6B]">
                       Subtotal
                     </span>
 
-                    <span>
+                    <span className="font-medium">
                       ₹{subtotal}
                     </span>
 
                   </div>
 
-                  <div className="flex justify-between text-[10px]">
+                  <div className="flex justify-between text-[14px]">
 
-                    <span className="text-[#6B6B6B]">
+                    <span className="font-light text-[#6B6B6B]">
                       Shipping
                     </span>
 
-                    <span>
+                    <span className="font-medium">
                       ₹{shipping}
                     </span>
 
                   </div>
 
-                  <div className="mt-4 flex items-end justify-between border-t border-[#E8DFD3] pt-4">
+                  <div className="
+                    mt-4
+                    flex
+                    items-end
+                    justify-between
+                    border-t
+                    border-[#E8DFD3]
+                    pt-4
+                  ">
 
-                    <span className="text-[9px] uppercase tracking-[0.15em] text-[#6B6B6B]">
+                    <span className="
+                      text-[10px]
+                      font-medium
+                      uppercase
+                      tracking-[0.15em]
+                      text-[#6B6B6B]
+                    ">
                       Total
                     </span>
 
-                    <span className="font-serif text-[28px] leading-none tracking-[-0.03em]">
+                    <span className="
+                      font-sans
+                      text-[27px]
+                      font-semibold
+                      leading-none
+                      tracking-[-0.03em]
+                    ">
                       ₹{total}
                     </span>
 
@@ -351,21 +507,54 @@ export default function CartPage() {
                 </div>
 
 
-                {/* CHECKOUT */}
+                {/* ==================================================
+                    DESKTOP ONLY CHECKOUT BUTTON
+
+                    Hidden on mobile because the sticky bottom
+                    checkout bar is the primary mobile CTA.
+                ================================================== */}
 
                 <Link
                   href="/checkout"
-                  className="mt-6 flex min-h-[48px] w-full items-center justify-center bg-[#E85D2C] px-5 text-[8px] font-medium uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#D14E20]"
+                  className="
+                    mt-6
+                    hidden
+                    min-h-[48px]
+                    w-full
+                    items-center
+                    justify-center
+                    rounded-full
+                    bg-[#E85D2C]
+                    px-5
+                    text-[14px]
+                    font-medium
+                    text-white
+                    transition-all
+                    hover:bg-[#D14E20]
+                    hover:-translate-y-[1px]
+                    lg:flex
+                  "
                 >
                   Proceed to checkout →
                 </Link>
 
 
-                {/* CONTINUE */}
+                {/* CONTINUE SHOPPING */}
 
                 <Link
                   href="/shop"
-                  className="mt-4 block text-center text-[8px] font-medium uppercase tracking-[0.15em] text-[#6B6B6B] transition-colors hover:text-[#E85D2C]"
+                  className="
+                    mt-4
+                    block
+                    rounded-full
+                    py-2
+                    text-center
+                    text-[14px]
+                    font-medium
+                    text-[#6B6B6B]
+                    transition-colors
+                    hover:text-[#E85D2C]
+                  "
                 >
                   ← Continue shopping
                 </Link>
@@ -373,9 +562,9 @@ export default function CartPage() {
 
                 {/* TRUST NOTE */}
 
-                <div className="mt-7 border-t border-[#E8DFD3] pt-5">
+                <div className="mt-6 border-t border-[#E8DFD3] pt-5">
 
-                  <p className="text-[8px] leading-[1.6] text-[#8A837B]">
+                  <p className="text-[12px] font-light leading-[1.6] text-[#8A837B]">
                     Science-first skincare.
                     <br />
                     No hype. Just care.
@@ -392,6 +581,101 @@ export default function CartPage() {
         </div>
 
       </section>
+
+
+      {/* ========================================================
+          STICKY BOTTOM BAR
+          DESKTOP + MOBILE
+      ======================================================== */}
+
+      <div
+        className="
+          fixed
+          inset-x-0
+          bottom-0
+          z-50
+          border-t
+          border-[#E8DFD3]
+          bg-[#FBF8F3]/95
+          px-4
+          py-3
+          shadow-[0_-8px_25px_rgba(26,26,26,0.06)]
+          backdrop-blur-md
+          sm:px-6
+          sm:py-4
+        "
+      >
+
+        <div
+          className="
+            mx-auto
+            flex
+            max-w-7xl
+            items-center
+            gap-4
+          "
+        >
+
+          {/* ESTIMATED TOTAL */}
+
+          <div className="min-w-0 flex-1">
+
+            <p className="
+              text-[8px]
+              font-medium
+              uppercase
+              tracking-[0.2em]
+              text-[#6B6B6B]
+              sm:text-[9px]
+            ">
+              Estimated total
+            </p>
+
+            <p className="
+              mt-1
+              font-sans
+              text-[23px]
+              font-semibold
+              leading-none
+              tracking-[-0.03em]
+              sm:text-[28px]
+            ">
+              ₹{total}
+            </p>
+
+          </div>
+
+
+          {/* STICKY CHECKOUT BUTTON */}
+
+          <Link
+            href="/checkout"
+            className="
+              flex
+              min-h-[46px]
+              shrink-0
+              items-center
+              justify-center
+              rounded-full
+              bg-[#E85D2C]
+              px-5
+              text-[12px]
+              font-medium
+              text-white
+              transition-all
+              hover:bg-[#D14E20]
+              hover:-translate-y-[1px]
+              sm:min-h-[50px]
+              sm:px-8
+              sm:text-[14px]
+            "
+          >
+            Proceed to checkout →
+          </Link>
+
+        </div>
+
+      </div>
 
 
       {/* FOOTER */}

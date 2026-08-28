@@ -1,26 +1,24 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono, Bodoni_Moda } from 'next/font/google'
+import { Poppins, Fahkwang } from 'next/font/google'
 import './globals.css'
+
 import Navbar from './components/Navbar'
 import IntroScreen from './components/IntroScreen'
 import CookieConsent from './components/CookieConsent'
 import { Providers } from './provider'
+import Footer from './components/Footer'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const poppins = Poppins({
+  variable: '--font-poppins',
   subsets: ['latin'],
+  weight: ['200', '300', '400', '500', '600', '700'],
+  display: 'swap',
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const fahkwang = Fahkwang({
+  variable: '--font-fahkwang',
   subsets: ['latin'],
-})
-
-const bodoni = Bodoni_Moda({
-  variable: '--font-bodoni',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
+  weight: ['300', '400', '500', '600', '700'],
   display: 'swap',
 })
 
@@ -38,13 +36,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${bodoni.variable}`}
+      className={`${poppins.variable} ${fahkwang.variable}`}
     >
       <body className="min-h-screen bg-[#F5F1E9] antialiased">
         <Providers>
           <IntroScreen />
           <Navbar />
           <main>{children}</main>
+          <Footer/>
           <CookieConsent />
         </Providers>
       </body>

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { useCart } from '../context/CartContext'
 import { useSession, signOut } from 'next-auth/react'
@@ -40,7 +41,6 @@ export default function Navbar() {
               overflow-hidden
             "
           >
-
             {/* =================================================
                 MAIN NAVBAR
             ================================================= */}
@@ -56,34 +56,35 @@ export default function Navbar() {
                 justify-between
               "
             >
-
               {/* =================================================
                   LOGO
               ================================================= */}
 
               <Link
                 href="/"
+                aria-label="AM:PM Home"
                 className="
                   flex
                   items-center
-                  text-[#E85D2C]
-                  hover:text-[#D14E20]
-                  transition-colors
+                  shrink-0
+                  transition-opacity
+                  hover:opacity-80
                 "
               >
-                <span
+                <Image
+                  src="/images/logo.png"
+                  alt="AM:PM"
+                  width={88}
+                  height={28}
+                  priority
                   className="
-                    text-[20px]
-                    sm:text-[22px]
-                    font-medium
-                    tracking-[-0.04em]
-                    leading-none
+                    h-auto
+                    w-[70px]
+                    sm:w-[70px]
+                    object-contain
                   "
-                >
-                  AM:PM
-                </span>
+                />
               </Link>
-
 
               {/* =================================================
                   RIGHT ACTIONS
@@ -110,7 +111,6 @@ export default function Navbar() {
                     transition-colors
                   "
                 >
-
                   <BagIcon />
 
                   {totalItems > 0 && (
@@ -134,10 +134,7 @@ export default function Navbar() {
                       {totalItems}
                     </span>
                   )}
-
                 </Link>
-
-
 
                 {/* =================================================
                     MENU
@@ -160,15 +157,11 @@ export default function Navbar() {
                 >
                   <MenuIcon />
                 </button>
-
               </div>
-
             </div>
-
           </div>
         </nav>
       )}
-
 
       {/* =====================================================
           FULL SCREEN MENU
@@ -182,9 +175,9 @@ export default function Navbar() {
             z-[100]
             bg-[#FBF8F3]
             text-[#1A1A1A]
+            overflow-hidden
           "
         >
-
           {/* =================================================
               MENU HEADER
           ================================================= */}
@@ -198,25 +191,36 @@ export default function Navbar() {
               flex
               items-center
               justify-between
+              shrink-0
             "
           >
-
             {/* LOGO */}
 
             <Link
               href="/"
               onClick={() => setIsOpen(false)}
+              aria-label="AM:PM Home"
               className="
-                text-[#E85D2C]
-                text-[23px]
-                sm:text-[26px]
-                font-medium
-                tracking-[-0.04em]
+                flex
+                items-center
+                transition-opacity
+                hover:opacity-80
               "
             >
-              AM:PM
+              <Image
+                src="/images/logo.png"
+                alt="AM:PM"
+                width={105}
+                height={34}
+                priority
+                className="
+                  h-auto
+                  w-[84px]
+                  sm:w-[72px]
+                  object-contain
+                "
+              />
             </Link>
-
 
             {/* CLOSE */}
 
@@ -232,16 +236,22 @@ export default function Navbar() {
                 text-[#1A1A1A]
                 hover:text-[#E85D2C]
                 transition-colors
+                shrink-0
               "
             >
               <CloseIcon />
             </button>
-
           </div>
-
 
           {/* =================================================
               MENU CONTENT
+
+              Mobile:
+              Same open layout/behaviour as before.
+
+              Desktop:
+              Navigation gets its own scroll area so the
+              complete list can never run outside the screen.
           ================================================= */}
 
           <div
@@ -250,11 +260,17 @@ export default function Navbar() {
               sm:px-14
               pt-20
               sm:pt-24
+
+              lg:absolute
+              lg:top-[88px]
+              lg:bottom-[112px]
+              lg:left-0
+              lg:right-0
+              lg:overflow-y-auto
+              lg:overscroll-contain
             "
           >
-
-            <nav className="flex flex-col">
-
+            <nav className="flex flex-col pb-6 lg:min-h-full">
               <MenuItem
                 href="/"
                 onClick={() => setIsOpen(false)}
@@ -263,7 +279,6 @@ export default function Navbar() {
                 Home
               </MenuItem>
 
-
               <MenuItem
                 href="/shop"
                 onClick={() => setIsOpen(false)}
@@ -271,22 +286,14 @@ export default function Navbar() {
                 Shop
               </MenuItem>
 
-
               <MenuItem
                 href="/quiz"
                 onClick={() => setIsOpen(false)}
               >
-                Skin Quiz
+                Skin Test
               </MenuItem>
 
-
-              <MenuItem
-                href="/school"
-                onClick={() => setIsOpen(false)}
-              >
-                Skin School
-              </MenuItem>
-
+              
 
               <MenuItem
                 href="/science"
@@ -295,14 +302,12 @@ export default function Navbar() {
                 Ingredient Science
               </MenuItem>
 
-
               <MenuItem
                 href="/about"
                 onClick={() => setIsOpen(false)}
               >
                 Our Story
               </MenuItem>
-
 
               <MenuItem
                 href="/support"
@@ -311,14 +316,12 @@ export default function Navbar() {
                 Support
               </MenuItem>
 
-
               <MenuItem
                 href="/cart"
                 onClick={() => setIsOpen(false)}
               >
                 Cart {totalItems > 0 && `(${totalItems})`}
               </MenuItem>
-
 
               {/* =================================================
                   AUTH LINKS
@@ -335,7 +338,9 @@ export default function Navbar() {
 
                   <button
                     onClick={() => {
-                      signOut({ callbackUrl: '/' })
+                      signOut({
+                        callbackUrl: '/',
+                      })
                       setIsOpen(false)
                     }}
                     className="
@@ -364,14 +369,14 @@ export default function Navbar() {
                   Sign In
                 </MenuItem>
               )}
-
             </nav>
-
           </div>
-
 
           {/* =================================================
               MENU FOOTER
+
+              This stays pinned to the bottom on desktop,
+              while the navigation above it remains scrollable.
           ================================================= */}
 
           <div
@@ -385,11 +390,10 @@ export default function Navbar() {
               flex
               items-end
               justify-between
+              bg-[#FBF8F3]
             "
           >
-
             <div>
-
               <p
                 className="
                   text-[10px]
@@ -410,9 +414,7 @@ export default function Navbar() {
               >
                 Science-first skincare.
               </p>
-
             </div>
-
 
             <div
               className="
@@ -426,15 +428,12 @@ export default function Navbar() {
             >
               No hype. Just care.
             </div>
-
           </div>
-
         </div>
       )}
     </>
   )
 }
-
 
 /* =========================================================
    FULL SCREEN MENU ITEM
@@ -477,7 +476,6 @@ function MenuItem({
   )
 }
 
-
 /* =========================================================
    CART / BAG ICON
 ========================================================= */
@@ -500,7 +498,6 @@ function BagIcon() {
   )
 }
 
-
 /* =========================================================
    MENU ICON
 ========================================================= */
@@ -522,7 +519,6 @@ function MenuIcon() {
     </svg>
   )
 }
-
 
 /* =========================================================
    CLOSE ICON

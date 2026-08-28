@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-
 import { products } from '../data/products'
 import { useCart } from '../context/CartContext'
 import Footer from '../components/Footer'
@@ -13,7 +12,7 @@ type QuizStep = 'intro' | 'questions' | 'result'
 type Answers = {
   skinType: string
   concerns: string[]
-  priority: string
+  priorities: string[]
 }
 
 const skinTypes = [
@@ -42,6 +41,8 @@ const concerns = [
   'Barrier',
   'Aging',
   'Redness',
+  'Pigmentation',
+  'Sunburn',
 ]
 
 const priorities = [
@@ -53,6 +54,27 @@ const priorities = [
   'Sun Protection',
 ]
 
+/* ============================================================
+   PRIORITY → PRODUCT CONCERN MAPPING
+
+   This is intentionally kept in one place so that when the
+   product database is updated later, the quiz logic can easily
+   be refined around the product concern data.
+============================================================ */
+
+const priorityConcernMap: Record<string, string[]> = {
+  Hydration: ['Barrier'],
+  Brightening: ['Dark Spots', 'Pigmentation'],
+  'Anti-aging': ['Aging'],
+  'Acne Control': ['Acne'],
+  'Barrier Repair': ['Barrier'],
+  'Sun Protection': ['SPF', 'Sunburn'],
+}
+
+/* ============================================================
+   QUIZ PAGE
+============================================================ */
+
 export default function QuizPage() {
   const router = useRouter()
 
@@ -61,16 +83,18 @@ export default function QuizPage() {
     hydrated,
   } = useCart()
 
-  const [step, setStep] = useState<QuizStep>('intro')
+  const [step, setStep] =
+    useState<QuizStep>('intro')
 
-  const [answers, setAnswers] = useState<Answers>({
-    skinType: '',
-    concerns: [],
-    priority: '',
-  })
+  const [answers, setAnswers] =
+    useState<Answers>({
+      skinType: '',
+      concerns: [],
+      priorities: [],
+    })
 
-  const [addingRoutine, setAddingRoutine] = useState(false)
-
+  const [addingRoutine, setAddingRoutine] =
+    useState(false)
 
   /* ============================================================
      SCROLL TOP WHEN MOVING BETWEEN QUIZ STEPS
@@ -84,20 +108,32 @@ export default function QuizPage() {
     })
   }, [step])
 
-
   /* ============================================================
      PRODUCT RECOMMENDATION
   ============================================================ */
 
   const recommendedProducts = useMemo(() => {
-    const scored = products.map(product => {
+    const scored = products.map((product) => {
       let score = 0
 
-      answers.concerns.forEach(concern => {
-        if (product.concern.includes(concern)) {
-          score += 3
+      const productConcerns = Array.isArray(product.concern)
+        ? product.concern
+        : [product.concern]
+
+      /* --------------------------------------------------------
+         CONCERN MATCHING
+         User concern = stronger match
+      -------------------------------------------------------- */
+
+      answers.concerns.forEach((concern) => {
+        if (productConcerns.includes(concern)) {
+          score += 4
         }
       })
+
+      /* --------------------------------------------------------
+         SKIN TYPE MATCHING
+      -------------------------------------------------------- */
 
       if (
         answers.skinType &&
@@ -109,40 +145,22 @@ export default function QuizPage() {
         score += 2
       }
 
-      if (
-        answers.priority === 'Acne Control' &&
-        product.concern.includes('Acne')
-      ) {
-        score += 2
-      }
+      /* --------------------------------------------------------
+         MULTIPLE PRIORITIES
+      -------------------------------------------------------- */
 
-      if (
-        answers.priority === 'Barrier Repair' &&
-        product.concern.includes('Barrier')
-      ) {
-        score += 2
-      }
+      answers.priorities.forEach((priority) => {
+        const relatedConcerns =
+          priorityConcernMap[priority] || []
 
-      if (
-        answers.priority === 'Brightening' &&
-        product.concern.includes('Dark Spots')
-      ) {
-        score += 2
-      }
-
-      if (
-        answers.priority === 'Sun Protection' &&
-        product.concern.includes('SPF')
-      ) {
-        score += 3
-      }
-
-      if (
-        answers.priority === 'Hydration' &&
-        product.concern.includes('Barrier')
-      ) {
-        score += 1
-      }
+        if (
+          relatedConcerns.some((concern) =>
+            productConcerns.includes(concern)
+          )
+        ) {
+          score += 3
+        }
+      })
 
       return {
         product,
@@ -151,42 +169,62 @@ export default function QuizPage() {
     })
 
     return scored
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 4)
-      .map(item => item.product)
+      .sort((a, b) => {
+        if (b.score !== a.score) {
+          return b.score - a.score
+        }
+
+        return (
+          a.product.name.localeCompare(
+            b.product.name
+          )
+        )
+      })
+      .filter((item) => item.score > 0)
+      .slice(0, 6)
+      .map((item) => item.product)
   }, [answers])
 
+  /* ============================================================
+     AM PRODUCTS
+  ============================================================ */
 
-  const amProducts = recommendedProducts
-    .filter(
-      product =>
-        product.category === 'am' ||
-        product.category === 'both'
-    )
-    .slice(0, 2)
+  const amProducts = useMemo(() => {
+    return recommendedProducts
+      .filter(
+        (product) =>
+          product.category === 'am' ||
+          product.category === 'both'
+      )
+      .slice(0, 3)
+  }, [recommendedProducts])
 
+  /* ============================================================
+     PM PRODUCTS
+  ============================================================ */
 
-  const pmProducts = recommendedProducts
-    .filter(
-      product =>
-        product.category === 'pm' ||
-        product.category === 'both'
-    )
-    .slice(0, 2)
+  const pmProducts = useMemo(() => {
+    return recommendedProducts
+      .filter(
+        (product) =>
+          product.category === 'pm' ||
+          product.category === 'both'
+      )
+      .slice(0, 3)
+  }, [recommendedProducts])
 
+  /* ============================================================
+     COMPLETE ROUTINE
+  ============================================================ */
 
   const routineProducts = useMemo(() => {
-    return [
-      ...amProducts,
-      ...pmProducts,
-    ].filter(
+    return [...amProducts, ...pmProducts].filter(
       (product, index, array) =>
         array.findIndex(
-          item => item.id === product.id
+          (item) => item.id === product.id
         ) === index
     )
   }, [amProducts, pmProducts])
-
 
   /* ============================================================
      ADD ROUTINE + GO TO CART
@@ -203,20 +241,10 @@ export default function QuizPage() {
 
     setAddingRoutine(true)
 
-    /*
-     * Add the entire routine in a single CartContext update.
-     */
     addProductsToCart(routineProducts)
 
-    /*
-     * Next.js client navigation.
-     *
-     * This does NOT reload the entire application like
-     * window.location.href does.
-     */
     router.push('/cart')
   }
-
 
   /* ============================================================
      CONCERN TOGGLE
@@ -225,14 +253,34 @@ export default function QuizPage() {
   const handleConcernToggle = (
     concern: string
   ) => {
-    setAnswers(prev => ({
+    setAnswers((prev) => ({
       ...prev,
+
       concerns: prev.concerns.includes(concern)
-        ? prev.concerns.filter(c => c !== concern)
+        ? prev.concerns.filter(
+            (item) => item !== concern
+          )
         : [...prev.concerns, concern],
     }))
   }
 
+  /* ============================================================
+     PRIORITY TOGGLE
+  ============================================================ */
+
+  const handlePriorityToggle = (
+    priority: string
+  ) => {
+    setAnswers((prev) => ({
+      ...prev,
+
+      priorities: prev.priorities.includes(priority)
+        ? prev.priorities.filter(
+            (item) => item !== priority
+          )
+        : [...prev.priorities, priority],
+    }))
+  }
 
   /* ============================================================
      RESET
@@ -242,74 +290,79 @@ export default function QuizPage() {
     setAnswers({
       skinType: '',
       concerns: [],
-      priority: '',
+      priorities: [],
     })
 
     setStep('intro')
   }
-
 
   /* ============================================================
      INTRO
   ============================================================ */
 
   const renderIntro = () => (
-    <section className="
-      flex
-      min-h-[72vh]
-      items-center
-      px-1
-      py-10
-      sm:py-16
-    ">
-
-      <div className="
-        mx-auto
-        w-full
-        max-w-4xl
-        text-center
-      ">
-
-        <p className="
-          text-[9px]
-          font-medium
-          uppercase
-          tracking-[0.3em]
-          text-[#E85D2C]
-        ">
-          AM:PM SKIN QUIZ
+    <section
+      className="
+        flex
+        min-h-[72vh]
+        items-center
+        px-1
+        py-10
+        sm:py-16
+      "
+    >
+      <div
+        className="
+          mx-auto
+          w-full
+          max-w-4xl
+          text-center
+        "
+      >
+        <p
+          className="
+            text-[10px]
+            font-medium
+            lowercase
+            tracking-[0.25em]
+            text-[#E85D2C]
+          "
+        >
+          amtopm skin test
         </p>
 
-        <h1 className="
-          mx-auto
-          mt-5
-          max-w-[750px]
-          font-serif
-          text-[64px]
-          leading-[0.8]
-          tracking-[-0.065em]
-          text-[#1A1A1A]
-          sm:text-[100px]
-        ">
+        <h1
+          className="
+            mx-auto
+            mt-5
+            max-w-[750px]
+            font-sans
+            text-[42px]
+            font-bold
+            leading-[0.92]
+            tracking-[-0.04em]
+            text-[#1A1A1A]
+            sm:text-[64px]
+          "
+        >
           Meet your
           <br />
-          <span className="
-            italic
-            text-[#E85D2C]
-          ">
+          <span className="font-fahkwang font-normal italic text-[#E85D2C]">
             routine.
           </span>
         </h1>
 
-        <p className="
-          mx-auto
-          mt-6
-          max-w-[420px]
-          text-[11px]
-          leading-[1.55]
-          text-[#6B6B6B]
-          sm:text-[13px]
-        ">
+        <p
+          className="
+            mx-auto
+            mt-6
+            max-w-[420px]
+            text-[14px]
+            font-light
+            leading-[1.55]
+            text-[#6B6B6B]
+          "
+        >
           A few quick questions.
           A routine built around your skin.
         </p>
@@ -323,152 +376,176 @@ export default function QuizPage() {
             min-h-[50px]
             items-center
             justify-center
+            rounded-full
             bg-[#E85D2C]
             px-8
-            text-[9px]
+            text-[14px]
             font-medium
-            uppercase
-            tracking-[0.18em]
             text-white
-            transition-colors
+            transition-all
             hover:bg-[#D14E20]
+            hover:-translate-y-[1px]
           "
         >
-          Start quiz →
+          Start skin test →
         </button>
 
-        <p className="
-          mt-4
-          text-[8px]
-          uppercase
-          tracking-[0.15em]
-          text-[#8A837B]
-        ">
+        <p
+          className="
+            mt-4
+            text-[10px]
+            uppercase
+            tracking-[0.15em]
+            text-[#8A837B]
+          "
+        >
           Takes about 2 minutes
         </p>
-
       </div>
-
     </section>
   )
-
 
   /* ============================================================
      QUESTIONS
   ============================================================ */
 
   const renderQuestions = () => {
-
     const canContinue =
       Boolean(answers.skinType) &&
       answers.concerns.length > 0 &&
-      Boolean(answers.priority)
+      answers.priorities.length > 0
 
     return (
-      <section className="
-        px-1
-        py-8
-        pb-14
-        sm:py-12
-        sm:pb-20
-      ">
+      <section
+        className="
+          px-1
+          py-8
+          pb-14
+          sm:py-12
+          sm:pb-20
+        "
+      >
+        <div
+          className="
+            mx-auto
+            max-w-3xl
+          "
+        >
+          {/* TOP BAR */}
 
-        <div className="
-          mx-auto
-          max-w-3xl
-        ">
-
-          <div className="
-            mb-9
-            flex
-            items-center
-            justify-between
-          ">
-
+          <div
+            className="
+              mb-9
+              flex
+              items-center
+              justify-between
+            "
+          >
             <button
               type="button"
               onClick={() => setStep('intro')}
               className="
-                text-[8px]
+                rounded-full
+                px-3
+                py-2
+                text-[10px]
                 font-medium
                 uppercase
                 tracking-[0.15em]
                 text-[#6B6B6B]
+                transition-colors
+                hover:bg-[#FCE6D9]
                 hover:text-[#E85D2C]
               "
             >
               ← Back
             </button>
 
-            <span className="
-              text-[8px]
-              font-medium
-              uppercase
-              tracking-[0.2em]
-              text-[#6B6B6B]
-            ">
+            <span
+              className="
+                text-[10px]
+                font-medium
+                uppercase
+                tracking-[0.2em]
+                text-[#6B6B6B]
+              "
+            >
               Build your routine
             </span>
-
           </div>
 
-          <div className="
-            mb-12
-            h-[2px]
-            w-full
-            bg-[#E8DFD3]
-          ">
-            <div className="
-              h-full
+          {/* PROGRESS */}
+
+          <div
+            className="
+              mb-12
+              h-[2px]
               w-full
-              bg-[#E85D2C]
-            " />
+              bg-[#E8DFD3]
+            "
+          >
+            <div
+              className="
+                h-full
+                w-full
+                bg-[#E85D2C]
+              "
+            />
           </div>
 
-
-          {/* SKIN TYPE */}
+          {/* ==================================================
+              01 — SKIN TYPE
+          ================================================== */}
 
           <div className="mb-12">
-
-            <p className="
-              text-[9px]
-              font-medium
-              uppercase
-              tracking-[0.25em]
-              text-[#E85D2C]
-            ">
+            <p
+              className="
+                text-[10px]
+                font-medium
+                uppercase
+                tracking-[0.25em]
+                text-[#E85D2C]
+              "
+            >
               01 / 03
             </p>
 
-            <h2 className="
-              mt-2
-              font-serif
-              text-[40px]
-              leading-[0.9]
-              tracking-[-0.045em]
-              sm:text-[54px]
-            ">
-              What's your skin type?
+            <h2
+              className="
+                mt-2
+                font-sans
+                text-[35px]
+                font-bold
+                leading-[0.94]
+                tracking-[-0.035em]
+                sm:text-[48px]
+              "
+            >
+              What&apos;s your skin type?
             </h2>
 
-            <p className="
-              mt-2
-              text-[10px]
-              text-[#6B6B6B]
-            ">
+            <p
+              className="
+                mt-2
+                text-[14px]
+                font-light
+                text-[#6B6B6B]
+              "
+            >
               Pick the closest match.
             </p>
 
-            <div className="
-              mt-5
-              grid
-              grid-cols-2
-              gap-2
-              sm:grid-cols-4
-              sm:gap-3
-            ">
-
-              {skinTypes.map(type => {
+            <div
+              className="
+                mt-5
+                grid
+                grid-cols-2
+                gap-2
+                sm:grid-cols-4
+                sm:gap-3
+              "
+            >
+              {skinTypes.map((type) => {
                 const selected =
                   answers.skinType === type.name
 
@@ -477,18 +554,19 @@ export default function QuizPage() {
                     key={type.name}
                     type="button"
                     onClick={() =>
-                      setAnswers(prev => ({
+                      setAnswers((prev) => ({
                         ...prev,
                         skinType: type.name,
                       }))
                     }
                     className={`
-                      min-h-[110px]
+                      min-h-[120px]
+                      rounded-[20px]
                       border
                       p-4
                       text-left
                       transition-all
-                      sm:min-h-[135px]
+                      sm:min-h-[145px]
                       sm:p-5
                       ${
                         selected
@@ -497,93 +575,110 @@ export default function QuizPage() {
                       }
                     `}
                   >
-
-                    <span className="
-                      block
-                      font-serif
-                      text-[22px]
-                      leading-none
-                    ">
+                    <span
+                      className="
+                        block
+                        font-fahkwang
+                        text-[22px]
+                        font-normal
+                        leading-none
+                        text-[#1A1A1A]
+                      "
+                    >
                       {type.name}
                     </span>
 
-                    <span className="
-                      mt-3
-                      block
-                      text-[8px]
-                      leading-[1.5]
-                      text-[#6B6B6B]
-                    ">
+                    <span
+                      className="
+                        mt-3
+                        block
+                        text-[14px]
+                        font-light
+                        leading-[1.45]
+                        text-[#6B6B6B]
+                      "
+                    >
                       {type.description}
                     </span>
 
                     {selected && (
-                      <span className="
-                        mt-3
-                        block
-                        text-[8px]
-                        font-medium
-                        uppercase
-                        tracking-[0.15em]
-                        text-[#E85D2C]
-                      ">
+                      <span
+                        className="
+                          mt-3
+                          inline-block
+                          rounded-full
+                          bg-[#E85D2C]
+                          px-3
+                          py-1
+                          text-[9px]
+                          font-medium
+                          uppercase
+                          tracking-[0.12em]
+                          text-white
+                        "
+                      >
                         Selected
                       </span>
                     )}
-
                   </button>
                 )
               })}
-
             </div>
-
           </div>
 
-
-          {/* CONCERNS */}
+          {/* ==================================================
+              02 — CONCERNS
+          ================================================== */}
 
           <div className="mb-12">
-
-            <p className="
-              text-[9px]
-              font-medium
-              uppercase
-              tracking-[0.25em]
-              text-[#E85D2C]
-            ">
+            <p
+              className="
+                text-[10px]
+                font-medium
+                uppercase
+                tracking-[0.25em]
+                text-[#E85D2C]
+              "
+            >
               02 / 03
             </p>
 
-            <h2 className="
-              mt-2
-              font-serif
-              text-[40px]
-              leading-[0.9]
-              tracking-[-0.045em]
-              sm:text-[54px]
-            ">
+            <h2
+              className="
+                mt-2
+                font-sans
+                text-[35px]
+                font-bold
+                leading-[0.94]
+                tracking-[-0.035em]
+                sm:text-[48px]
+              "
+            >
               What are you working on?
             </h2>
 
-            <p className="
-              mt-2
-              text-[10px]
-              text-[#6B6B6B]
-            ">
+            <p
+              className="
+                mt-2
+                text-[14px]
+                font-light
+                text-[#6B6B6B]
+              "
+            >
               Select all that apply.
             </p>
 
-            <div className="
-              mt-5
-              grid
-              grid-cols-2
-              gap-2
-              sm:grid-cols-3
-              sm:gap-3
-            ">
-
-              {concerns.map(concern => {
-
+            <div
+              className="
+                mt-5
+                grid
+                grid-cols-2
+                gap-2
+                sm:grid-cols-3
+                sm:gap-3
+              "
+            >
+              {concerns.map((concern) => {
                 const selected =
                   answers.concerns.includes(concern)
 
@@ -595,9 +690,13 @@ export default function QuizPage() {
                       handleConcernToggle(concern)
                     }
                     className={`
+                      flex
                       min-h-[64px]
+                      items-center
+                      justify-between
+                      rounded-full
                       border
-                      px-4
+                      px-5
                       text-left
                       transition-all
                       ${
@@ -607,93 +706,99 @@ export default function QuizPage() {
                       }
                     `}
                   >
-
-                    <span className="
-                      text-[11px]
-                      font-medium
-                    ">
+                    <span
+                      className="
+                        text-[14px]
+                        font-medium
+                      "
+                    >
                       {concern}
                     </span>
 
                     {selected && (
-                      <span className="
-                        float-right
-                        text-[10px]
-                      ">
+                      <span className="ml-2 text-[14px]">
                         ✓
                       </span>
                     )}
-
                   </button>
                 )
               })}
-
             </div>
-
           </div>
 
-
-          {/* PRIORITY */}
+          {/* ==================================================
+              03 — PRIORITIES
+          ================================================== */}
 
           <div>
-
-            <p className="
-              text-[9px]
-              font-medium
-              uppercase
-              tracking-[0.25em]
-              text-[#E85D2C]
-            ">
+            <p
+              className="
+                text-[10px]
+                font-medium
+                uppercase
+                tracking-[0.25em]
+                text-[#E85D2C]
+              "
+            >
               03 / 03
             </p>
 
-            <h2 className="
-              mt-2
-              font-serif
-              text-[40px]
-              leading-[0.9]
-              tracking-[-0.045em]
-              sm:text-[54px]
-            ">
-              What's your priority?
+            <h2
+              className="
+                mt-2
+                font-sans
+                text-[35px]
+                font-bold
+                leading-[0.94]
+                tracking-[-0.035em]
+                sm:text-[48px]
+              "
+            >
+              What&apos;s your priority?
             </h2>
 
-            <p className="
-              mt-2
-              text-[10px]
-              text-[#6B6B6B]
-            ">
-              Pick the result you care about most.
+            <p
+              className="
+                mt-2
+                text-[14px]
+                font-light
+                text-[#6B6B6B]
+              "
+            >
+              Select all the results that matter to you.
             </p>
 
-            <div className="
-              mt-5
-              grid
-              grid-cols-1
-              gap-2
-              sm:grid-cols-2
-              sm:gap-3
-            ">
-
-              {priorities.map(priority => {
-
+            <div
+              className="
+                mt-5
+                grid
+                grid-cols-1
+                gap-2
+                sm:grid-cols-2
+                sm:gap-3
+              "
+            >
+              {priorities.map((priority) => {
                 const selected =
-                  answers.priority === priority
+                  answers.priorities.includes(
+                    priority
+                  )
 
                 return (
                   <button
                     key={priority}
                     type="button"
                     onClick={() =>
-                      setAnswers(prev => ({
-                        ...prev,
-                        priority,
-                      }))
+                      handlePriorityToggle(priority)
                     }
                     className={`
-                      min-h-[58px]
+                      flex
+                      min-h-[60px]
+                      items-center
+                      justify-between
+                      rounded-full
                       border
-                      px-4
+                      px-5
                       text-left
                       transition-all
                       ${
@@ -703,70 +808,60 @@ export default function QuizPage() {
                       }
                     `}
                   >
-
-                    <span className="
-                      text-[11px]
-                      font-medium
-                    ">
+                    <span
+                      className="
+                        text-[14px]
+                        font-medium
+                      "
+                    >
                       {priority}
                     </span>
 
                     {selected && (
-                      <span className="
-                        float-right
-                        text-[10px]
-                      ">
+                      <span className="ml-2 text-[14px]">
                         ✓
                       </span>
                     )}
-
                   </button>
                 )
               })}
-
             </div>
 
-            <div className="
-              mt-7
-              flex
-              justify-end
-            ">
+            {/* CONTINUE */}
 
+            <div className="mt-7 flex justify-end">
               <button
                 type="button"
                 disabled={!canContinue}
                 onClick={() => setStep('result')}
                 className={`
+                  inline-flex
                   min-h-[48px]
+                  items-center
+                  justify-center
+                  rounded-full
                   px-7
-                  text-[9px]
+                  text-[14px]
                   font-medium
-                  uppercase
-                  tracking-[0.18em]
                   transition-all
                   ${
                     canContinue
-                      ? 'bg-[#E85D2C] text-white hover:bg-[#D14E20]'
+                      ? 'bg-[#E85D2C] text-white hover:bg-[#D14E20] hover:-translate-y-[1px]'
                       : 'cursor-not-allowed bg-[#E8DFD3] text-[#9A938B]'
                   }
                 `}
               >
                 See my routine →
               </button>
-
             </div>
-
           </div>
-
         </div>
-
       </section>
     )
   }
 
-
   /* ============================================================
-     PRODUCT ROW
+     ROUTINE PRODUCT
   ============================================================ */
 
   const RoutineProduct = ({
@@ -776,7 +871,6 @@ export default function QuizPage() {
     product: (typeof products)[number]
     index: number
   }) => (
-
     <Link
       href={`/shop/${product.id}`}
       className="
@@ -790,15 +884,16 @@ export default function QuizPage() {
         sm:p-4
       "
     >
-
-      <div className="
-        h-[72px]
-        w-[64px]
-        shrink-0
-        overflow-hidden
-        bg-[#E8DFD3]
-      ">
-
+      <div
+        className="
+          h-[72px]
+          w-[64px]
+          shrink-0
+          overflow-hidden
+          rounded-[14px]
+          bg-[#E8DFD3]
+        "
+      >
         <img
           src={product.image}
           alt={product.name}
@@ -811,95 +906,94 @@ export default function QuizPage() {
             group-hover:scale-105
           "
         />
-
       </div>
 
-      <div className="
-        min-w-0
-        flex-1
-      ">
-
-        <div className="
-          flex
-          gap-2
-        ">
-
-          <span className="
-            text-[8px]
-            font-medium
-            text-[#E85D2C]
-          ">
+      <div className="min-w-0 flex-1">
+        <div className="flex gap-2">
+          <span
+            className="
+              pt-0.5
+              text-[9px]
+              font-semibold
+              text-[#E85D2C]
+            "
+          >
             0{index + 1}
           </span>
 
-          <h3 className="
-            font-serif
-            text-[18px]
-            leading-[0.95]
-            tracking-[-0.025em]
-          ">
+          <h3
+            className="
+              font-sans
+              text-[17px]
+              font-semibold
+              leading-[1.05]
+              tracking-[-0.02em]
+            "
+          >
             {product.name}
           </h3>
-
         </div>
 
-        <p className="
-          mt-2
-          text-[8px]
-          leading-[1.4]
-          text-[#6B6B6B]
-        ">
+        <p
+          className="
+            mt-2
+            text-[14px]
+            font-light
+            leading-[1.4]
+            text-[#6B6B6B]
+          "
+        >
           {product.tagline}
         </p>
 
-        <p className="
-          mt-2
-          text-[10px]
-          font-medium
-        ">
+        <p
+          className="
+            mt-2
+            text-[14px]
+            font-medium
+          "
+        >
           ₹{product.price}
         </p>
-
       </div>
-
     </Link>
   )
-
 
   /* ============================================================
      RESULTS
   ============================================================ */
 
   const renderResult = () => (
-
-    <section className="
-      px-1
-      py-8
-      pb-16
-      sm:py-12
-      sm:pb-20
-    ">
-
-      <div className="
-        mx-auto
-        max-w-5xl
-      ">
-
-        <div className="
-          flex
-          items-center
-          justify-between
-        ">
-
+    <section
+      className="
+        px-1
+        py-8
+        pb-16
+        sm:py-12
+        sm:pb-20
+      "
+    >
+      <div
+        className="
+          mx-auto
+          max-w-5xl
+        "
+      >
+        <div className="flex items-center justify-between">
           <button
             type="button"
             onClick={() => setStep('questions')}
             className="
-              text-[8px]
+              rounded-full
+              px-3
+              py-2
+              text-[10px]
               font-medium
               uppercase
               tracking-[0.15em]
               text-[#6B6B6B]
+              transition-colors
+              hover:bg-[#FCE6D9]
               hover:text-[#E85D2C]
             "
           >
@@ -910,241 +1004,315 @@ export default function QuizPage() {
             type="button"
             onClick={resetQuiz}
             className="
-              text-[8px]
+              rounded-full
+              px-3
+              py-2
+              text-[10px]
               font-medium
               uppercase
               tracking-[0.15em]
               text-[#6B6B6B]
+              transition-colors
+              hover:bg-[#FCE6D9]
               hover:text-[#E85D2C]
             "
           >
             Retake
           </button>
-
         </div>
 
+        {/* RESULT HEADER */}
 
-        <div className="
-          mt-8
-          border-b
-          border-[#E8DFD3]
-          pb-7
-        ">
-
-          <p className="
-            text-[9px]
-            font-medium
-            uppercase
-            tracking-[0.28em]
-            text-[#E85D2C]
-          ">
+        <div
+          className="
+            mt-8
+            border-b
+            border-[#E8DFD3]
+            pb-7
+          "
+        >
+          <p
+            className="
+              text-[10px]
+              font-medium
+              uppercase
+              tracking-[0.28em]
+              text-[#E85D2C]
+            "
+          >
             YOUR ROUTINE
           </p>
 
-          <h1 className="
-            mt-3
-            font-serif
-            text-[55px]
-            leading-[0.82]
-            tracking-[-0.055em]
-            sm:text-[76px]
-          ">
+          <h1
+            className="
+              mt-3
+              font-sans
+              text-[48px]
+              font-bold
+              leading-[0.9]
+              tracking-[-0.04em]
+              sm:text-[68px]
+            "
+          >
             Made for
             <br />
-            <span className="
-              italic
-              text-[#E85D2C]
-            ">
+            <span className="font-fahkwang font-normal italic text-[#E85D2C]">
               your skin.
             </span>
           </h1>
 
-          <p className="
-            mt-4
-            text-[10px]
-            text-[#6B6B6B]
-          ">
-            {answers.skinType} · {answers.priority}
-          </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {answers.skinType && (
+              <span
+                className="
+                  rounded-full
+                  bg-[#FCE6D9]
+                  px-3
+                  py-1.5
+                  text-[10px]
+                  font-medium
+                  text-[#E85D2C]
+                "
+              >
+                {answers.skinType}
+              </span>
+            )}
 
+            {answers.priorities.map((priority) => (
+              <span
+                key={priority}
+                className="
+                  rounded-full
+                  border
+                  border-[#E8DFD3]
+                  px-3
+                  py-1.5
+                  text-[10px]
+                  font-medium
+                  text-[#6B6B6B]
+                "
+              >
+                {priority}
+              </span>
+            ))}
+          </div>
         </div>
 
+        {/* ==================================================
+            AM / PM
+        ================================================== */}
 
-        <div className="
-          mt-6
-          grid
-          gap-3
-          sm:grid-cols-2
-        ">
-
-
+        <div
+          className="
+            mt-6
+            grid
+            gap-3
+            sm:grid-cols-2
+          "
+        >
           {/* AM */}
 
-          <div className="
-            border
-            border-[#E8DFD3]
-            bg-[#FBF8F3]
-          ">
-
-            <div className="
-              flex
-              items-end
-              justify-between
-              border-b
+          <div
+            className="
+              overflow-hidden
+              rounded-[22px]
+              border
               border-[#E8DFD3]
-              p-5
-            ">
-
+              bg-[#FBF8F3]
+            "
+          >
+            <div
+              className="
+                flex
+                items-end
+                justify-between
+                border-b
+                border-[#E8DFD3]
+                p-5
+              "
+            >
               <div>
-
-                <p className="
-                  text-[8px]
-                  font-medium
-                  uppercase
-                  tracking-[0.2em]
-                  text-[#E85D2C]
-                ">
-                  MORNING
+                <p
+                  className="
+                    text-[10px]
+                    font-medium
+                    uppercase
+                    tracking-[0.2em]
+                    text-[#E85D2C]
+                  "
+                >
+                  Morning
                 </p>
 
-                <h2 className="
-                  mt-1
-                  font-serif
-                  text-[31px]
-                  leading-none
-                ">
+                <h2
+                  className="
+                    mt-1
+                    font-sans
+                    text-[31px]
+                    font-bold
+                    leading-none
+                  "
+                >
                   AM
                 </h2>
-
               </div>
 
-              <span className="
-                text-[18px]
-                text-[#E85D2C]
-              ">
+              <span className="text-[18px] text-[#E85D2C]">
                 ☼
               </span>
-
             </div>
 
             <div className="p-1">
-
-              {amProducts.map((product, index) => (
-                <RoutineProduct
-                  key={product.id}
-                  product={product}
-                  index={index}
-                />
-              ))}
-
+              {amProducts.length > 0 ? (
+                amProducts.map((product, index) => (
+                  <RoutineProduct
+                    key={product.id}
+                    product={product}
+                    index={index}
+                  />
+                ))
+              ) : (
+                <div className="p-5">
+                  <p className="text-[14px] font-light leading-[1.5] text-[#6B6B6B]">
+                    We&apos;re still refining your morning
+                    recommendations. Check back as our
+                    product range grows.
+                  </p>
+                </div>
+              )}
             </div>
-
           </div>
-
 
           {/* PM */}
 
-          <div className="
-            border
-            border-[#E8DFD3]
-            bg-[#FBF8F3]
-          ">
-
-            <div className="
-              flex
-              items-end
-              justify-between
-              border-b
+          <div
+            className="
+              overflow-hidden
+              rounded-[22px]
+              border
               border-[#E8DFD3]
-              p-5
-            ">
-
+              bg-[#FBF8F3]
+            "
+          >
+            <div
+              className="
+                flex
+                items-end
+                justify-between
+                border-b
+                border-[#E8DFD3]
+                p-5
+              "
+            >
               <div>
-
-                <p className="
-                  text-[8px]
-                  font-medium
-                  uppercase
-                  tracking-[0.2em]
-                  text-[#E85D2C]
-                ">
-                  EVENING
+                <p
+                  className="
+                    text-[10px]
+                    font-medium
+                    uppercase
+                    tracking-[0.2em]
+                    text-[#E85D2C]
+                  "
+                >
+                  Evening
                 </p>
 
-                <h2 className="
-                  mt-1
-                  font-serif
-                  text-[31px]
-                  leading-none
-                ">
+                <h2
+                  className="
+                    mt-1
+                    font-sans
+                    text-[31px]
+                    font-bold
+                    leading-none
+                  "
+                >
                   PM
                 </h2>
-
               </div>
 
-              <span className="
-                text-[18px]
-                text-[#E85D2C]
-              ">
+              <span className="text-[18px] text-[#E85D2C]">
                 ◐
               </span>
-
             </div>
 
             <div className="p-1">
-
-              {pmProducts.map((product, index) => (
-                <RoutineProduct
-                  key={product.id}
-                  product={product}
-                  index={index}
-                />
-              ))}
-
+              {pmProducts.length > 0 ? (
+                pmProducts.map((product, index) => (
+                  <RoutineProduct
+                    key={product.id}
+                    product={product}
+                    index={index}
+                  />
+                ))
+              ) : (
+                <div className="p-5">
+                  <p className="text-[14px] font-light leading-[1.5] text-[#6B6B6B]">
+                    We&apos;re still refining your evening
+                    recommendations. Check back as our
+                    product range grows.
+                  </p>
+                </div>
+              )}
             </div>
-
           </div>
-
         </div>
 
+        {/* ==================================================
+            ROUTINE SUMMARY
+        ================================================== */}
 
-        <div className="
-          mt-5
-          flex
-          items-center
-          justify-between
-          border-y
-          border-[#E8DFD3]
-          py-4
-        ">
-
-          <span className="
-            text-[8px]
-            font-medium
-            uppercase
-            tracking-[0.18em]
-            text-[#6B6B6B]
-          ">
+        <div
+          className="
+            mt-5
+            flex
+            flex-col
+            gap-2
+            border-y
+            border-[#E8DFD3]
+            py-4
+            sm:flex-row
+            sm:items-center
+            sm:justify-between
+          "
+        >
+          <span
+            className="
+              text-[10px]
+              font-medium
+              uppercase
+              tracking-[0.18em]
+              text-[#6B6B6B]
+            "
+          >
             Your routine
           </span>
 
-          <span className="
-            font-serif
-            text-[20px]
-          ">
-            {routineProducts.length} products
+          <span
+            className="
+              font-fahkwang
+              text-[20px]
+              text-[#1A1A1A]
+            "
+          >
+            {routineProducts.length}{' '}
+            {routineProducts.length === 1
+              ? 'product'
+              : 'products'}
           </span>
-
         </div>
 
+        {/* ==================================================
+            ACTIONS
+        ================================================== */}
 
-        <div className="
-          mt-5
-          grid
-          gap-2
-          sm:grid-cols-2
-        ">
-
+        <div
+          className="
+            mt-5
+            grid
+            gap-2
+            sm:grid-cols-2
+          "
+        >
           <button
             type="button"
             onClick={handleShopRoutine}
@@ -1158,17 +1326,18 @@ export default function QuizPage() {
               min-h-[52px]
               items-center
               justify-center
+              rounded-full
               px-6
-              text-[9px]
+              text-[14px]
               font-medium
-              uppercase
-              tracking-[0.18em]
               text-white
-              transition-colors
+              transition-all
               ${
                 addingRoutine
                   ? 'cursor-wait bg-[#D14E20]'
-                  : 'bg-[#E85D2C] hover:bg-[#D14E20]'
+                  : routineProducts.length === 0
+                    ? 'cursor-not-allowed bg-[#E8DFD3] text-[#9A938B]'
+                    : 'bg-[#E85D2C] hover:bg-[#D14E20] hover:-translate-y-[1px]'
               }
             `}
           >
@@ -1176,7 +1345,6 @@ export default function QuizPage() {
               ? 'Adding routine...'
               : 'Add routine to bag →'}
           </button>
-
 
           <button
             type="button"
@@ -1186,64 +1354,59 @@ export default function QuizPage() {
               min-h-[52px]
               items-center
               justify-center
+              rounded-full
               border
               border-[#1A1A1A]
               px-6
-              text-[9px]
+              text-[14px]
               font-medium
-              uppercase
-              tracking-[0.18em]
               text-[#1A1A1A]
+              transition-all
               hover:bg-[#1A1A1A]
               hover:text-white
             "
           >
-            Retake quiz
+            Retake skin test
           </button>
-
         </div>
-
       </div>
-
     </section>
   )
-
 
   /* ============================================================
      PAGE
   ============================================================ */
 
   return (
-    <main className="
-      min-h-screen
-      overflow-x-hidden
-      bg-[#F7F2EB]
-      text-[#1A1A1A]
-    ">
+    <main
+      className="
+        min-h-screen
+        overflow-x-hidden
+        bg-[#F7F2EB]
+        text-[#1A1A1A]
+      "
+    >
+      {/* Navbar-safe spacing */}
 
-      <div className="
-        h-24
-        sm:h-32
-      " />
+      <div className="h-24 sm:h-32" />
 
-      <div className="
-        mx-auto
-        w-full
-        max-w-7xl
-        px-4
-        sm:px-6
-      ">
-
+      <div
+        className="
+          mx-auto
+          w-full
+          max-w-7xl
+          px-4
+          sm:px-6
+        "
+      >
         {step === 'intro' && renderIntro()}
 
         {step === 'questions' && renderQuestions()}
 
         {step === 'result' && renderResult()}
-
       </div>
 
       <Footer />
-
     </main>
   )
 }

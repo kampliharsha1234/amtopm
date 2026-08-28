@@ -22,27 +22,30 @@ export default function Footer() {
           FOOTER MAIN
       ====================================================== */}
 
-      <div className="
-        mx-auto
-        max-w-7xl
-        px-5
-        pt-12
-        sm:px-8
-        sm:pt-16
-      ">
+      <div
+        className="
+          mx-auto
+          max-w-7xl
+          px-5
+          pt-12
+          sm:px-8
+          sm:pt-16
+        "
+      >
 
         {/* ==================================================
             BRAND + FOOTER MENU
         ================================================== */}
 
-        <div className="
-          grid
-          grid-cols-2
-          gap-x-8
-          gap-y-10
-          sm:grid-cols-4
-        ">
-
+        <div
+          className="
+            grid
+            grid-cols-2
+            gap-x-8
+            gap-y-10
+            sm:grid-cols-4
+          "
+        >
 
           {/* ==================================================
               BRAND
@@ -50,29 +53,40 @@ export default function Footer() {
 
           <div className="col-span-2 sm:col-span-1">
 
+            {/* LOGO */}
+
             <Link
               href="/"
               className="
-                inline-block
-                text-[30px]
-                font-medium
-                tracking-[-0.055em]
-                text-[#E85D2C]
-                transition-colors
-                hover:text-[#FCE6D9]
+                inline-flex
+                items-center
+                transition-opacity
+                hover:opacity-80
               "
             >
-              AM:PM
+              <img
+                src="/images/logo.png"
+                alt="AM:PM"
+                className="
+                  block
+                  h-auto
+                  w-[82px]
+                  object-contain
+                  sm:w-[92px]
+                "
+              />
             </Link>
 
 
-            <p className="
-              mt-3
-              max-w-[220px]
-              text-[10px]
-              leading-[1.65]
-              text-[#A7A7A7]
-            ">
+            <p
+              className="
+                mt-3
+                max-w-[220px]
+                text-[10px]
+                leading-[1.65]
+                text-[#A7A7A7]
+              "
+            >
               Skincare for morning &amp; night.
               <br />
               Made with patience.
@@ -81,12 +95,14 @@ export default function Footer() {
 
             {/* SMALL BRAND MARK */}
 
-            <div className="
-              mt-7
-              h-px
-              w-12
-              bg-[#E85D2C]
-            " />
+            <div
+              className="
+                mt-7
+                h-px
+                w-12
+                bg-[#E85D2C]
+              "
+            />
 
           </div>
 
@@ -97,23 +113,27 @@ export default function Footer() {
 
           <div>
 
-            <h4 className="
-              text-[8px]
-              font-medium
-              uppercase
-              tracking-[0.3em]
-              text-[#6B6B6B]
-            ">
+            <h4
+              className="
+                text-[8px]
+                font-medium
+                uppercase
+                tracking-[0.3em]
+                text-[#6B6B6B]
+              "
+            >
               Shop
             </h4>
 
 
-            <ul className="
-              mt-4
-              space-y-2.5
-              text-[11px]
-              text-[#D6D0C9]
-            ">
+            <ul
+              className="
+                mt-4
+                space-y-2.5
+                text-[11px]
+                text-[#D6D0C9]
+              "
+            >
 
               <li>
                 <Link
@@ -186,23 +206,27 @@ export default function Footer() {
 
           <div>
 
-            <h4 className="
-              text-[8px]
-              font-medium
-              uppercase
-              tracking-[0.3em]
-              text-[#6B6B6B]
-            ">
+            <h4
+              className="
+                text-[8px]
+                font-medium
+                uppercase
+                tracking-[0.3em]
+                text-[#6B6B6B]
+              "
+            >
               Learn
             </h4>
 
 
-            <ul className="
-              mt-4
-              space-y-2.5
-              text-[11px]
-              text-[#D6D0C9]
-            ">
+            <ul
+              className="
+                mt-4
+                space-y-2.5
+                text-[11px]
+                text-[#D6D0C9]
+              "
+            >
 
               <li>
                 <Link
@@ -251,23 +275,27 @@ export default function Footer() {
 
           <div>
 
-            <h4 className="
-              text-[8px]
-              font-medium
-              uppercase
-              tracking-[0.3em]
-              text-[#6B6B6B]
-            ">
+            <h4
+              className="
+                text-[8px]
+                font-medium
+                uppercase
+                tracking-[0.3em]
+                text-[#6B6B6B]
+              "
+            >
               Support
             </h4>
 
 
-            <ul className="
-              mt-4
-              space-y-2.5
-              text-[11px]
-              text-[#D6D0C9]
-            ">
+            <ul
+              className="
+                mt-4
+                space-y-2.5
+                text-[11px]
+                text-[#D6D0C9]
+              "
+            >
 
               <li>
                 <Link
@@ -314,26 +342,28 @@ export default function Footer() {
 
         {/* ======================================================
             NEWSLETTER
-            At the VERY END of the footer menu
         ====================================================== */}
 
-        <div className="
-          mt-12
-          border-t
-          border-[#3D3D3D]
-          py-10
-          sm:mt-16
-          sm:py-14
-        ">
+        <div
+          className="
+            mt-12
+            border-t
+            border-[#3D3D3D]
+            py-10
+            sm:mt-16
+            sm:py-14
+          "
+        >
 
-          <div className="
-            grid
-            gap-8
-            sm:grid-cols-[0.9fr_1.1fr]
-            sm:items-center
-            sm:gap-14
-          ">
-
+          <div
+            className="
+              grid
+              gap-8
+              sm:grid-cols-[0.9fr_1.1fr]
+              sm:items-center
+              sm:gap-14
+            "
+          >
 
             {/* ==================================================
                 NEWSLETTER COPY
@@ -341,39 +371,45 @@ export default function Footer() {
 
             <div>
 
-              <p className="
-                text-[8px]
-                font-medium
-                uppercase
-                tracking-[0.3em]
-                text-[#E85D2C]
-              ">
+              <p
+                className="
+                  text-[8px]
+                  font-medium
+                  uppercase
+                  tracking-[0.3em]
+                  text-[#E85D2C]
+                "
+              >
                 STAY IN THE LOOP
               </p>
 
 
-              <h2 className="
-                mt-2
-                font-serif
-                text-[38px]
-                leading-[0.9]
-                tracking-[-0.045em]
-                text-[#FBF8F3]
-                sm:text-[50px]
-              ">
+              <h2
+                className="
+                  mt-2
+                  font-serif
+                  text-[38px]
+                  leading-[0.9]
+                  tracking-[-0.045em]
+                  text-[#FBF8F3]
+                  sm:text-[50px]
+                "
+              >
                 Learn your skin.
               </h2>
 
 
-              <p className="
-                mt-3
-                max-w-[390px]
-                font-serif
-                text-[18px]
-                leading-[1.25]
-                text-[#A7A7A7]
-                sm:text-[21px]
-              ">
+              <p
+                className="
+                  mt-3
+                  max-w-[390px]
+                  font-serif
+                  text-[18px]
+                  leading-[1.25]
+                  text-[#A7A7A7]
+                  sm:text-[21px]
+                "
+              >
                 Short, honest emails. No hype.
               </p>
 
@@ -388,42 +424,50 @@ export default function Footer() {
 
               {subscribed ? (
 
-                <div className="
-                  border
-                  border-[#3D3D3D]
-                  bg-[#242424]
-                  px-5
-                  py-6
-                  sm:px-6
-                  sm:py-7
-                ">
+                <div
+                  className="
+                    border
+                    border-[#3D3D3D]
+                    bg-[#242424]
+                    px-5
+                    py-6
+                    sm:px-6
+                    sm:py-7
+                  "
+                >
 
-                  <p className="
-                    font-serif
-                    text-[23px]
-                    leading-none
-                    text-[#FBF8F3]
-                  ">
+                  <p
+                    className="
+                      font-serif
+                      text-[23px]
+                      leading-none
+                      text-[#FBF8F3]
+                    "
+                  >
                     You&apos;re on the list.
                   </p>
 
 
-                  <p className="
-                    mt-2
-                    text-[10px]
-                    leading-relaxed
-                    text-[#A7A7A7]
-                  ">
+                  <p
+                    className="
+                      mt-2
+                      text-[10px]
+                      leading-relaxed
+                      text-[#A7A7A7]
+                    "
+                  >
                     We&apos;ll keep the emails useful. Promise.
                   </p>
 
 
-                  <div className="
-                    mt-5
-                    h-px
-                    w-10
-                    bg-[#E85D2C]
-                  " />
+                  <div
+                    className="
+                      mt-5
+                      h-px
+                      w-10
+                      bg-[#E85D2C]
+                    "
+                  />
 
                 </div>
 
@@ -445,16 +489,18 @@ export default function Footer() {
                   </label>
 
 
-                  <div className="
-                    mt-2
-                    flex
-                    h-[52px]
-                    border
-                    border-[#555555]
-                    bg-[#242424]
-                    transition-colors
-                    focus-within:border-[#E85D2C]
-                  ">
+                  <div
+                    className="
+                      mt-2
+                      flex
+                      h-[52px]
+                      border
+                      border-[#555555]
+                      bg-[#242424]
+                      transition-colors
+                      focus-within:border-[#E85D2C]
+                    "
+                  >
 
                     <input
                       id="footer-newsletter-email"
@@ -498,12 +544,14 @@ export default function Footer() {
                   </div>
 
 
-                  <label className="
-                    mt-3
-                    flex
-                    items-start
-                    gap-2.5
-                  ">
+                  <label
+                    className="
+                      mt-3
+                      flex
+                      items-start
+                      gap-2.5
+                    "
+                  >
 
                     <input
                       type="checkbox"
@@ -517,11 +565,13 @@ export default function Footer() {
                     />
 
 
-                    <span className="
-                      text-[9px]
-                      leading-[1.4]
-                      text-[#6B6B6B]
-                    ">
+                    <span
+                      className="
+                        text-[9px]
+                        leading-[1.4]
+                        text-[#6B6B6B]
+                      "
+                    >
                       Yes, subscribe me to your newsletter. *
                     </span>
 
@@ -542,21 +592,23 @@ export default function Footer() {
             BOTTOM BAR
         ====================================================== */}
 
-        <div className="
-          flex
-          flex-col
-          gap-2
-          border-t
-          border-[#3D3D3D]
-          py-5
-          text-[8px]
-          uppercase
-          tracking-[0.18em]
-          text-[#6B6B6B]
-          sm:flex-row
-          sm:items-center
-          sm:justify-between
-        ">
+        <div
+          className="
+            flex
+            flex-col
+            gap-2
+            border-t
+            border-[#3D3D3D]
+            py-5
+            text-[8px]
+            uppercase
+            tracking-[0.18em]
+            text-[#6B6B6B]
+            sm:flex-row
+            sm:items-center
+            sm:justify-between
+          "
+        >
 
           <span>
             © 2026 AM:PM Skincare
