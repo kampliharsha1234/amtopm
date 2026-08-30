@@ -12,6 +12,7 @@ type TermSection = {
   number: string
   title: string
   content: string[]
+  note?: string
 }
 
 const terms: TermSection[] = [
