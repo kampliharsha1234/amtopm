@@ -1406,7 +1406,6 @@ export default function QuizPage() {
         {step === 'result' && renderResult()}
       </div>
 
-      <Footer />
     </main>
   )
 }

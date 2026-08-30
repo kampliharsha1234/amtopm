@@ -99,7 +99,7 @@ const doctorReviews = [
     designation: 'Dermatologist',
     image: '/images/doctors/doctor1.png',
     review:
-      'AM:PM takes a thoughtful approach to skincare, with a clear focus on purposeful formulations and skin health.',
+      'amtopm takes a thoughtful approach to skincare, with a clear focus on purposeful formulations and skin health.',
   },
   {
     id: 'doctor-2',
@@ -107,7 +107,7 @@ const doctorReviews = [
     designation: 'Consultant Dermatologist',
     image: '/images/doctors/doctor2.png',
     review:
-      'Good skincare starts with understanding the skin. AM:PM keeps that principle at the centre of its approach.',
+      'Good skincare starts with understanding the skin. amtopm keeps that principle at the centre of its approach.',
   },
   {
     id: 'doctor-3',
@@ -288,7 +288,7 @@ function HeroCarousel() {
           >
             <img
               src="/images/barrier.png"
-              alt="AM:PM free skin consultation"
+              alt="amtopm free skin consultation"
               className="absolute inset-0 h-full w-full object-cover"
             />
 
@@ -337,7 +337,7 @@ function HeroCarousel() {
               </h2>
 
               <Link
-                href="/support"
+                href="/consultation"
                 className="
                   mt-6
                   inline-flex
@@ -998,7 +998,7 @@ function EditorialPromo() {
           <div className="relative min-h-[370px] overflow-hidden rounded-b-[22px] bg-[#E8DFD3] sm:min-h-[540px] sm:rounded-b-none sm:rounded-r-[22px]">
             <img
               src="/images/barrier.png"
-              alt="AM:PM skincare"
+              alt="amtopm skincare"
               className="absolute inset-0 h-full w-full object-cover"
             />
 
@@ -1010,7 +1010,7 @@ function EditorialPromo() {
               </p>
 
               <span className="hidden text-[10px] uppercase tracking-[0.2em] text-white/80 sm:block">
-                AM:PM
+                amtopm
               </span>
             </div>
           </div>
@@ -1021,7 +1021,7 @@ function EditorialPromo() {
 }
 
 /* ============================================================
-   WHY AM:PM
+   WHY amtopm
 ============================================================ */
 
 function TrustSection() {
@@ -1049,7 +1049,7 @@ function TrustSection() {
         <div className="grid gap-5 sm:grid-cols-[0.9fr_1.1fr] sm:items-end">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#6B6B6B]">
-              WHY AM:PM
+              WHY amtopm
             </p>
 
             <h2 className="mt-2 font-sans text-[40px] font-bold leading-[0.9] tracking-[-0.045em] text-[#1A1A1A] sm:text-[62px]">
@@ -1327,7 +1327,7 @@ export default function Home() {
 
       <EditorialPromo />
 
-      {/* 07 — WHY AM:PM */}
+      {/* 07 — WHY amtopm */}
 
       <TrustSection />
 

@@ -678,9 +678,7 @@ export default function CartPage() {
       </div>
 
 
-      {/* FOOTER */}
 
-      <Footer />
 
     </main>
   )

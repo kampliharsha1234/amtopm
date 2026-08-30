@@ -1,261 +1,944 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Footer from '../components/Footer'
 
 export const metadata: Metadata = {
-  title: 'Ingredients Science | AM:PM',
+  title: 'Ingredient Science | am to pm',
   description:
-    'Understand the ingredients behind AM:PM skincare and why each one has a job.',
+    'Understand skincare ingredients, what they do, and how they work on your skin.',
 }
 
-const acids = [
+type Ingredient = {
+  name: string
+  classification: string
+  category: string
+  short: string
+  functions: string[]
+  mechanism: string
+}
+
+const ingredients: Ingredient[] = [
   {
     name: 'Azelaic Acid',
-    description: 'Calms inflammation and helps clear breakouts.',
+    classification: 'Dicarboxylic Acid',
+    category: 'Clarify',
+    short:
+      'A multifunctional ingredient that supports clearer-looking skin, more even tone and reduced visible redness.',
+    functions: [
+      'Helps reduce the appearance of acne',
+      'Helps improve post-acne pigmentation',
+      'Helps reduce visible redness',
+      'Supports more even-looking skin tone',
+    ],
+    mechanism:
+      'Azelaic Acid works across several pathways associated with acne-prone and uneven-looking skin. It supports more normal keratinization and processes associated with blemishes and discoloration.',
   },
-  {
-    name: 'Lactic Acid',
-    description: 'Gently exfoliates for smoother, brighter skin.',
-  },
-  {
-    name: 'Tranexamic Acid',
-    description: 'Helps fade hyperpigmentation and dark spots.',
-  },
+
   {
     name: 'Salicylic Acid',
-    description: 'Unclogs pores and helps treat acne.',
+    classification: 'Beta Hydroxy Acid · BHA',
+    category: 'Exfoliate',
+    short:
+      'An oil-soluble exfoliating acid that works particularly well around oily pores.',
+    functions: [
+      'Helps unclog pores',
+      'Helps reduce blackheads',
+      'Helps reduce whiteheads',
+      'Helps remove excess oil',
+      'Supports smoother skin texture',
+    ],
+    mechanism:
+      'Because Salicylic Acid is oil-soluble, it can work within oily pores. It helps loosen dead skin cells and excess sebum, supporting natural exfoliation and clearer-looking pores.',
   },
-  {
-    name: 'Hyaluronic Acid',
-    description: 'Attracts moisture to keep skin hydrated and plump.',
-  },
-  {
-    name: 'Ascorbic Acid',
-    description: 'Brightens skin and provides antioxidant support.',
-  },
+
   {
     name: 'Mandelic Acid',
-    description: 'Provides gentle exfoliation for more even-looking skin.',
+    classification: 'Alpha Hydroxy Acid · AHA',
+    category: 'Renew',
+    short:
+      'A surface exfoliating acid chosen for its slower penetration and focus on texture.',
+    functions: [
+      'Supports surface exfoliation',
+      'Helps improve skin texture',
+      'Supports brighter-looking skin',
+      'Helps improve the appearance of post-acne marks',
+    ],
+    mechanism:
+      'Mandelic Acid works primarily at the skin surface, encouraging the shedding of dead skin cells. Its larger molecular size allows slower penetration than smaller AHAs.',
+  },
+
+  {
+    name: 'Niacinamide',
+    classification: 'Vitamin B3',
+    category: 'Barrier',
+    short:
+      'A versatile ingredient supporting the barrier while helping with oil balance, tone and texture.',
+    functions: [
+      'Supports the skin barrier',
+      'Helps regulate excess oil',
+      'Helps improve uneven-looking skin tone',
+      'Supports smoother-looking skin',
+      'Helps improve the appearance of enlarged pores',
+    ],
+    mechanism:
+      'Niacinamide supports natural barrier-lipid production and contributes to improved barrier function. It also supports a more even-looking complexion.',
+  },
+
+  {
+    name: 'Tranexamic Acid',
+    classification: 'Skin Brightening Active',
+    category: 'Brighten',
+    short:
+      'A targeted brightening ingredient used to support the appearance of pigmentation and post-inflammatory marks.',
+    functions: [
+      'Helps improve the appearance of pigmentation',
+      'Supports more even-looking skin tone',
+      'Helps improve post-acne marks',
+      'Supports overall skin radiance',
+    ],
+    mechanism:
+      'Tranexamic Acid is understood to influence pathways involved in pigmentation by reducing signals that can stimulate excess melanin production, particularly those associated with inflammation.',
+  },
+
+  {
+    name: 'Alpha Arbutin',
+    classification: 'Skin Brightening Active',
+    category: 'Brighten',
+    short:
+      'A brightening ingredient commonly used to target visible dark spots and uneven-looking skin tone.',
+    functions: [
+      'Helps improve the appearance of dark spots',
+      'Supports a more even-looking complexion',
+      'Supports brighter-looking skin',
+    ],
+    mechanism:
+      'Alpha Arbutin is used in cosmetic brightening formulations to support a more even-looking complexion and improve the appearance of visible discoloration.',
+  },
+
+  {
+    name: 'Potassium Azeloyl Diglycinate',
+    classification: 'Azelaic Acid Derivative',
+    category: 'Balance',
+    short:
+      'A water-soluble azelaic acid derivative combining brightening and oil-balancing support.',
+    functions: [
+      'Helps improve uneven-looking skin tone',
+      'Supports brighter-looking skin',
+      'Helps balance excess oil',
+      'Supports skin hydration',
+    ],
+    mechanism:
+      'Potassium Azeloyl Diglycinate combines brightening support with sebum-balancing properties and fits naturally into lightweight daily formulations.',
+  },
+
+  {
+    name: 'Bakuchiol',
+    classification: 'Plant-Derived Functional Ingredient',
+    category: 'Renew',
+    short:
+      'A plant-derived ingredient used to support skin renewal, texture and antioxidant defense.',
+    functions: [
+      'Helps improve skin texture',
+      'Supports smoother-looking skin',
+      'Provides antioxidant support',
+      'Helps improve the appearance of fine lines',
+      'Supports skin renewal',
+    ],
+    mechanism:
+      'Bakuchiol is believed to support skin-renewal and collagen-related pathways while providing antioxidant protection.',
+  },
+
+  {
+    name: 'Zinc PCA',
+    classification: 'Sebum-Regulating Ingredient',
+    category: 'Balance',
+    short:
+      'An oil-balancing ingredient designed to support skin that tends to produce excess sebum.',
+    functions: [
+      'Helps reduce excess oil',
+      'Supports acne-prone skin',
+      'Helps maintain skin balance',
+      'Complements oil-balancing ingredients',
+    ],
+    mechanism:
+      'Zinc PCA is used to support sebum balance and overall skin equilibrium, particularly when excess oil is part of the concern.',
+  },
+
+  {
+    name: 'Panthenol',
+    classification: 'Provitamin B5',
+    category: 'Hydrate',
+    short:
+      'A skin-conditioning ingredient that attracts moisture while supporting comfort and barrier function.',
+    functions: [
+      'Supports hydration',
+      'Helps soothe skin',
+      'Supports barrier recovery',
+      'Helps reduce the feeling of dryness',
+      'Improves skin softness',
+    ],
+    mechanism:
+      'Panthenol acts as a humectant, helping attract water into the outer layers of the skin while supporting barrier function and comfort.',
+  },
+
+  {
+    name: 'Ceramides',
+    classification: 'Barrier Repair Lipids',
+    category: 'Barrier',
+    short:
+      'Lipids naturally found in the outer skin layer that help maintain barrier integrity.',
+    functions: [
+      'Reinforce the skin barrier',
+      'Help reduce moisture loss',
+      'Support long-term hydration',
+      'Improve skin resilience',
+      'Support smoother-looking skin',
+    ],
+    mechanism:
+      'Ceramides help fill spaces between skin cells in the outer layer, forming part of a protective lipid matrix that helps reduce water loss and strengthen the barrier.',
+  },
+
+  {
+    name: 'Glycerin',
+    classification: 'Humectant',
+    category: 'Hydrate',
+    short:
+      'A well-studied humectant that helps attract and retain moisture in the outer layers of skin.',
+    functions: [
+      'Supports hydration',
+      'Helps retain moisture',
+      'Improves skin softness',
+      'Supports a supple skin feel',
+    ],
+    mechanism:
+      'Glycerin binds water and helps maintain hydration in the outermost skin layer, contributing to softer and more comfortable-feeling skin.',
+  },
+
+  {
+    name: 'Sodium Hyaluronate',
+    classification: 'Hyaluronic Acid Salt',
+    category: 'Hydrate',
+    short:
+      'A highly water-binding form of hyaluronic acid supporting hydrated, supple-looking skin.',
+    functions: [
+      'Supports hydration',
+      'Improves the appearance of skin plumpness',
+      'Supports smoother-looking skin',
+      'Helps reduce the feeling of dryness',
+    ],
+    mechanism:
+      'Sodium Hyaluronate binds significant amounts of water, helping maintain hydration and improving the appearance of smooth, supple skin.',
+  },
+
+  {
+    name: 'Squalane',
+    classification: 'Skin-Identical Emollient',
+    category: 'Barrier',
+    short:
+      'A lightweight emollient that closely resembles naturally occurring skin lipids.',
+    functions: [
+      'Softens the skin',
+      'Supports barrier function',
+      'Helps reduce moisture loss',
+      'Improves skin comfort',
+    ],
+    mechanism:
+      'Squalane forms a lightweight protective layer over the skin, helping reduce moisture loss while improving softness and comfort.',
+  },
+
+  {
+    name: 'Allantoin',
+    classification: 'Skin Protectant',
+    category: 'Soothe',
+    short:
+      'A skin-comfort ingredient used to help soothe and support a more comfortable skin feel.',
+    functions: [
+      'Helps soothe skin',
+      'Supports skin comfort',
+      'Helps reduce the feeling of irritation',
+      'Supports formulation tolerability',
+    ],
+    mechanism:
+      'Allantoin is used as a skin protectant and soothing ingredient, helping improve comfort when skin is exposed to environmental stress or active skincare ingredients.',
+  },
+
+  {
+    name: 'Green Tea Extract',
+    classification: 'Botanical Extract',
+    category: 'Protect',
+    short:
+      'A botanical ingredient rich in polyphenols, valued for antioxidant and soothing support.',
+    functions: [
+      'Provides antioxidant support',
+      'Helps soothe skin',
+      'Helps protect against environmental stressors',
+      'Supports healthier-looking skin',
+    ],
+    mechanism:
+      'Green Tea Extract contains naturally occurring polyphenols that provide antioxidant support and are commonly used to help the skin cope with environmental stress.',
+  },
+
+  {
+    name: 'Licorice Root Extract',
+    classification: 'Botanical Extract',
+    category: 'Soothe',
+    short:
+      'A botanical ingredient commonly used in skincare focused on uneven tone and visible redness.',
+    functions: [
+      'Helps improve the appearance of post-acne marks',
+      'Supports brighter-looking skin',
+      'Helps soothe visible redness',
+    ],
+    mechanism:
+      'Licorice Root Extract is used in cosmetic formulations to support a more even-looking complexion while providing soothing benefits.',
+  },
+
+  {
+    name: 'Tocopherol',
+    classification: 'Vitamin E · Antioxidant',
+    category: 'Protect',
+    short:
+      'An antioxidant supporting skin conditioning and environmental defense.',
+    functions: [
+      'Provides antioxidant support',
+      'Supports skin conditioning',
+      'Helps maintain healthy-looking skin',
+    ],
+    mechanism:
+      'Vitamin E provides antioxidant support and complements the skin’s defenses against oxidative stress associated with environmental exposure.',
+  },
+
+  {
+    name: 'Uvinul A Plus',
+    classification: 'UVA UV Filter',
+    category: 'UV Protection',
+    short:
+      'A modern photostable UV filter used as part of a broad-spectrum protection system.',
+    functions: [
+      'Supports UVA protection',
+      'Contributes to broad-spectrum UV protection',
+      'Supports photostability',
+    ],
+    mechanism:
+      'Uvinul A Plus contributes primarily to UVA protection and works alongside complementary UV filters to create broader ultraviolet coverage.',
+  },
+
+  {
+    name: 'Uvinul T150',
+    classification: 'UVB UV Filter',
+    category: 'UV Protection',
+    short:
+      'A modern UV filter used primarily to support UVB protection within a broader filter system.',
+    functions: [
+      'Supports UVB protection',
+      'Contributes to broad-spectrum protection',
+      'Works as part of a photostable UV system',
+    ],
+    mechanism:
+      'Uvinul T150 contributes primarily to UVB protection and works alongside other filters to provide complementary ultraviolet coverage.',
+  },
+
+  {
+    name: 'Tinosorb S',
+    classification: 'Broad-Spectrum UV Filter',
+    category: 'UV Protection',
+    short:
+      'A modern photostable UV filter contributing to both UVA and UVB coverage.',
+    functions: [
+      'Supports UVA protection',
+      'Supports UVB protection',
+      'Contributes to broad-spectrum coverage',
+      'Supports photostability',
+    ],
+    mechanism:
+      'Tinosorb S contributes to both UVA and UVB protection and works with complementary filters to broaden overall ultraviolet coverage.',
   },
 ]
 
-const ingredients = [
+const ingredientGroups = [
   {
-    name: 'Tranexamic Acid',
+    title: 'Clarify',
+    accent: 'acids',
     description:
-      'Targets the appearance of dark spots and uneven skin tone.',
-    number: '01',
+      'Ingredients that help address excess oil, clogged pores and uneven texture.',
+    ingredients: [
+      'Azelaic Acid',
+      'Salicylic Acid',
+      'Mandelic Acid',
+      'Zinc PCA',
+    ],
   },
+
   {
-    name: 'Azelaic Acid',
+    title: 'Even',
+    accent: 'tone',
     description:
-      'Helps calm redness and supports clearer-looking skin.',
-    number: '02',
+      'Ingredients that support a brighter and more even-looking complexion.',
+    ingredients: [
+      'Tranexamic Acid',
+      'Alpha Arbutin',
+      'Niacinamide',
+      'Potassium Azeloyl Diglycinate',
+      'Licorice Root Extract',
+    ],
   },
+
   {
-    name: 'Niacinamide',
+    title: 'Strengthen',
+    accent: 'barrier',
     description:
-      'Supports the skin barrier and helps improve overall texture.',
-    number: '03',
+      'Ingredients that support hydration, comfort and the skin barrier.',
+    ingredients: [
+      'Ceramides',
+      'Niacinamide',
+      'Panthenol',
+      'Glycerin',
+      'Squalane',
+      'Allantoin',
+    ],
   },
+
   {
-    name: 'Ceramides',
+    title: 'Protect',
+    accent: 'defence',
     description:
-      'Help restore and maintain a healthy skin barrier.',
-    number: '04',
+      'Ingredients that support antioxidant defence and protection from environmental exposure.',
+    ingredients: [
+      'Green Tea Extract',
+      'Tocopherol',
+      'Uvinul A Plus',
+      'Uvinul T150',
+      'Tinosorb S',
+    ],
   },
 ]
+
+function IngredientCard({
+  ingredient,
+}: {
+  ingredient: Ingredient
+}) {
+  return (
+    <article
+      className="
+        group
+        relative
+        overflow-hidden
+        rounded-[28px]
+        border
+        border-[#E8DFD3]
+        bg-[#FBF8F3]
+        transition-all
+        duration-500
+        hover:-translate-y-1
+        hover:shadow-[0_18px_40px_rgba(26,26,26,0.08)]
+      "
+    >
+      <div
+        className="
+          pointer-events-none
+          absolute
+          -right-16
+          -top-16
+          h-40
+          w-40
+          rounded-full
+          bg-[#E85D2C]/[0.05]
+          transition-transform
+          duration-700
+          group-hover:scale-125
+        "
+      />
+
+      <div className="relative border-b border-[#E8DFD3] px-5 py-4">
+        <span className="font-poppins text-[11px] font-semibold uppercase tracking-[0.16em] text-[#E85D2C]">
+          {ingredient.category}
+        </span>
+      </div>
+
+      <div className="relative p-5 sm:p-6">
+
+        <p className="font-poppins text-[10px] font-semibold uppercase tracking-[0.15em] text-[#8A837B]">
+          {ingredient.classification}
+        </p>
+
+        <h3 className="mt-3 font-poppins text-[26px] font-semibold leading-[1.05] tracking-[-0.03em] text-[#1A1A1A] sm:text-[30px]">
+          {ingredient.name}
+        </h3>
+
+        <p className="body-text mt-4">
+          {ingredient.short}
+        </p>
+
+        <div className="mt-6 border-t border-[#E8DFD3] pt-5">
+
+          <p className="font-poppins text-[11px] font-semibold uppercase tracking-[0.16em] text-[#E85D2C]">
+            What it does
+          </p>
+
+          <div className="mt-4 space-y-2.5">
+
+            {ingredient.functions.map((item) => (
+              <div
+                key={item}
+                className="flex items-start gap-2.5"
+              >
+                <span className="mt-[7px] h-[5px] w-[5px] shrink-0 rounded-full bg-[#E85D2C]" />
+
+                <span className="body-text text-[13px]">
+                  {item}
+                </span>
+              </div>
+            ))}
+
+          </div>
+
+        </div>
+
+        <div className="mt-6 rounded-[18px] bg-[#F7F2EB] p-4 sm:p-5">
+
+          <div className="flex items-center gap-2">
+
+            <span className="h-px w-6 bg-[#E85D2C]" />
+
+            <p className="font-poppins text-[10px] font-semibold uppercase tracking-[0.16em] text-[#8A837B]">
+              How it works
+            </p>
+
+          </div>
+
+          <p className="body-text mt-3 text-[13px]">
+            {ingredient.mechanism}
+          </p>
+
+        </div>
+
+      </div>
+    </article>
+  )
+}
 
 export default function SciencePage() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#F7F2EB] text-[#1A1A1A]">
 
-      {/* ========================================================
-          INTRO
-      ======================================================== */}
+      {/* =====================================================
+          HERO
+      ===================================================== */}
 
-      <section className="px-5 pb-12 pt-32 sm:px-8 sm:pb-16 sm:pt-36">
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-3xl">
+      <section className="relative overflow-hidden px-5 pb-12 pt-28 sm:px-8 sm:pb-16 sm:pt-32">
 
-            <p className="text-[9px] font-medium uppercase tracking-[0.3em] text-[#E85D2C]">
-              INGREDIENTS · SCIENCE
-            </p>
+        <div className="pointer-events-none absolute -right-28 -top-28 h-[380px] w-[380px] rounded-full border border-[#E85D2C]/10 sm:h-[560px] sm:w-[560px]" />
 
-            <h1 className="mt-4 font-serif text-[54px] leading-[0.88] tracking-[-0.055em] sm:text-[78px]">
-              Every ingredient
-              <br />
-              <span className="italic text-[#E85D2C]">
-                has a job.
-              </span>
-            </h1>
+        <div className="pointer-events-none absolute -bottom-40 -left-40 h-[430px] w-[430px] rounded-full bg-[#E85D2C]/[0.045]" />
 
-            <p className="mt-5 max-w-[480px] text-[11px] leading-[1.7] text-[#6B6B6B] sm:text-[13px]">
-              No mystery ingredients. No complicated jargon.
-              Just a clear look at what goes into your skincare
-              and why.
-            </p>
+        <div className="relative mx-auto max-w-7xl">
 
-          </div>
-        </div>
-      </section>
-
-
-      {/* ========================================================
-          THE 7 ACIDS
-      ======================================================== */}
-
-      <section className="border-y border-[#E8DFD3] bg-[#FBF8F3] px-5 py-12 sm:px-8 sm:py-16">
-        <div className="mx-auto max-w-7xl">
-
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-20">
 
             <div>
-              <p className="text-[8px] font-medium uppercase tracking-[0.25em] text-[#E85D2C]">
-                THE ACIDS
+
+              <p className="meta-text text-[#E85D2C]">
+                Ingredient science
               </p>
 
-              <h2 className="mt-2 font-serif text-[40px] leading-none tracking-[-0.045em] sm:text-[52px]">
-                The 7 acids.
-              </h2>
+              <h1
+                className="
+                  mt-5
+                  font-poppins
+                  text-[48px]
+                  font-semibold
+                  leading-[0.93]
+                  tracking-[-0.045em]
+                  text-[#1A1A1A]
+                  sm:text-[68px]
+                  lg:text-[88px]
+                "
+              >
+                Know what
+                <br />
+                goes on
+                <br />
+                <span className="font-fahkwang font-normal italic text-[#E85D2C]">
+                  your skin.
+                </span>
+              </h1>
+
             </div>
 
-            <p className="max-w-[250px] text-[10px] leading-[1.6] text-[#6B6B6B] sm:text-[11px]">
-              Each one has a specific purpose.
-            </p>
+            <div className="max-w-[500px] lg:justify-self-end">
+
+              <p className="sub-heading">
+                Understand the ingredient. Understand the role. Make better
+                skincare choices.
+              </p>
+
+              <p className="body-text mt-5">
+                Explore the ingredients used across the amtopm formulation
+                philosophy — what they do, how they work and why they matter
+                to your skin.
+              </p>
+
+              <a
+                href="#ingredient-library"
+                className="btn-secondary mt-7"
+              >
+                Explore ingredients ↓
+              </a>
+
+            </div>
 
           </div>
 
 
-          <div className="mt-8 grid grid-cols-1 border-t border-[#E8DFD3] sm:grid-cols-2 lg:grid-cols-3">
+          {/* HERO STATEMENT */}
 
-            {acids.map((acid, index) => (
-              <div
-                key={acid.name}
-                className="flex min-h-[115px] flex-col justify-between border-b border-[#E8DFD3] py-5 sm:px-5 lg:px-6"
-              >
+          <div className="mt-12 overflow-hidden rounded-[28px] bg-[#1A1A1A] sm:mt-16">
 
-                <div className="flex items-start justify-between gap-4">
+            <div className="grid sm:grid-cols-3">
 
-                  <h3 className="font-serif text-[21px] leading-none tracking-[-0.025em]">
-                    {acid.name}
-                  </h3>
+              <div className="p-6 sm:p-8">
 
-                  <span className="text-[8px] font-medium text-[#E85D2C]">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
+                <p className="meta-text-white">
+                  The question
+                </p>
 
-                </div>
-
-                <p className="mt-4 max-w-[280px] text-[9px] leading-[1.6] text-[#6B6B6B] sm:text-[10px]">
-                  {acid.description}
+                <p className="mt-4 font-poppins text-[24px] font-semibold leading-[1] tracking-[-0.03em] text-white sm:text-[29px]">
+                  What is it?
                 </p>
 
               </div>
-            ))}
+
+              <div className="bg-[#E85D2C] p-6 sm:p-8">
+
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/60">
+                  The answer
+                </p>
+
+                <p className="mt-4 font-poppins text-[24px] font-semibold leading-[1] tracking-[-0.03em] text-white sm:text-[29px]">
+                  What does it do?
+                </p>
+
+              </div>
+
+              <div className="bg-[#FBF8F3] p-6 sm:p-8">
+
+                <p className="font-poppins text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8A837B]">
+                  The point
+                </p>
+
+                <p className="mt-4 font-poppins text-[24px] font-semibold leading-[1] tracking-[-0.03em] text-[#1A1A1A] sm:text-[29px]">
+                  Why does it matter?
+                </p>
+
+              </div>
+
+            </div>
 
           </div>
 
         </div>
+
       </section>
 
 
-      {/* ========================================================
-          INGREDIENT LIBRARY
-      ======================================================== */}
+      {/* =====================================================
+          PHILOSOPHY
+      ===================================================== */}
+
+      <section className="border-y border-[#E8DFD3] bg-[#FBF8F3] px-5 py-11 sm:px-8 sm:py-16">
+
+        <div className="mx-auto max-w-7xl">
+
+          <div className="grid gap-9 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+
+            <div>
+
+              <p className="meta-text text-[#E85D2C]">
+                The amtopm approach
+              </p>
+
+              <h2 className="mt-4 font-poppins text-[42px] font-semibold leading-[0.9] tracking-[-0.045em] sm:text-[58px]">
+                Every ingredient
+                <br />
+                <span className="font-fahkwang font-normal italic text-[#E85D2C]">
+                  earns its place.
+                </span>
+              </h2>
+
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-2 md:gap-10">
+
+              <div>
+
+                <p className="sub-heading">
+                  Not the longest ingredient list.
+                </p>
+
+                <p className="body-text mt-4">
+                  Good skincare is about understanding what each ingredient
+                  contributes to the formula.
+                </p>
+
+              </div>
+
+              <div>
+
+                <p className="sub-heading">
+                  Not one “hero” ingredient.
+                </p>
+
+                <p className="body-text mt-4">
+                  Different ingredients can support different parts of the
+                  same skin goal.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* =====================================================
+          INGREDIENT MAP
+      ===================================================== */}
 
       <section className="px-5 py-12 sm:px-8 sm:py-16">
+
         <div className="mx-auto max-w-7xl">
 
-          <div className="max-w-xl">
+          <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:items-end lg:gap-16">
 
-            <p className="text-[8px] font-medium uppercase tracking-[0.25em] text-[#E85D2C]">
-              INGREDIENT LIBRARY
+            <div>
+
+              <p className="meta-text text-[#E85D2C]">
+                Ingredient map
+              </p>
+
+              <h2 className="mt-3 font-poppins text-[42px] font-semibold leading-[0.9] tracking-[-0.045em] sm:text-[58px]">
+                Different jobs.
+                <br />
+                <span className="font-fahkwang font-normal italic text-[#E85D2C]">
+                  One skin.
+                </span>
+              </h2>
+
+            </div>
+
+            <p className="body-text max-w-[620px] lg:justify-self-end lg:text-right">
+              Ingredients can have more than one role. These groups simply
+              highlight the functions they are most commonly selected to
+              support.
             </p>
-
-            <h2 className="mt-2 font-serif text-[40px] leading-none tracking-[-0.045em] sm:text-[52px]">
-              Know what
-              <br />
-              your skin gets.
-            </h2>
 
           </div>
 
 
-          <div className="mt-8 grid grid-cols-1 gap-px border border-[#E8DFD3] bg-[#E8DFD3] sm:grid-cols-2">
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
 
-            {ingredients.map((ingredient) => (
-              <article
-                key={ingredient.name}
-                className="bg-[#FBF8F3] p-5 sm:p-7"
+            {ingredientGroups.map((group, index) => (
+
+              <div
+                key={group.title}
+                className={`
+                  relative
+                  overflow-hidden
+                  rounded-[26px]
+                  p-6
+                  ${
+                    index === 1
+                      ? 'bg-[#E85D2C] text-white'
+                      : index === 3
+                        ? 'bg-[#1A1A1A] text-white'
+                        : 'border border-[#E8DFD3] bg-[#FBF8F3]'
+                  }
+                `}
               >
 
-                <div className="flex items-start justify-between">
+                <h3 className="font-poppins text-[30px] font-semibold leading-none tracking-[-0.035em] sm:text-[34px]">
+                  {group.title}
+                </h3>
 
-                  <span className="text-[8px] font-medium tracking-[0.15em] text-[#E85D2C]">
-                    {ingredient.number}
-                  </span>
+                <p
+                  className={`
+                    mt-3
+                    min-h-[76px]
+                    font-poppins
+                    text-[14px]
+                    font-extralight
+                    leading-[1.55]
+                    ${
+                      index === 1 || index === 3
+                        ? 'text-white/70'
+                        : 'text-[#6B6B6B]'
+                    }
+                  `}
+                >
+                  {group.description}
+                </p>
 
-                  <span className="h-2 w-2 rounded-full bg-[#E85D2C]" />
+                <div
+                  className={`
+                    mt-5
+                    border-t
+                    pt-4
+                    ${
+                      index === 1 || index === 3
+                        ? 'border-white/15'
+                        : 'border-[#E8DFD3]'
+                    }
+                  `}
+                >
+
+                  {group.ingredients.map((item) => (
+                    <div
+                      key={item}
+                      className={`
+                        border-b
+                        py-2.5
+                        last:border-0
+                        ${
+                          index === 1 || index === 3
+                            ? 'border-white/10'
+                            : 'border-[#E8DFD3]'
+                        }
+                      `}
+                    >
+                      <p
+                        className={`
+                          font-poppins
+                          text-[14px]
+                          font-semibold
+                          ${
+                            index === 1 || index === 3
+                              ? 'text-white'
+                              : 'text-[#1A1A1A]'
+                          }
+                        `}
+                      >
+                        {item}
+                      </p>
+                    </div>
+                  ))}
 
                 </div>
 
-                <h3 className="mt-8 font-serif text-[27px] leading-none tracking-[-0.035em]">
-                  {ingredient.name}
-                </h3>
+              </div>
 
-                <p className="mt-3 max-w-[360px] text-[10px] leading-[1.65] text-[#6B6B6B] sm:text-[11px]">
-                  {ingredient.description}
-                </p>
-
-              </article>
             ))}
 
           </div>
 
         </div>
+
       </section>
 
 
-      {/* ========================================================
-          TESTING & SAFETY
-      ======================================================== */}
+      {/* =====================================================
+          LIBRARY INTRO
+      ===================================================== */}
 
-      <section className="bg-[#1A1A1A] px-5 py-12 text-white sm:px-8 sm:py-16">
+      <section
+        id="ingredient-library"
+        className="bg-[#1A1A1A] px-5 py-12 text-white sm:px-8 sm:py-16"
+      >
+
         <div className="mx-auto max-w-7xl">
 
-          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+          <div className="grid gap-8 lg:grid-cols-[1fr_0.7fr] lg:items-end">
 
             <div>
 
-              <p className="text-[8px] font-medium uppercase tracking-[0.25em] text-[#E85D2C]">
-                TESTING & SAFETY
+              <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[#E85D2C]">
+                Ingredient library
               </p>
 
-              <h2 className="mt-3 max-w-[450px] font-serif text-[42px] leading-[0.92] tracking-[-0.045em] sm:text-[54px]">
-                Skin first.
+              <h2 className="mt-4 font-poppins text-[48px] font-semibold leading-[0.9] tracking-[-0.045em] text-white sm:text-[70px]">
+                What&apos;s actually
                 <br />
-                Always.
+                <span className="font-fahkwang font-normal italic text-[#E85D2C]">
+                  happening?
+                </span>
               </h2>
 
             </div>
 
+            <p className="font-poppins text-[14px] font-extralight leading-[1.7] text-white/55 lg:justify-self-end lg:text-right">
+              A closer look at the ingredients, their roles and the ways they
+              interact with skin.
+            </p>
 
-            <div className="grid gap-px border border-white/10 bg-white/10 sm:grid-cols-2">
+          </div>
 
-              <div className="bg-[#1A1A1A] p-5 sm:p-7">
+        </div>
 
-                <span className="text-[8px] font-medium uppercase tracking-[0.2em] text-[#E85D2C]">
-                  01
-                </span>
+      </section>
 
-                <h3 className="mt-5 font-serif text-[25px] leading-none">
-                  Dermatologist-tested
-                </h3>
 
-                <p className="mt-3 text-[9px] leading-[1.7] text-white/60 sm:text-[10px]">
-                  Formulated with skin health and everyday
-                  use in mind.
+      {/* =====================================================
+          INGREDIENT LIBRARY
+      ===================================================== */}
+
+      <section className="bg-[#1A1A1A] px-5 pb-14 sm:px-8 sm:pb-20">
+
+        <div className="mx-auto max-w-7xl">
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+
+            {ingredients.map((ingredient) => (
+              <IngredientCard
+                key={ingredient.name}
+                ingredient={ingredient}
+              />
+            ))}
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* =====================================================
+          SYNERGY
+      ===================================================== */}
+
+      <section className="px-5 py-12 sm:px-8 sm:py-16">
+
+        <div className="mx-auto max-w-7xl">
+
+          <div className="overflow-hidden rounded-[30px] bg-[#E85D2C] text-white">
+
+            <div className="grid lg:grid-cols-[0.85fr_1.15fr]">
+
+              <div className="relative overflow-hidden p-7 sm:p-10">
+
+                <div className="pointer-events-none absolute -right-24 -top-24 h-[300px] w-[300px] rounded-full border border-white/15" />
+
+                <p className="relative text-[9px] font-semibold uppercase tracking-[0.25em] text-white/65">
+                  The bigger picture
+                </p>
+
+                <h2 className="relative mt-6 font-poppins text-[42px] font-semibold leading-[0.88] tracking-[-0.05em] sm:text-[62px]">
+                  Ingredients
+                  <br />
+                  work
+                  <br />
+                  <span className="font-fahkwang font-normal italic text-[#FCE6D9]">
+                    together.
+                  </span>
+                </h2>
+
+                <p className="relative mt-8 max-w-[390px] font-poppins text-[14px] font-extralight leading-[1.7] text-white/75">
+                  Skin concerns rarely have a single cause. Thoughtful
+                  skincare combines complementary ingredients rather than
+                  relying on one “hero” active.
                 </p>
 
               </div>
@@ -263,18 +946,33 @@ export default function SciencePage() {
 
               <div className="bg-[#1A1A1A] p-5 sm:p-7">
 
-                <span className="text-[8px] font-medium uppercase tracking-[0.2em] text-[#E85D2C]">
-                  02
-                </span>
+                <div className="grid gap-3 sm:grid-cols-2">
 
-                <h3 className="mt-5 font-serif text-[25px] leading-none">
-                  Cruelty-free
-                </h3>
+                  <SynergyCard
+                    title="Exfoliation"
+                    heading="Two pathways."
+                    text="Salicylic Acid works primarily around oily pores while Mandelic Acid works mainly at the skin surface."
+                  />
 
-                <p className="mt-3 text-[9px] leading-[1.7] text-white/60 sm:text-[10px]">
-                  Never tested on animals.
-                  Skincare should be kind in every way.
-                </p>
+                  <SynergyCard
+                    title="Oil balance"
+                    heading="Keep balance."
+                    text="Niacinamide and Zinc PCA can complement routines focused on excess oil and skin balance."
+                  />
+
+                  <SynergyCard
+                    title="Barrier"
+                    heading="Support the skin."
+                    text="Ceramides, Panthenol and Allantoin provide complementary support for hydration, comfort and barrier function."
+                  />
+
+                  <SynergyCard
+                    title="Antioxidants"
+                    heading="Defend daily."
+                    text="Green Tea Extract, Bakuchiol and Vitamin E contribute antioxidant support in different formulation contexts."
+                  />
+
+                </div>
 
               </div>
 
@@ -283,48 +981,72 @@ export default function SciencePage() {
           </div>
 
         </div>
+
       </section>
 
 
-      {/* ========================================================
-          CTA
-      ======================================================== */}
+      {/* =====================================================
+          RESPONSIBLE SCIENCE
+      ===================================================== */}
 
-      <section className="px-5 py-14 sm:px-8 sm:py-20">
+      <section className="bg-[#FBF8F3] px-5 py-12 sm:px-8 sm:py-16">
 
-        <div className="mx-auto max-w-5xl bg-[#E85D2C] px-6 py-12 text-center text-white sm:px-10 sm:py-16">
+        <div className="mx-auto max-w-7xl">
 
-          <p className="text-[8px] font-medium uppercase tracking-[0.3em] text-white/70">
-            NOW THAT YOU KNOW
-          </p>
+          <div className="grid gap-9 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
 
-          <h2 className="mx-auto mt-3 max-w-[600px] font-serif text-[42px] leading-[0.9] tracking-[-0.045em] sm:text-[58px]">
-            Find what your
-            <br />
-            skin actually needs.
-          </h2>
+            <div>
 
-          <p className="mx-auto mt-4 max-w-[390px] text-[10px] leading-[1.7] text-white/80 sm:text-[11px]">
-            Explore our formulas or take the skin quiz
-            to build your AM and PM routine.
-          </p>
+              <p className="meta-text text-[#E85D2C]">
+                Responsible science
+              </p>
 
+              <h2 className="mt-4 font-poppins text-[42px] font-semibold leading-[0.9] tracking-[-0.045em] sm:text-[56px]">
+                Science should
+                <br />
+                make things
+                <br />
+                <span className="font-fahkwang font-normal italic text-[#E85D2C]">
+                  clearer.
+                </span>
+              </h2>
 
-          <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+            </div>
 
-            <Link
-              href="/shop"
-              className="inline-flex min-h-[44px] items-center justify-center bg-white px-7 text-[8px] font-medium uppercase tracking-[0.18em] text-[#E85D2C] transition hover:bg-[#FBF8F3]"
-            >
-              Shop skincare →
-            </Link>
+            <div>
 
-            <Link
-              href="/quiz"
-              className="inline-flex min-h-[44px] items-center justify-center border border-white/50 px-7 text-[8px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-white/10"
-            >
-              Take the skin quiz
-            </Link>
+              <p className="body-text">
+                Ingredient science can explain what an ingredient is intended
+                to do, but individual skin responses vary. This information is
+                provided for cosmetic and educational purposes and is not a
+                medical diagnosis or treatment.
+              </p>
+
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+
+                <SciencePoint
+                  title="Results vary"
+                  text="Different skin can respond differently to the same ingredient."
+                />
+
+                <SciencePoint
+                  title="Claims need evidence"
+                  text="Performance and protection claims should be supported by appropriate final-product evidence."
+                />
+
+                <SciencePoint
+                  title="Skin comfort matters"
+                  text="Active skincare should be considered alongside barrier support and overall skin comfort."
+                />
+
+                <SciencePoint
+                  title="Know the difference"
+                  text="Cosmetic ingredient information is not a substitute for medical diagnosis or treatment."
+                />
+
+              </div>
+
+            </div>
 
           </div>
 
@@ -333,12 +1055,104 @@ export default function SciencePage() {
       </section>
 
 
-      {/* ========================================================
-          FOOTER
-      ======================================================== */}
+      {/* =====================================================
+          CLOSING
+      ===================================================== */}
 
-      <Footer />
+      <section className="border-t border-[#E8DFD3] bg-[#F7F2EB] px-5 py-14 sm:px-8 sm:py-20">
+
+        <div className="mx-auto max-w-5xl text-center">
+
+          <p className="meta-text text-[#E85D2C]">
+            amtopm
+          </p>
+
+          <h2 className="mt-5 font-poppins text-[42px] font-semibold leading-[0.92] tracking-[-0.045em] sm:text-[62px]">
+            Understand the ingredient.
+            <br />
+            <span className="font-fahkwang font-normal italic text-[#E85D2C]">
+              Understand your routine.
+            </span>
+          </h2>
+
+          <p className="body-text mx-auto mt-5 max-w-[520px]">
+            No mystery. No unnecessary noise. Just a clearer way to understand
+            what skincare ingredients are designed to do.
+          </p>
+
+          <Link
+            href="/shop"
+            className="btn-primary mt-7"
+          >
+            Shop now →
+          </Link>
+
+        </div>
+
+      </section>
+
+
 
     </main>
+  )
+}
+
+
+/* ============================================================
+   SYNERGY CARD
+============================================================ */
+
+function SynergyCard({
+  title,
+  heading,
+  text,
+}: {
+  title: string
+  heading: string
+  text: string
+}) {
+  return (
+    <div className="rounded-[22px] border border-white/10 bg-white/[0.035] p-5">
+
+      <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[#E85D2C]">
+        {title}
+      </p>
+
+      <h3 className="mt-3 font-poppins text-[22px] font-semibold leading-[1] tracking-[-0.025em] text-white">
+        {heading}
+      </h3>
+
+      <p className="mt-3 font-poppins text-[13px] font-extralight leading-[1.7] text-white/55">
+        {text}
+      </p>
+
+    </div>
+  )
+}
+
+
+/* ============================================================
+   SCIENCE POINT
+============================================================ */
+
+function SciencePoint({
+  title,
+  text,
+}: {
+  title: string
+  text: string
+}) {
+  return (
+    <div className="rounded-[22px] border border-[#E8DFD3] bg-[#F7F2EB] p-5">
+
+      <h3 className="font-poppins text-[20px] font-semibold leading-none tracking-[-0.025em]">
+        {title}
+      </h3>
+
+      <p className="body-text mt-3 text-[13px]">
+        {text}
+      </p>
+
+    </div>
   )
 }
