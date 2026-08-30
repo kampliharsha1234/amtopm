@@ -44,13 +44,13 @@ export default function Navbar() {
         className={`
           fixed
           left-1/2
-          top-[18px]
+          top-[24px]
           z-[60]
           -translate-x-1/2
 
           w-[calc(100%-56px)]
 
-          sm:top-[24px]
+          sm:top-[30px]
           sm:w-[calc(100%-48px)]
           sm:max-w-[1400px]
 
@@ -195,8 +195,8 @@ export default function Navbar() {
         {/* =================================================
             EXPANDED MENU
 
-            Same navbar container.
-            No separate popup.
+            Same container.
+            Single column.
             No scrolling.
         ================================================= */}
 
@@ -441,15 +441,17 @@ function MenuItem({
       className={`
         block
         w-fit
-        py-[9px]
+        py-[6px]
         font-sans
         text-[18px]
         font-semibold
         leading-[1]
         tracking-[-0.02em]
         transition-colors
+
         sm:py-[7px]
         sm:text-[20px]
+
         ${
           accent
             ? 'text-[#E85D2C]'
