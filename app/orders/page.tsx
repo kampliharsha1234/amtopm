@@ -28,7 +28,7 @@ export default async function OrdersPage() {
 
         <div className="mt-5 mb-8">
           <p className="text-xs uppercase tracking-[0.18em] text-[#E85D2C]">
-            AM:PM ACCOUNT
+            amtopm ACCOUNT
           </p>
 
           <h1 className="text-3xl sm:text-4xl font-semibold text-[#171717] mt-1">
@@ -36,7 +36,7 @@ export default async function OrdersPage() {
           </h1>
 
           <p className="text-sm text-[#6B6B6B] mt-2">
-            View your AM:PM order history.
+            View your amtopm order history.
           </p>
         </div>
 

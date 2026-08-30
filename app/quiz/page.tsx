@@ -3,9 +3,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+
 import { products } from '../data/products'
 import { useCart } from '../context/CartContext'
 import Footer from '../components/Footer'
+
+
+/* ============================================================
+   TYPES
+============================================================ */
 
 type QuizStep = 'intro' | 'questions' | 'result'
 
@@ -14,6 +20,11 @@ type Answers = {
   concerns: string[]
   priorities: string[]
 }
+
+
+/* ============================================================
+   SKIN TYPES
+============================================================ */
 
 const skinTypes = [
   {
@@ -34,6 +45,14 @@ const skinTypes = [
   },
 ]
 
+
+/* ============================================================
+   USER-FACING CONCERNS
+
+   These are intentionally written in customer-friendly terms.
+   They are translated into product-data concerns below.
+============================================================ */
+
 const concerns = [
   'Acne',
   'Dark Spots',
@@ -45,6 +64,11 @@ const concerns = [
   'Sunburn',
 ]
 
+
+/* ============================================================
+   PRIORITIES
+============================================================ */
+
 const priorities = [
   'Hydration',
   'Brightening',
@@ -54,22 +78,149 @@ const priorities = [
   'Sun Protection',
 ]
 
-/* ============================================================
-   PRIORITY → PRODUCT CONCERN MAPPING
 
-   This is intentionally kept in one place so that when the
-   product database is updated later, the quiz logic can easily
-   be refined around the product concern data.
+/* ============================================================
+   QUIZ → PRODUCT DATA MAPPING
+
+   The quiz uses simple customer-facing terms while the actual
+   product database contains more specific concern labels.
+
+   This is the bridge between the two systems.
 ============================================================ */
 
-const priorityConcernMap: Record<string, string[]> = {
-  Hydration: ['Barrier'],
-  Brightening: ['Dark Spots', 'Pigmentation'],
-  'Anti-aging': ['Aging'],
-  'Acne Control': ['Acne'],
-  'Barrier Repair': ['Barrier'],
-  'Sun Protection': ['SPF', 'Sunburn'],
+const concernMap: Record<string, string[]> = {
+  Acne: [
+    'Acne',
+    'Oily Skin',
+    'Excess Sebum',
+    'Blackheads',
+    'Whiteheads',
+    'Enlarged Pores',
+  ],
+
+  'Dark Spots': [
+    'Dark Spots',
+    'Post-Acne Marks',
+    'Uneven Skin Tone',
+    'Hyperpigmentation',
+    'Pigmentation',
+  ],
+
+  SPF: [
+    'UV Exposure',
+    'Sunburn',
+    'Photoaging',
+    'Hyperpigmentation',
+    'Daily Environmental Exposure',
+  ],
+
+  Barrier: [
+    'Barrier',
+    'Dryness',
+    'Dehydration',
+    'Sensitivity',
+    'Tightness',
+    'Irritation',
+  ],
+
+  Aging: [
+    'Aging',
+    'Photoaging',
+    'Skin Texture',
+    'Radiance',
+  ],
+
+  Redness: [
+    'Redness',
+    'Irritation',
+    'Sensitivity',
+  ],
+
+  Pigmentation: [
+    'Pigmentation',
+    'Dark Spots',
+    'Uneven Skin Tone',
+    'Post-Acne Marks',
+    'Hyperpigmentation',
+  ],
+
+  Sunburn: [
+    'Sunburn',
+    'UV Exposure',
+    'Daily Environmental Exposure',
+  ],
 }
+
+
+/* ============================================================
+   PRIORITY → PRODUCT DATA MAPPING
+============================================================ */
+
+const priorityMap: Record<string, string[]> = {
+  Hydration: [
+    'Barrier',
+    'Dryness',
+    'Dehydration',
+    'Daily Hydration',
+    'Tightness',
+  ],
+
+  Brightening: [
+    'Dark Spots',
+    'Pigmentation',
+    'Uneven Skin Tone',
+    'Post-Acne Marks',
+    'Radiance',
+  ],
+
+  'Anti-aging': [
+    'Aging',
+    'Photoaging',
+    'Skin Texture',
+    'Radiance',
+  ],
+
+  'Acne Control': [
+    'Acne',
+    'Oily Skin',
+    'Excess Sebum',
+    'Blackheads',
+    'Whiteheads',
+    'Enlarged Pores',
+  ],
+
+  'Barrier Repair': [
+    'Barrier',
+    'Dryness',
+    'Dehydration',
+    'Sensitivity',
+    'Tightness',
+    'Irritation',
+  ],
+
+  'Sun Protection': [
+    'UV Exposure',
+    'Sunburn',
+    'Photoaging',
+    'Hyperpigmentation',
+    'Daily Environmental Exposure',
+  ],
+}
+
+
+/* ============================================================
+   FOUNDATION PRODUCT IDS
+
+   These are products that can sensibly form part of a basic
+   routine even when there is no aggressive concern match.
+============================================================ */
+
+const foundationProductIds = {
+  cleanser: 'mild-cleanser',
+  moisturizer: 'cotton-moisturizer',
+  sunscreen: 'thinshield-sunscreen',
+}
+
 
 /* ============================================================
    QUIZ PAGE
@@ -96,8 +247,9 @@ export default function QuizPage() {
   const [addingRoutine, setAddingRoutine] =
     useState(false)
 
+
   /* ============================================================
-     SCROLL TOP WHEN MOVING BETWEEN QUIZ STEPS
+     SCROLL TOP BETWEEN STEPS
   ============================================================ */
 
   useEffect(() => {
@@ -108,123 +260,418 @@ export default function QuizPage() {
     })
   }, [step])
 
+
   /* ============================================================
-     PRODUCT RECOMMENDATION
+     PRODUCT RECOMMENDATION ENGINE
   ============================================================ */
 
-  const recommendedProducts = useMemo(() => {
-    const scored = products.map((product) => {
-      let score = 0
+  const scoredProducts = useMemo(() => {
+    return products
+      .map((product) => {
+        let score = 0
 
-      const productConcerns = Array.isArray(product.concern)
-        ? product.concern
-        : [product.concern]
+        const productConcerns = product.concern || []
 
-      /* --------------------------------------------------------
-         CONCERN MATCHING
-         User concern = stronger match
-      -------------------------------------------------------- */
 
-      answers.concerns.forEach((concern) => {
-        if (productConcerns.includes(concern)) {
-          score += 4
-        }
-      })
+        /* ------------------------------------------------------
+           DIRECT CONCERN MATCH
+           Strongest signal
+        ------------------------------------------------------ */
 
-      /* --------------------------------------------------------
-         SKIN TYPE MATCHING
-      -------------------------------------------------------- */
+        answers.concerns.forEach((userConcern) => {
+          const mappedConcerns =
+            concernMap[userConcern] || []
 
-      if (
-        answers.skinType &&
-        (
-          product.skinType.includes('All') ||
-          product.skinType.includes(answers.skinType)
-        )
-      ) {
-        score += 2
-      }
+          mappedConcerns.forEach((mappedConcern) => {
+            if (
+              productConcerns.includes(mappedConcern)
+            ) {
+              score += 5
+            }
+          })
+        })
 
-      /* --------------------------------------------------------
-         MULTIPLE PRIORITIES
-      -------------------------------------------------------- */
 
-      answers.priorities.forEach((priority) => {
-        const relatedConcerns =
-          priorityConcernMap[priority] || []
+        /* ------------------------------------------------------
+           PRIORITY MATCH
+        ------------------------------------------------------ */
+
+        answers.priorities.forEach((priority) => {
+          const mappedPriorities =
+            priorityMap[priority] || []
+
+          mappedPriorities.forEach((mappedConcern) => {
+            if (
+              productConcerns.includes(mappedConcern)
+            ) {
+              score += 3
+            }
+          })
+        })
+
+
+        /* ------------------------------------------------------
+           SKIN TYPE MATCH
+        ------------------------------------------------------ */
 
         if (
-          relatedConcerns.some((concern) =>
-            productConcerns.includes(concern)
+          answers.skinType &&
+          product.skinType.includes(
+            answers.skinType
           )
         ) {
           score += 3
         }
+
+
+        /* ------------------------------------------------------
+           FOUNDATIONAL ROUTINE LOGIC
+        ------------------------------------------------------ */
+
+        if (
+          product.id ===
+            foundationProductIds.cleanser &&
+          product.category === 'both'
+        ) {
+          score += 1
+        }
+
+        if (
+          product.id ===
+            foundationProductIds.moisturizer &&
+          product.category === 'both'
+        ) {
+          score += 1
+        }
+
+
+        /* ------------------------------------------------------
+           SUNSCREEN PRIORITY
+        ------------------------------------------------------ */
+
+        if (
+          product.id ===
+          foundationProductIds.sunscreen
+        ) {
+          const needsSunProtection =
+            answers.concerns.includes('SPF') ||
+            answers.concerns.includes('Sunburn') ||
+            answers.priorities.includes(
+              'Sun Protection'
+            )
+
+          if (needsSunProtection) {
+            score += 7
+          }
+        }
+
+
+        /* ------------------------------------------------------
+           ACNE LOGIC
+        ------------------------------------------------------ */
+
+        if (
+          product.id ===
+            'acnowell-facewash' &&
+          (
+            answers.concerns.includes('Acne') ||
+            answers.priorities.includes(
+              'Acne Control'
+            )
+          )
+        ) {
+          score += 4
+        }
+
+        if (
+          product.id ===
+            'acnowell-cream' &&
+          (
+            answers.concerns.includes('Acne') ||
+            answers.priorities.includes(
+              'Acne Control'
+            )
+          )
+        ) {
+          score += 5
+        }
+
+
+        /* ------------------------------------------------------
+           PIGMENTATION LOGIC
+        ------------------------------------------------------ */
+
+        if (
+          product.id === 'faeden-cream' &&
+          (
+            answers.concerns.includes(
+              'Pigmentation'
+            ) ||
+            answers.concerns.includes(
+              'Dark Spots'
+            ) ||
+            answers.priorities.includes(
+              'Brightening'
+            )
+          )
+        ) {
+          score += 5
+        }
+
+
+        return {
+          product,
+          score,
+        }
       })
-
-      return {
-        product,
-        score,
-      }
-    })
-
-    return scored
       .sort((a, b) => {
         if (b.score !== a.score) {
           return b.score - a.score
         }
 
-        return (
-          a.product.name.localeCompare(
-            b.product.name
-          )
+        return a.product.name.localeCompare(
+          b.product.name
         )
       })
-      .filter((item) => item.score > 0)
-      .slice(0, 6)
-      .map((item) => item.product)
   }, [answers])
+
+
+  /* ============================================================
+     FINAL RECOMMENDED PRODUCTS
+
+     We don't blindly take all six. We select products that
+     actually have meaningful scores.
+  ============================================================ */
+
+  const recommendedProducts = useMemo(() => {
+    const matched = scoredProducts
+      .filter((item) => item.score > 0)
+      .map((item) => item.product)
+
+    const ensureProduct = (
+      id: string
+    ) => {
+      const product = products.find(
+        (item) => item.id === id
+      )
+
+      if (
+        product &&
+        !matched.some(
+          (item) => item.id === product.id
+        )
+      ) {
+        matched.push(product)
+      }
+    }
+
+
+    /* ----------------------------------------------------------
+       Always ensure a basic cleanser and moisturizer exist
+       when there are no stronger matches.
+    ---------------------------------------------------------- */
+
+    if (matched.length === 0) {
+      ensureProduct(
+        foundationProductIds.cleanser
+      )
+
+      ensureProduct(
+        foundationProductIds.moisturizer
+      )
+    }
+
+
+    /* ----------------------------------------------------------
+       Sunscreen is a useful AM foundation and becomes a strong
+       recommendation when sun protection is relevant.
+    ---------------------------------------------------------- */
+
+    const sunRelevant =
+      answers.concerns.includes('SPF') ||
+      answers.concerns.includes('Sunburn') ||
+      answers.priorities.includes(
+        'Sun Protection'
+      )
+
+    if (sunRelevant) {
+      ensureProduct(
+        foundationProductIds.sunscreen
+      )
+    }
+
+
+    return matched
+  }, [scoredProducts, answers])
+
 
   /* ============================================================
      AM PRODUCTS
   ============================================================ */
 
   const amProducts = useMemo(() => {
-    return recommendedProducts
-      .filter(
-        (product) =>
-          product.category === 'am' ||
-          product.category === 'both'
-      )
-      .slice(0, 3)
-  }, [recommendedProducts])
+    const candidates =
+      scoredProducts
+        .filter((item) =>
+          recommendedProducts.some(
+            (product) =>
+              product.id ===
+              item.product.id
+          )
+        )
+        .filter(
+          (item) =>
+            item.product.category ===
+              'am' ||
+            item.product.category ===
+              'both'
+        )
+        .sort(
+          (a, b) =>
+            b.score - a.score
+        )
+        .map((item) => item.product)
+
+
+    const result: typeof candidates = []
+
+
+    /* ----------------------------------------------------------
+       Foundational cleanser
+    ---------------------------------------------------------- */
+
+    const cleanser = products.find(
+      (product) =>
+        product.id ===
+        foundationProductIds.cleanser
+    )
+
+    if (
+      cleanser &&
+      cleanser.category === 'both'
+    ) {
+      result.push(cleanser)
+    }
+
+
+    /* ----------------------------------------------------------
+       Other scored AM products
+    ---------------------------------------------------------- */
+
+    candidates.forEach((product) => {
+      if (
+        !result.some(
+          (item) =>
+            item.id === product.id
+        )
+      ) {
+        result.push(product)
+      }
+    })
+
+
+    /* ----------------------------------------------------------
+       Maximum of 3 AM products
+    ---------------------------------------------------------- */
+
+    return result.slice(0, 3)
+  }, [scoredProducts, recommendedProducts])
+
 
   /* ============================================================
      PM PRODUCTS
   ============================================================ */
 
   const pmProducts = useMemo(() => {
-    return recommendedProducts
-      .filter(
-        (product) =>
-          product.category === 'pm' ||
-          product.category === 'both'
+    const candidates =
+      scoredProducts
+        .filter((item) =>
+          recommendedProducts.some(
+            (product) =>
+              product.id ===
+              item.product.id
+          )
+        )
+        .filter(
+          (item) =>
+            item.product.category ===
+              'pm' ||
+            item.product.category ===
+              'both'
+        )
+        .sort(
+          (a, b) =>
+            b.score - a.score
+        )
+        .map((item) => item.product)
+
+
+    const result: typeof candidates = []
+
+
+    /* ----------------------------------------------------------
+       Add strongest matches first
+    ---------------------------------------------------------- */
+
+    candidates.forEach((product) => {
+      if (
+        !result.some(
+          (item) =>
+            item.id === product.id
+        )
+      ) {
+        result.push(product)
+      }
+    })
+
+
+    /* ----------------------------------------------------------
+       Make sure moisturizer is available to PM routine
+    ---------------------------------------------------------- */
+
+    const moisturizer = products.find(
+      (product) =>
+        product.id ===
+        foundationProductIds.moisturizer
+    )
+
+    if (
+      moisturizer &&
+      !result.some(
+        (item) =>
+          item.id ===
+          moisturizer.id
       )
-      .slice(0, 3)
-  }, [recommendedProducts])
+    ) {
+      result.push(moisturizer)
+    }
+
+
+    /* ----------------------------------------------------------
+       Maximum of 3 PM products
+    ---------------------------------------------------------- */
+
+    return result.slice(0, 3)
+  }, [scoredProducts, recommendedProducts])
+
 
   /* ============================================================
      COMPLETE ROUTINE
   ============================================================ */
 
   const routineProducts = useMemo(() => {
-    return [...amProducts, ...pmProducts].filter(
+    return [
+      ...amProducts,
+      ...pmProducts,
+    ].filter(
       (product, index, array) =>
         array.findIndex(
-          (item) => item.id === product.id
+          (item) =>
+            item.id === product.id
         ) === index
     )
   }, [amProducts, pmProducts])
+
 
   /* ============================================================
      ADD ROUTINE + GO TO CART
@@ -241,10 +688,13 @@ export default function QuizPage() {
 
     setAddingRoutine(true)
 
-    addProductsToCart(routineProducts)
+    addProductsToCart(
+      routineProducts
+    )
 
     router.push('/cart')
   }
+
 
   /* ============================================================
      CONCERN TOGGLE
@@ -253,16 +703,24 @@ export default function QuizPage() {
   const handleConcernToggle = (
     concern: string
   ) => {
-    setAnswers((prev) => ({
-      ...prev,
+    setAnswers((previous) => ({
+      ...previous,
 
-      concerns: prev.concerns.includes(concern)
-        ? prev.concerns.filter(
-            (item) => item !== concern
-          )
-        : [...prev.concerns, concern],
+      concerns:
+        previous.concerns.includes(
+          concern
+        )
+          ? previous.concerns.filter(
+              (item) =>
+                item !== concern
+            )
+          : [
+              ...previous.concerns,
+              concern,
+            ],
     }))
   }
+
 
   /* ============================================================
      PRIORITY TOGGLE
@@ -271,16 +729,24 @@ export default function QuizPage() {
   const handlePriorityToggle = (
     priority: string
   ) => {
-    setAnswers((prev) => ({
-      ...prev,
+    setAnswers((previous) => ({
+      ...previous,
 
-      priorities: prev.priorities.includes(priority)
-        ? prev.priorities.filter(
-            (item) => item !== priority
-          )
-        : [...prev.priorities, priority],
+      priorities:
+        previous.priorities.includes(
+          priority
+        )
+          ? previous.priorities.filter(
+              (item) =>
+                item !== priority
+            )
+          : [
+              ...previous.priorities,
+              priority,
+            ],
     }))
   }
+
 
   /* ============================================================
      RESET
@@ -295,6 +761,7 @@ export default function QuizPage() {
 
     setStep('intro')
   }
+
 
   /* ============================================================
      INTRO
@@ -369,7 +836,9 @@ export default function QuizPage() {
 
         <button
           type="button"
-          onClick={() => setStep('questions')}
+          onClick={() =>
+            setStep('questions')
+          }
           className="
             mt-7
             inline-flex
@@ -383,8 +852,8 @@ export default function QuizPage() {
             font-medium
             text-white
             transition-all
-            hover:bg-[#D14E20]
             hover:-translate-y-[1px]
+            hover:bg-[#D14E20]
           "
         >
           Start skin test →
@@ -404,6 +873,7 @@ export default function QuizPage() {
       </div>
     </section>
   )
+
 
   /* ============================================================
      QUESTIONS
@@ -431,6 +901,7 @@ export default function QuizPage() {
             max-w-3xl
           "
         >
+
           {/* TOP BAR */}
 
           <div
@@ -441,9 +912,12 @@ export default function QuizPage() {
               justify-between
             "
           >
+
             <button
               type="button"
-              onClick={() => setStep('intro')}
+              onClick={() =>
+                setStep('intro')
+              }
               className="
                 rounded-full
                 px-3
@@ -472,7 +946,9 @@ export default function QuizPage() {
             >
               Build your routine
             </span>
+
           </div>
+
 
           {/* PROGRESS */}
 
@@ -493,11 +969,13 @@ export default function QuizPage() {
             />
           </div>
 
+
           {/* ==================================================
-              01 — SKIN TYPE
+              SKIN TYPE
           ================================================== */}
 
           <div className="mb-12">
+
             <p
               className="
                 text-[10px]
@@ -545,19 +1023,25 @@ export default function QuizPage() {
                 sm:gap-3
               "
             >
+
               {skinTypes.map((type) => {
+
                 const selected =
-                  answers.skinType === type.name
+                  answers.skinType ===
+                  type.name
 
                 return (
                   <button
                     key={type.name}
                     type="button"
                     onClick={() =>
-                      setAnswers((prev) => ({
-                        ...prev,
-                        skinType: type.name,
-                      }))
+                      setAnswers(
+                        (previous) => ({
+                          ...previous,
+                          skinType:
+                            type.name,
+                        })
+                      )
                     }
                     className={`
                       min-h-[120px]
@@ -575,6 +1059,7 @@ export default function QuizPage() {
                       }
                     `}
                   >
+
                     <span
                       className="
                         block
@@ -620,17 +1105,22 @@ export default function QuizPage() {
                         Selected
                       </span>
                     )}
+
                   </button>
                 )
               })}
+
             </div>
+
           </div>
 
+
           {/* ==================================================
-              02 — CONCERNS
+              CONCERNS
           ================================================== */}
 
           <div className="mb-12">
+
             <p
               className="
                 text-[10px]
@@ -678,16 +1168,22 @@ export default function QuizPage() {
                 sm:gap-3
               "
             >
+
               {concerns.map((concern) => {
+
                 const selected =
-                  answers.concerns.includes(concern)
+                  answers.concerns.includes(
+                    concern
+                  )
 
                 return (
                   <button
                     key={concern}
                     type="button"
                     onClick={() =>
-                      handleConcernToggle(concern)
+                      handleConcernToggle(
+                        concern
+                      )
                     }
                     className={`
                       flex
@@ -706,12 +1202,8 @@ export default function QuizPage() {
                       }
                     `}
                   >
-                    <span
-                      className="
-                        text-[14px]
-                        font-medium
-                      "
-                    >
+
+                    <span className="text-[14px] font-medium">
                       {concern}
                     </span>
 
@@ -720,17 +1212,22 @@ export default function QuizPage() {
                         ✓
                       </span>
                     )}
+
                   </button>
                 )
               })}
+
             </div>
+
           </div>
 
+
           {/* ==================================================
-              03 — PRIORITIES
+              PRIORITIES
           ================================================== */}
 
           <div>
+
             <p
               className="
                 text-[10px]
@@ -778,7 +1275,9 @@ export default function QuizPage() {
                 sm:gap-3
               "
             >
+
               {priorities.map((priority) => {
+
                 const selected =
                   answers.priorities.includes(
                     priority
@@ -789,7 +1288,9 @@ export default function QuizPage() {
                     key={priority}
                     type="button"
                     onClick={() =>
-                      handlePriorityToggle(priority)
+                      handlePriorityToggle(
+                        priority
+                      )
                     }
                     className={`
                       flex
@@ -808,12 +1309,8 @@ export default function QuizPage() {
                       }
                     `}
                   >
-                    <span
-                      className="
-                        text-[14px]
-                        font-medium
-                      "
-                    >
+
+                    <span className="text-[14px] font-medium">
                       {priority}
                     </span>
 
@@ -822,18 +1319,24 @@ export default function QuizPage() {
                         ✓
                       </span>
                     )}
+
                   </button>
                 )
               })}
+
             </div>
+
 
             {/* CONTINUE */}
 
             <div className="mt-7 flex justify-end">
+
               <button
                 type="button"
                 disabled={!canContinue}
-                onClick={() => setStep('result')}
+                onClick={() =>
+                  setStep('result')
+                }
                 className={`
                   inline-flex
                   min-h-[48px]
@@ -846,19 +1349,23 @@ export default function QuizPage() {
                   transition-all
                   ${
                     canContinue
-                      ? 'bg-[#E85D2C] text-white hover:bg-[#D14E20] hover:-translate-y-[1px]'
+                      ? 'bg-[#E85D2C] text-white hover:-translate-y-[1px] hover:bg-[#D14E20]'
                       : 'cursor-not-allowed bg-[#E8DFD3] text-[#9A938B]'
                   }
                 `}
               >
                 See my routine →
               </button>
+
             </div>
+
           </div>
+
         </div>
       </section>
     )
   }
+
 
   /* ============================================================
      ROUTINE PRODUCT
@@ -884,6 +1391,7 @@ export default function QuizPage() {
         sm:p-4
       "
     >
+
       <div
         className="
           h-[72px]
@@ -894,22 +1402,39 @@ export default function QuizPage() {
           bg-[#E8DFD3]
         "
       >
-        <img
-          src={product.image}
-          alt={product.name}
-          className="
-            h-full
-            w-full
-            object-cover
-            transition-transform
-            duration-500
-            group-hover:scale-105
-          "
-        />
+        {product.imagePlaceholder ? (
+
+          <div className="flex h-full w-full items-center justify-center">
+
+            <span className="font-fahkwang text-[10px] italic text-[#E85D2C]">
+              am · pm
+            </span>
+
+          </div>
+
+        ) : (
+
+          <img
+            src={product.image}
+            alt={product.name}
+            className="
+              h-full
+              w-full
+              object-contain
+              transition-transform
+              duration-500
+              group-hover:scale-105
+            "
+          />
+
+        )}
       </div>
 
+
       <div className="min-w-0 flex-1">
+
         <div className="flex gap-2">
+
           <span
             className="
               pt-0.5
@@ -932,7 +1457,9 @@ export default function QuizPage() {
           >
             {product.name}
           </h3>
+
         </div>
+
 
         <p
           className="
@@ -946,6 +1473,7 @@ export default function QuizPage() {
           {product.tagline}
         </p>
 
+
         <p
           className="
             mt-2
@@ -955,9 +1483,12 @@ export default function QuizPage() {
         >
           ₹{product.price}
         </p>
+
       </div>
+
     </Link>
   )
+
 
   /* ============================================================
      RESULTS
@@ -973,16 +1504,23 @@ export default function QuizPage() {
         sm:pb-20
       "
     >
+
       <div
         className="
           mx-auto
           max-w-5xl
         "
       >
+
+        {/* TOP ACTIONS */}
+
         <div className="flex items-center justify-between">
+
           <button
             type="button"
-            onClick={() => setStep('questions')}
+            onClick={() =>
+              setStep('questions')
+            }
             className="
               rounded-full
               px-3
@@ -999,6 +1537,7 @@ export default function QuizPage() {
           >
             ← Adjust answers
           </button>
+
 
           <button
             type="button"
@@ -1019,7 +1558,9 @@ export default function QuizPage() {
           >
             Retake
           </button>
+
         </div>
+
 
         {/* RESULT HEADER */}
 
@@ -1031,6 +1572,7 @@ export default function QuizPage() {
             pb-7
           "
         >
+
           <p
             className="
               text-[10px]
@@ -1042,6 +1584,7 @@ export default function QuizPage() {
           >
             YOUR ROUTINE
           </p>
+
 
           <h1
             className="
@@ -1061,7 +1604,9 @@ export default function QuizPage() {
             </span>
           </h1>
 
+
           <div className="mt-4 flex flex-wrap gap-2">
+
             {answers.skinType && (
               <span
                 className="
@@ -1078,28 +1623,34 @@ export default function QuizPage() {
               </span>
             )}
 
-            {answers.priorities.map((priority) => (
-              <span
-                key={priority}
-                className="
-                  rounded-full
-                  border
-                  border-[#E8DFD3]
-                  px-3
-                  py-1.5
-                  text-[10px]
-                  font-medium
-                  text-[#6B6B6B]
-                "
-              >
-                {priority}
-              </span>
-            ))}
+
+            {answers.concerns.map(
+              (concern) => (
+                <span
+                  key={concern}
+                  className="
+                    rounded-full
+                    border
+                    border-[#E8DFD3]
+                    px-3
+                    py-1.5
+                    text-[10px]
+                    font-medium
+                    text-[#6B6B6B]
+                  "
+                >
+                  {concern}
+                </span>
+              )
+            )}
+
           </div>
+
         </div>
 
+
         {/* ==================================================
-            AM / PM
+            AM / PM ROUTINES
         ================================================== */}
 
         <div
@@ -1110,7 +1661,10 @@ export default function QuizPage() {
             sm:grid-cols-2
           "
         >
-          {/* AM */}
+
+          {/* ==================================================
+              MORNING
+          ================================================== */}
 
           <div
             className="
@@ -1121,6 +1675,7 @@ export default function QuizPage() {
               bg-[#FBF8F3]
             "
           >
+
             <div
               className="
                 flex
@@ -1131,7 +1686,9 @@ export default function QuizPage() {
                 p-5
               "
             >
+
               <div>
+
                 <p
                   className="
                     text-[10px]
@@ -1155,35 +1712,51 @@ export default function QuizPage() {
                 >
                   AM
                 </h2>
+
               </div>
 
               <span className="text-[18px] text-[#E85D2C]">
                 ☼
               </span>
+
             </div>
+
 
             <div className="p-1">
+
               {amProducts.length > 0 ? (
-                amProducts.map((product, index) => (
-                  <RoutineProduct
-                    key={product.id}
-                    product={product}
-                    index={index}
-                  />
-                ))
+
+                amProducts.map(
+                  (product, index) => (
+                    <RoutineProduct
+                      key={product.id}
+                      product={product}
+                      index={index}
+                    />
+                  )
+                )
+
               ) : (
+
                 <div className="p-5">
+
                   <p className="text-[14px] font-light leading-[1.5] text-[#6B6B6B]">
                     We&apos;re still refining your morning
-                    recommendations. Check back as our
-                    product range grows.
+                    recommendations.
                   </p>
+
                 </div>
+
               )}
+
             </div>
+
           </div>
 
-          {/* PM */}
+
+          {/* ==================================================
+              EVENING
+          ================================================== */}
 
           <div
             className="
@@ -1194,6 +1767,7 @@ export default function QuizPage() {
               bg-[#FBF8F3]
             "
           >
+
             <div
               className="
                 flex
@@ -1204,7 +1778,9 @@ export default function QuizPage() {
                 p-5
               "
             >
+
               <div>
+
                 <p
                   className="
                     text-[10px]
@@ -1228,34 +1804,49 @@ export default function QuizPage() {
                 >
                   PM
                 </h2>
+
               </div>
 
               <span className="text-[18px] text-[#E85D2C]">
                 ◐
               </span>
+
             </div>
 
+
             <div className="p-1">
+
               {pmProducts.length > 0 ? (
-                pmProducts.map((product, index) => (
-                  <RoutineProduct
-                    key={product.id}
-                    product={product}
-                    index={index}
-                  />
-                ))
+
+                pmProducts.map(
+                  (product, index) => (
+                    <RoutineProduct
+                      key={product.id}
+                      product={product}
+                      index={index}
+                    />
+                  )
+                )
+
               ) : (
+
                 <div className="p-5">
+
                   <p className="text-[14px] font-light leading-[1.5] text-[#6B6B6B]">
                     We&apos;re still refining your evening
-                    recommendations. Check back as our
-                    product range grows.
+                    recommendations.
                   </p>
+
                 </div>
+
               )}
+
             </div>
+
           </div>
+
         </div>
+
 
         {/* ==================================================
             ROUTINE SUMMARY
@@ -1275,6 +1866,7 @@ export default function QuizPage() {
             sm:justify-between
           "
         >
+
           <span
             className="
               text-[10px]
@@ -1284,8 +1876,9 @@ export default function QuizPage() {
               text-[#6B6B6B]
             "
           >
-            Your routine
+            Recommended routine
           </span>
+
 
           <span
             className="
@@ -1299,7 +1892,9 @@ export default function QuizPage() {
               ? 'product'
               : 'products'}
           </span>
+
         </div>
+
 
         {/* ==================================================
             ACTIONS
@@ -1313,6 +1908,7 @@ export default function QuizPage() {
             sm:grid-cols-2
           "
         >
+
           <button
             type="button"
             onClick={handleShopRoutine}
@@ -1330,14 +1926,13 @@ export default function QuizPage() {
               px-6
               text-[14px]
               font-medium
-              text-white
               transition-all
               ${
                 addingRoutine
-                  ? 'cursor-wait bg-[#D14E20]'
+                  ? 'cursor-wait bg-[#D14E20] text-white'
                   : routineProducts.length === 0
                     ? 'cursor-not-allowed bg-[#E8DFD3] text-[#9A938B]'
-                    : 'bg-[#E85D2C] hover:bg-[#D14E20] hover:-translate-y-[1px]'
+                    : 'bg-[#E85D2C] text-white hover:-translate-y-[1px] hover:bg-[#D14E20]'
               }
             `}
           >
@@ -1345,6 +1940,7 @@ export default function QuizPage() {
               ? 'Adding routine...'
               : 'Add routine to bag →'}
           </button>
+
 
           <button
             type="button"
@@ -1368,10 +1964,32 @@ export default function QuizPage() {
           >
             Retake skin test
           </button>
+
         </div>
+
+
+        {/* NOTE */}
+
+        <p
+          className="
+            mx-auto
+            mt-5
+            max-w-[620px]
+            text-center
+            text-[10px]
+            font-light
+            leading-[1.6]
+            text-[#8A837B]
+          "
+        >
+          Your recommendations are based on the answers you provided.
+          Individual skin responses can vary.
+        </p>
+
       </div>
     </section>
   )
+
 
   /* ============================================================
      PAGE
@@ -1386,9 +2004,11 @@ export default function QuizPage() {
         text-[#1A1A1A]
       "
     >
-      {/* Navbar-safe spacing */}
+
+      {/* Space for floating navbar */}
 
       <div className="h-24 sm:h-32" />
+
 
       <div
         className="
@@ -1399,12 +2019,20 @@ export default function QuizPage() {
           sm:px-6
         "
       >
-        {step === 'intro' && renderIntro()}
 
-        {step === 'questions' && renderQuestions()}
+        {step === 'intro' &&
+          renderIntro()}
 
-        {step === 'result' && renderResult()}
+        {step === 'questions' &&
+          renderQuestions()}
+
+        {step === 'result' &&
+          renderResult()}
+
       </div>
+
+
+      <Footer />
 
     </main>
   )

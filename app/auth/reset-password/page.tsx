@@ -116,7 +116,7 @@ export default function ResetPasswordPage() {
 
           <p className="body-text-sm mt-2 text-center text-[#6B6B6B]">
             Choose a new password for
-            your AM:PM account.
+            your amtopm account.
           </p>
 
           {!token ? (

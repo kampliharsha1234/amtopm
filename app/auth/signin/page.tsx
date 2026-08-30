@@ -46,7 +46,7 @@ export default function SignInPage() {
           </h1>
 
           <p className="body-text-sm text-center text-[#6B6B6B] mt-2">
-            Welcome back to AM:PM
+            Welcome back to amtopm
           </p>
 
           <form
