@@ -835,7 +835,7 @@ function FreeConsultationSection() {
               </h3>
 
               <Link
-                href="/support"
+                href="/consultation"
                 className="
                   mt-5
                   inline-flex
