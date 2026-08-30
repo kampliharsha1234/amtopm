@@ -1,6 +1,7 @@
+
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Footer from '../components/Footer'
+
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions | amtopm',
@@ -116,7 +117,7 @@ const terms: TermSection[] = [
     title: 'Returns, Refunds and Cancellations',
     content: [
       'Because skincare products are hygiene-sensitive, returns may not be possible where a product has been opened, used and is unsafe to restock.',
-      'Refunds and cancellations are subject to our published policy and applicable law.For more details, please refer to our Returns & Refunds Policy.',
+      'Refunds and cancellations are subject to our published policy and applicable law. For more details, please refer to our Returns & Refunds Policy.',
     ],
   },
   {
@@ -285,46 +286,25 @@ const terms: TermSection[] = [
 export default function TermsPage() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#F7F2EB] text-[#1A1A1A]">
-
-      {/* =====================================================
-          HERO
-      ===================================================== */}
-
+      {/* HERO */}
       <section className="px-5 pb-10 pt-28 sm:px-8 sm:pb-14 sm:pt-36">
         <div className="mx-auto max-w-7xl">
-
           <div className="grid gap-8 lg:grid-cols-[1fr_0.55fr] lg:items-end lg:gap-16">
-
             <div>
-
               <p className="text-[9px] font-medium lowercase tracking-[0.28em] text-[#E85D2C] sm:text-[10px]">
                 amtopm · legal
               </p>
 
-              <h1
-                className="
-                  mt-4
-                  max-w-[900px]
-                  font-sans
-                  text-[48px]
-                  font-bold
-                  leading-[0.9]
-                  tracking-[-0.045em]
-                  sm:text-[70px]
-                  lg:text-[88px]
-                "
-              >
+              <h1 className="mt-4 max-w-[900px] font-sans text-[48px] font-bold leading-[0.9] tracking-[-0.045em] sm:text-[70px] lg:text-[88px]">
                 Terms &
                 <br />
                 <span className="font-fahkwang font-normal italic text-[#E85D2C]">
                   Conditions.
                 </span>
               </h1>
-
             </div>
 
             <div className="max-w-[420px] lg:justify-self-end">
-
               <p className="font-fahkwang text-[21px] leading-[1.3] text-[#1A1A1A] sm:text-[25px]">
                 The terms that govern your use of our website, store, products and services.
               </p>
@@ -332,26 +312,16 @@ export default function TermsPage() {
               <p className="mt-4 text-[11px] font-light leading-[1.7] text-[#6B6B6B]">
                 Please read these terms carefully before using the website or placing an order.
               </p>
-
             </div>
-
           </div>
-
         </div>
       </section>
 
-
-      {/* =====================================================
-          QUICK INFO
-      ===================================================== */}
-
+      {/* QUICK INFO */}
       <section className="border-y border-[#E8DFD3] bg-[#FBF8F3] px-5 py-7 sm:px-8 sm:py-9">
         <div className="mx-auto max-w-7xl">
-
           <div className="grid gap-px overflow-hidden rounded-[22px] border border-[#E8DFD3] bg-[#E8DFD3] sm:grid-cols-3">
-
             <div className="bg-[#FBF8F3] p-5 sm:p-6">
-
               <p className="text-[9px] font-medium uppercase tracking-[0.22em] text-[#E85D2C]">
                 BUSINESS
               </p>
@@ -363,11 +333,9 @@ export default function TermsPage() {
               <p className="mt-1 text-[11px] font-light text-[#6B6B6B]">
                 Veetarag Kasar
               </p>
-
             </div>
 
             <div className="bg-[#FBF8F3] p-5 sm:p-6">
-
               <p className="text-[9px] font-medium uppercase tracking-[0.22em] text-[#E85D2C]">
                 GOVERNING LAW
               </p>
@@ -379,11 +347,9 @@ export default function TermsPage() {
               <p className="mt-1 text-[11px] font-light text-[#6B6B6B]">
                 Subject to applicable consumer law
               </p>
-
             </div>
 
             <div className="bg-[#1A1A1A] p-5 text-white sm:p-6">
-
               <p className="text-[9px] font-medium uppercase tracking-[0.22em] text-[#E85D2C]">
                 LAST WORD
               </p>
@@ -395,60 +361,35 @@ export default function TermsPage() {
               <p className="mt-1 text-[11px] font-light text-white/60">
                 Your statutory rights remain protected.
               </p>
-
             </div>
-
           </div>
-
         </div>
       </section>
 
-
-      {/* =====================================================
-          TERMS
-      ===================================================== */}
-
+      {/* TERMS */}
       <section className="px-5 py-10 sm:px-8 sm:py-16">
         <div className="mx-auto max-w-5xl">
-
           <div className="space-y-3">
-
             {terms.map((term) => (
               <article
                 key={term.number}
-                className="
-                  rounded-[20px]
-                  border
-                  border-[#E8DFD3]
-                  bg-[#FBF8F3]
-                  p-5
-                  sm:p-7
-                "
+                className="rounded-[20px] border border-[#E8DFD3] bg-[#FBF8F3] p-5 sm:p-7"
               >
-
                 <div className="grid gap-4 sm:grid-cols-[70px_1fr] sm:gap-7">
-
                   {/* NUMBER */}
-
                   <div>
-
                     <span className="font-fahkwang text-[18px] italic text-[#E85D2C]">
                       {term.number}
                     </span>
-
                   </div>
 
-
                   {/* CONTENT */}
-
                   <div>
-
                     <h2 className="font-sans text-[22px] font-semibold leading-[1.05] tracking-[-0.025em] sm:text-[27px]">
                       {term.title}
                     </h2>
 
                     <div className="mt-4 space-y-3">
-
                       {term.content.map((paragraph, index) => (
                         <p
                           key={`${term.number}-${index}`}
@@ -457,43 +398,28 @@ export default function TermsPage() {
                           {paragraph}
                         </p>
                       ))}
-
                     </div>
 
                     {term.note && (
                       <div className="mt-5 border-l-2 border-[#E85D2C] bg-[#FCE6D9] px-4 py-3">
-
                         <p className="text-[11px] font-light leading-[1.6] text-[#6B3E2C]">
                           {term.note}
                         </p>
-
                       </div>
                     )}
-
                   </div>
-
                 </div>
-
               </article>
             ))}
-
           </div>
-
         </div>
       </section>
 
-
-      {/* =====================================================
-          CONTACT
-      ===================================================== */}
-
+      {/* CONTACT */}
       <section className="bg-[#1A1A1A] px-5 py-12 text-white sm:px-8 sm:py-16">
         <div className="mx-auto max-w-7xl">
-
           <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-end lg:gap-16">
-
             <div>
-
               <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-[#E85D2C]">
                 33 · CONTACT
               </p>
@@ -505,11 +431,9 @@ export default function TermsPage() {
                   amtopm?
                 </span>
               </h2>
-
             </div>
 
             <div className="border-l border-white/15 pl-5 sm:pl-8">
-
               <p className="text-[11px] uppercase tracking-[0.2em] text-white/45">
                 Owner / Proprietor
               </p>
@@ -519,7 +443,6 @@ export default function TermsPage() {
               </p>
 
               <div className="mt-5 grid gap-4 sm:grid-cols-2">
-
                 <div>
                   <p className="text-[9px] uppercase tracking-[0.18em] text-white/40">
                     Email
@@ -545,11 +468,9 @@ export default function TermsPage() {
                     9480281108
                   </a>
                 </div>
-
               </div>
 
               <div className="mt-5">
-
                 <p className="text-[9px] uppercase tracking-[0.18em] text-white/40">
                   Business Address
                 </p>
@@ -558,28 +479,17 @@ export default function TermsPage() {
                   Kalpadrum Arcade, 4th floor, CTS 1966, Kore Galli,
                   Shahapur, Belgavi - 590003
                 </p>
-
               </div>
-
             </div>
-
           </div>
-
         </div>
       </section>
 
-
-      {/* =====================================================
-          RELATED POLICIES
-      ===================================================== */}
-
+      {/* RELATED POLICIES */}
       <section className="bg-[#F7F2EB] px-5 py-10 sm:px-8 sm:py-14">
         <div className="mx-auto max-w-7xl">
-
           <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-
             <div>
-
               <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-[#E85D2C]">
                 RELATED INFORMATION
               </p>
@@ -587,37 +497,21 @@ export default function TermsPage() {
               <h2 className="mt-3 font-sans text-[34px] font-bold leading-none tracking-[-0.035em] sm:text-[46px]">
                 More policies.
               </h2>
-
             </div>
 
             <Link
               href="/support"
-              className="
-                inline-flex
-                min-h-[44px]
-                w-fit
-                items-center
-                justify-center
-                rounded-full
-                border
-                border-[#1A1A1A]
-                px-6
-                text-[12px]
-                font-medium
-                text-[#1A1A1A]
-                transition-all
-                hover:bg-[#1A1A1A]
-                hover:text-white
-              "
+              className="inline-flex min-h-[44px] w-fit items-center justify-center rounded-full border border-[#1A1A1A] px-6 text-[12px] font-medium text-[#1A1A1A] transition-all hover:bg-[#1A1A1A] hover:text-white"
             >
               Visit support →
             </Link>
-
           </div>
 
           <div className="mt-7 grid gap-3 sm:grid-cols-3">
-
-            <div className="rounded-[20px] border border-[#E8DFD3] bg-[#FBF8F3] p-5">
+            <Link
+              href="/privacy"
+              className="rounded-[20px] border border-[#E8DFD3] bg-[#FBF8F3] p-5 transition-transform hover:-translate-y-0.5"
+            >
               <p className="text-[9px] uppercase tracking-[0.2em] text-[#E85D2C]">
                 PRIVACY
               </p>
@@ -629,9 +523,12 @@ export default function TermsPage() {
               <p className="mt-2 text-[11px] font-light leading-[1.6] text-[#6B6B6B]">
                 How personal information may be handled.
               </p>
-            </div>
+            </Link>
 
-            <div className="rounded-[20px] border border-[#E8DFD3] bg-[#FBF8F3] p-5">
+            <Link
+              href="/shipping"
+              className="rounded-[20px] border border-[#E8DFD3] bg-[#FBF8F3] p-5 transition-transform hover:-translate-y-0.5"
+            >
               <p className="text-[9px] uppercase tracking-[0.2em] text-[#E85D2C]">
                 ORDERS
               </p>
@@ -643,9 +540,12 @@ export default function TermsPage() {
               <p className="mt-2 text-[11px] font-light leading-[1.6] text-[#6B6B6B]">
                 Delivery information and service expectations.
               </p>
-            </div>
+            </Link>
 
-            <div className="rounded-[20px] border border-[#E8DFD3] bg-[#FBF8F3] p-5">
+            <Link
+              href="/returns"
+              className="rounded-[20px] border border-[#E8DFD3] bg-[#FBF8F3] p-5 transition-transform hover:-translate-y-0.5"
+            >
               <p className="text-[9px] uppercase tracking-[0.2em] text-[#E85D2C]">
                 RETURNS
               </p>
@@ -657,15 +557,13 @@ export default function TermsPage() {
               <p className="mt-2 text-[11px] font-light leading-[1.6] text-[#6B6B6B]">
                 Eligibility, exclusions and refund information.
               </p>
-            </div>
-
+            </Link>
           </div>
-
         </div>
       </section>
 
-
-   
+      
     </main>
   )
 }
+
