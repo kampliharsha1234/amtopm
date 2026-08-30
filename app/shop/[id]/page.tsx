@@ -10,7 +10,7 @@ import {
 } from '../../data/products'
 
 import { useCart } from '../../context/CartContext'
-import Footer from '../../components/Footer'
+
 
 
 /* ============================================================
@@ -2090,11 +2090,6 @@ export default function ProductPage({
       </section>
 
 
-      {/* =====================================================
-          FOOTER
-      ===================================================== */}
-
-      <Footer />
 
 
       {/* =====================================================

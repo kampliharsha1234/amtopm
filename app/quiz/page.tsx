@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 
 import { products } from '../data/products'
 import { useCart } from '../context/CartContext'
-import Footer from '../components/Footer'
+
 
 
 /* ============================================================
@@ -2032,8 +2032,7 @@ export default function QuizPage() {
       </div>
 
 
-      <Footer />
-
+   
     </main>
   )
 }
