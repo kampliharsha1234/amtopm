@@ -104,7 +104,6 @@ export default async function OrdersPage() {
                           : 'Payment pending'}
                       </span>
                     </div>
-
                   </div>
                 </div>
 

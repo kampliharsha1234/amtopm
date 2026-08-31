@@ -1,8 +1,22 @@
 'use client'
 
+import {
+  useEffect,
+  useState,
+} from 'react'
+
 import Link from 'next/link'
 import { useCart } from '../context/CartContext'
 import Footer from '../components/Footer'
+
+type ShippingRate = {
+  shippingCharge: number
+  courier?: {
+    name?: string
+    etd?: string | null
+    estimatedDeliveryDays?: string | null
+  } | null
+}
 
 export default function CartPage() {
   const {
@@ -13,8 +27,75 @@ export default function CartPage() {
     hydrated,
   } = useCart()
 
-  const shipping = items.length > 0 ? 99 : 0
-  const total = subtotal + shipping
+  const [pincode, setPincode] = useState('')
+  const [shippingRate, setShippingRate] = useState<ShippingRate | null>(null)
+  const [shippingLoading, setShippingLoading] = useState(false)
+  const [shippingError, setShippingError] = useState('')
+
+  const shippingCharge = shippingRate?.shippingCharge || 0
+  const total = subtotal + shippingCharge
+  const trimmedPincode = pincode.trim()
+  const hasValidPincode = /^\d{6}$/.test(trimmedPincode)
+
+  useEffect(() => {
+    if (!hydrated || items.length === 0 || !hasValidPincode) {
+      return
+    }
+
+    let cancelled = false
+
+    const timer = setTimeout(async () => {
+      try {
+        setShippingLoading(true)
+        setShippingError('')
+
+        const response = await fetch('/api/shipping-rate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            items: items.map(item => ({
+              id: item.id,
+              quantity: item.quantity,
+            })),
+            destinationPincode: trimmedPincode,
+          }),
+        })
+
+        const data = await response.json()
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || 'Unable to calculate shipping.')
+        }
+
+        if (!cancelled) {
+          setShippingRate({
+            shippingCharge: Number(data.shippingCharge),
+            courier: data.courier || null,
+          })
+        }
+      } catch (rateError) {
+        if (!cancelled) {
+          setShippingRate(null)
+          setShippingError(
+            rateError instanceof Error
+              ? rateError.message
+              : 'Unable to calculate shipping.'
+          )
+        }
+      } finally {
+        if (!cancelled) {
+          setShippingLoading(false)
+        }
+      }
+    }, 500)
+
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
+    }
+  }, [hydrated, items, hasValidPincode, trimmedPincode])
 
   /* ============================================================
      WAIT FOR CART TO LOAD
@@ -460,6 +541,46 @@ export default function CartPage() {
 
                   </div>
 
+                  <div className="rounded-xl border border-[#E8DFD3] bg-[#F7F2EB] p-3">
+                    <label className="block text-[10px] font-medium uppercase tracking-[0.15em] text-[#6B6B6B]">
+                      Delivery pincode
+                    </label>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]{6}"
+                      maxLength={6}
+                      value={pincode}
+                      onChange={e => {
+                        const nextValue = e.target.value.replace(/\D/g, '')
+                        setPincode(nextValue)
+                        setShippingRate(null)
+                        setShippingError('')
+                      }}
+                      placeholder="6-digit PIN"
+                      className="mt-2 w-full rounded-full border border-[#E8DFD3] bg-white px-3 py-2 text-[14px] text-[#1A1A1A] outline-none transition focus:border-[#E85D2C]"
+                    />
+
+                    {shippingLoading && (
+                      <p className="mt-2 text-[11px] text-[#6B6B6B]">
+                        Calculating delivery charge...
+                      </p>
+                    )}
+
+                    {shippingError && (
+                      <p className="mt-2 text-[11px] text-red-600">
+                        {shippingError}
+                      </p>
+                    )}
+
+                    {shippingRate && (
+                      <p className="mt-2 text-[11px] text-[#6B6B6B]">
+                        {shippingRate.courier?.name || 'Shiprocket courier'} • ₹
+                        {shippingRate.shippingCharge.toLocaleString('en-IN')}
+                      </p>
+                    )}
+                  </div>
+
                   <div className="flex justify-between text-[14px]">
 
                     <span className="font-light text-[#6B6B6B]">
@@ -467,7 +588,7 @@ export default function CartPage() {
                     </span>
 
                     <span className="font-medium">
-                      ₹{shipping}
+                      {shippingLoading ? 'Calculating...' : shippingRate ? `₹${shippingCharge.toLocaleString('en-IN')}` : '—'}
                     </span>
 
                   </div>
