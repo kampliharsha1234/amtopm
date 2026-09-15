@@ -184,7 +184,7 @@ html: ` <!DOCTYPE html> <html> <body style="margin:0;padding:0;background:#F5F1E
         </div>
 
         <div style="padding:20px 32px;border-top:1px solid #E8DFD3;font-size:11px;color:#8A8A8A;">
-          AM · PM · EVERY DAY
+          amtopm · every day
         </div>
 
       </div>

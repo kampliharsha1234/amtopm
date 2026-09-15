@@ -17,7 +17,7 @@ export default async function AccountPage() {
         <div className="border border-[#E8DFD3] bg-[#FBF8F3] p-6 sm:p-8">
 
           <p className="text-[8px] font-medium uppercase tracking-[0.25em] text-[#E85D2C]">
-            AM:PM ACCOUNT
+            amtopm ACCOUNT
           </p>
 
           <h1 className="mt-3 font-serif text-[42px] leading-none tracking-[-0.045em] sm:text-[54px]">

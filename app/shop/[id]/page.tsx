@@ -889,8 +889,11 @@ export default function ProductPage({
               className="
                 mt-7
                 rounded-[22px]
-                bg-[#F7F2EB]
+                border
+                border-[#D7C7B7]
+                bg-white
                 p-5
+                shadow-[0_8px_22px_rgba(26,26,26,0.05)]
               "
             >
 
@@ -1000,8 +1003,9 @@ export default function ProductPage({
               className="
                 rounded-[24px]
                 border
-                border-[#E8DFD3]
-                bg-[#FBF8F3]
+                border-[#D7C7B7]
+                bg-white
+                shadow-[0_10px_28px_rgba(26,26,26,0.06)]
                 p-6
               "
             >
@@ -1030,6 +1034,8 @@ export default function ProductPage({
                       key={concern}
                       className="
                         rounded-full
+                        border
+                        border-[#E8DFD3]
                         bg-[#F7F2EB]
                         px-3.5
                         py-2
@@ -1054,8 +1060,9 @@ export default function ProductPage({
               className="
                 rounded-[24px]
                 border
-                border-[#E8DFD3]
-                bg-[#FBF8F3]
+                border-[#D7C7B7]
+                bg-white
+                shadow-[0_10px_28px_rgba(26,26,26,0.06)]
                 p-6
               "
             >
@@ -2029,7 +2036,7 @@ export default function ProductPage({
                     <div
                       className="
                         relative
-                        aspect-square
+                        aspect-[0.88]
                         bg-[#E8DFD3]
                       "
                     >
@@ -2252,7 +2259,7 @@ function ProductImage({
                 text-[#E85D2C]
               "
             >
-              am · pm
+              amtopm
             </span>
 
           </div>
@@ -2331,7 +2338,7 @@ function OtherProductImage({
             text-[#E85D2C]
           "
         >
-          am · pm
+              amtopm
         </span>
 
       </div>
@@ -2349,8 +2356,7 @@ function OtherProductImage({
       className="
         h-full
         w-full
-        object-contain
-        p-8
+        object-cover
         transition-transform
         duration-700
         group-hover:scale-[1.04]

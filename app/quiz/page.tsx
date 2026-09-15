@@ -1055,7 +1055,7 @@ export default function QuizPage() {
                       ${
                         selected
                           ? 'border-[#E85D2C] bg-[#FCE6D9]'
-                          : 'border-[#E8DFD3] bg-[#FBF8F3] hover:border-[#E85D2C]'
+                          : 'border-[#C9A58D] bg-white shadow-[0_8px_20px_rgba(26,26,26,0.06)] hover:border-[#E85D2C] hover:shadow-[0_10px_24px_rgba(232,93,44,0.12)]'
                       }
                     `}
                   >
@@ -1198,7 +1198,7 @@ export default function QuizPage() {
                       ${
                         selected
                           ? 'border-[#E85D2C] bg-[#FCE6D9] text-[#E85D2C]'
-                          : 'border-[#E8DFD3] bg-[#FBF8F3] hover:border-[#E85D2C]'
+                          : 'border-[#C9A58D] bg-white shadow-[0_6px_16px_rgba(26,26,26,0.05)] hover:border-[#E85D2C] hover:shadow-[0_8px_20px_rgba(232,93,44,0.1)]'
                       }
                     `}
                   >
@@ -1305,7 +1305,7 @@ export default function QuizPage() {
                       ${
                         selected
                           ? 'border-[#E85D2C] bg-[#FCE6D9] text-[#E85D2C]'
-                          : 'border-[#E8DFD3] bg-[#FBF8F3] hover:border-[#E85D2C]'
+                          : 'border-[#C9A58D] bg-white shadow-[0_6px_16px_rgba(26,26,26,0.05)] hover:border-[#E85D2C] hover:shadow-[0_8px_20px_rgba(232,93,44,0.1)]'
                       }
                     `}
                   >
@@ -1407,7 +1407,7 @@ export default function QuizPage() {
           <div className="flex h-full w-full items-center justify-center">
 
             <span className="font-fahkwang text-[10px] italic text-[#E85D2C]">
-              am · pm
+              amtopm
             </span>
 
           </div>

@@ -23,7 +23,7 @@ const fahkwang = Fahkwang({
 })
 
 export const metadata: Metadata = {
-  title: 'AM:PM – Skincare for Morning & Night',
+  title: 'amtopm – Skincare for Morning & Night',
   description:
     'Dermatologist-inspired, science-first skincare. Simple, honest products for AM and PM routines.',
 }

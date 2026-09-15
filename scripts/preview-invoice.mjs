@@ -12,7 +12,7 @@ const sampleOrder = {
   items: [
     {
       productId: 'amp-001',
-      name: 'AM:PM Glow Cleanser',
+      name: 'amtopm Glow Cleanser',
       price: 1299,
       quantity: 1,
       image: '/images/products/cleanser.png',
@@ -20,7 +20,7 @@ const sampleOrder = {
     },
     {
       productId: 'amp-002',
-      name: 'AM:PM Barrier Serum',
+      name: 'amtopm Barrier Serum',
       price: 2499,
       quantity: 1,
       image: '/images/products/serum.png',

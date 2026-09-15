@@ -294,7 +294,7 @@ export default function AboutPage() {
           </span>
 
           <span className="text-[8px] uppercase tracking-[0.2em] text-white/50 sm:text-[9px]">
-            AM · PM · EVERY DAY
+            amtopm · every day
           </span>
         </div>
       </div>
@@ -632,7 +632,7 @@ export default function AboutPage() {
           <div className="py-8 text-center sm:py-12">
 
             <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-[#6B6B6B]">
-              THE AMTOPM DIFFERENCE
+              THE amtopm DIFFERENCE
             </p>
 
             <h2

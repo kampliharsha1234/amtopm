@@ -52,7 +52,7 @@ export async function sendOrderConfirmationEmail({
     <div style="font-family: Arial, sans-serif; background: #F7F2EB; padding: 40px 20px; color: #171717;">
       <div style="max-width: 680px; margin: 0 auto; background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #E8DFD3;">
         <div style="background: #F7F2EB; padding: 28px 32px; border-bottom: 1px solid #E8DFD3;">
-          <p style="margin: 0; font-size: 10px; letter-spacing: 3px; color: #E85D2C; font-weight: 700;">AMTOPM</p>
+          <p style="margin: 0; font-size: 10px; letter-spacing: 3px; color: #E85D2C; font-weight: 700;">amtopm</p>
           <h1 style="margin: 14px 0 0; font-size: 30px; color: #171717;">Order confirmed</h1>
         </div>
 

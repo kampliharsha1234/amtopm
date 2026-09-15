@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Footer from '../components/Footer'
 
 export const metadata: Metadata = {
-  title: 'Ingredient Science | am to pm',
+  title: 'Ingredient Science | amtopm',
   description:
     'Understand skincare ingredients, what they do, and how they work on your skin.',
 }

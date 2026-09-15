@@ -67,20 +67,20 @@ export async function POST(
 
     const fromEmail =
       process.env.RESEND_FROM_EMAIL ||
-      'AM:PM <onboarding@resend.dev>'
+      'amtopm <onboarding@resend.dev>'
 
     const { error } =
       await resend.emails.send({
         from: fromEmail,
         to: [user.email],
         subject:
-          'Reset your AM:PM password',
+          'Reset your amtopm password',
         html: `
           <div style="font-family: Arial, sans-serif; background: #F7F2EB; padding: 40px 20px;">
             <div style="max-width: 560px; margin: 0 auto; background: #ffffff; padding: 40px; border-radius: 20px;">
               
               <p style="font-size: 11px; letter-spacing: 3px; color: #E85D2C; margin-bottom: 20px;">
-                AM:PM
+                amtopm
               </p>
 
               <h1 style="font-size: 28px; color: #171717; margin-bottom: 15px;">
@@ -93,7 +93,7 @@ export async function POST(
 
               <p style="font-size: 15px; line-height: 1.6; color: #6B6B6B;">
                 We received a request to reset the password
-                for your AM:PM account.
+                for your amtopm account.
               </p>
 
               <a
@@ -125,7 +125,7 @@ export async function POST(
 
               <div style="border-top: 1px solid #E8DFD3; margin-top: 30px; padding-top: 20px;">
                 <p style="font-size: 11px; color: #999999;">
-                  AM:PM Skincare
+                  amtopm Skincare
                 </p>
               </div>
 

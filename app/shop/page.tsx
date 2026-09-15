@@ -623,8 +623,9 @@ export default function ShopPage() {
                       overflow-hidden
                       rounded-[26px]
                       border
-                      border-[#E8DFD3]
-                      bg-[#FBF8F3]
+                      border-[#D7C7B7]
+                      bg-white
+                      shadow-[0_10px_28px_rgba(26,26,26,0.06)]
                       transition-all
                       duration-500
                       hover:-translate-y-1
@@ -1114,7 +1115,7 @@ function ProductImage({
                 text-[#E85D2C]
               "
             >
-              am · pm
+              amtopm
             </span>
 
           </div>

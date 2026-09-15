@@ -28,7 +28,7 @@ const policySections: PolicySection[] = [
     number: '02',
     title: 'No General Returns',
     content: [
-      'AM TO PM does not accept ordinary returns after an order is placed or delivered merely because a customer changes their mind, selected the wrong product, no longer wants the product, dislikes texture or fragrance, or ordered incorrectly.',
+      'amtopm does not accept ordinary returns after an order is placed or delivered merely because a customer changes their mind, selected the wrong product, no longer wants the product, dislikes texture or fragrance, or ordered incorrectly.',
       'Opened, used, tested or partially used products are not eligible for ordinary return. Correctly supplied products cannot ordinarily be returned for another product.',
       'Nothing in this Policy limits mandatory legal remedies.',
     ],
@@ -47,9 +47,9 @@ const policySections: PolicySection[] = [
     content: [
       'Product received physically damaged, broken, crushed or leaking.',
       'Seal or packaging materially compromised or tampered with on arrival.',
-      'Wrong product dispatched by am to pm.',
+      'Wrong product dispatched by amtopm.',
       'Item missing from a multi-item order where fulfilment records support the claim.',
-      'Other material product-condition or fulfilment issue confirmed by am to pm.',
+      'Other material product-condition or fulfilment issue confirmed by amtopm.',
     ],
   },
   {
@@ -75,8 +75,8 @@ const policySections: PolicySection[] = [
     number: '07',
     title: 'How to Request an Exchange',
     content: [
-      'Contact am to pm using the published support contact and include the order number, issue description, delivery date and requested photographs or videos.',
-      'Do not discard the affected product or packaging until am to pm confirms it is no longer required.',
+      'Contact amtopm using the published support contact and include the order number, issue description, delivery date and requested photographs or videos.',
+      'Do not discard the affected product or packaging until amtopm confirms it is no longer required.',
     ],
   },
   {
@@ -91,9 +91,9 @@ const policySections: PolicySection[] = [
     number: '09',
     title: 'Exchange Procedure',
     content: [
-      'If approved, am to pm will normally replace the same product, subject to stock availability.',
-      'If unavailable, am to pm may offer an appropriate alternative or other remedy after discussion with the customer, subject to law.',
-      'am to pm may arrange reverse pickup where operationally available or provide return instructions.',
+      'If approved, amtopm will normally replace the same product, subject to stock availability.',
+      'If unavailable, amtopm may offer an appropriate alternative or other remedy after discussion with the customer, subject to law.',
+      'amtopm may arrange reverse pickup where operationally available or provide return instructions.',
       'Replacement will normally be sent to the original delivery address unless otherwise agreed.',
     ],
   },
@@ -101,9 +101,9 @@ const policySections: PolicySection[] = [
     number: '10',
     title: 'No Cash Refund for Ordinary Returns',
     content: [
-      'am to pm does not provide cash refunds merely because a customer wants to return a correctly supplied product.',
+      'amtopm does not provide cash refunds merely because a customer wants to return a correctly supplied product.',
       'Where an eligible damage or fulfilment issue is confirmed, exchange is the normal remedy.',
-      'Where applicable law requires a refund, or am to pm cannot provide a suitable replacement for a confirmed eligible issue, the appropriate refund or remedy will be provided in accordance with law.',
+      'Where applicable law requires a refund, or amtopm cannot provide a suitable replacement for a confirmed eligible issue, the appropriate refund or remedy will be provided in accordance with law.',
     ],
   },
   {
@@ -111,8 +111,8 @@ const policySections: PolicySection[] = [
     title: 'Cancellation Before Dispatch',
     content: [
       'Cancellation requests may be considered only before the order enters dispatch or fulfilment, subject to order status and applicable law.',
-      'Contact am to pm immediately after ordering.',
-      'Cancellation is not complete until am to pm confirms it.',
+      'Contact amtopm immediately after ordering.',
+      'Cancellation is not complete until amtopm confirms it.',
       'If a prepaid order is validly cancelled, an eligible refund will be processed through the applicable payment method, subject to applicable timelines.',
     ],
   },
@@ -131,15 +131,15 @@ const policySections: PolicySection[] = [
     content: [
       'Customers are responsible for accurate name, address, PIN code and contact details.',
       'If delivery fails because of incorrect or incomplete information, additional delivery or re-dispatch charges may apply where lawful and disclosed.',
-      'Contact am to pm immediately if an error is noticed before dispatch; an address change cannot be guaranteed after fulfilment begins.',
+      'Contact amtopm immediately if an error is noticed before dispatch; an address change cannot be guaranteed after fulfilment begins.',
     ],
   },
   {
     number: '14',
     title: 'Wrong Product Sent',
     content: [
-      'If am to pm sends a different product from the one ordered, report it within the stated reporting period.',
-      'After verification, am to pm will arrange appropriate replacement and provide instructions for the incorrectly supplied item.',
+      'If amtopm sends a different product from the one ordered, report it within the stated reporting period.',
+      'After verification, amtopm will arrange appropriate replacement and provide instructions for the incorrectly supplied item.',
       'Do not open or use it if an exchange is requested.',
     ],
   },
@@ -149,15 +149,15 @@ const policySections: PolicySection[] = [
     content: [
       'Do not use a damaged, leaking or broken product.',
       'Photograph the package and product and contact support promptly.',
-      'am to pm may arrange replacement after verification. If product integrity is compromised, do not apply it to the skin.',
+      'amtopm may arrange replacement after verification. If product integrity is compromised, do not apply it to the skin.',
     ],
   },
   {
     number: '16',
     title: 'Quality Defects',
     content: [
-      'If a customer believes a product has a manufacturing defect, seal failure, unusual contamination, significant unexplained change in appearance or odour, or another quality issue, stop use and contact am to pm with the batch number and purchase details.',
-      'am to pm may request the product for quality investigation.',
+      'If a customer believes a product has a manufacturing defect, seal failure, unusual contamination, significant unexplained change in appearance or odour, or another quality issue, stop use and contact amtopm with the batch number and purchase details.',
+      'amtopm may request the product for quality investigation.',
       'A confirmed defect will be handled with an appropriate remedy under applicable law.',
     ],
   },
@@ -167,7 +167,7 @@ const policySections: PolicySection[] = [
     content: [
       'An adverse skin reaction is not automatically a return request.',
       'Stop using the product and seek medical attention for severe or urgent symptoms.',
-      'Contact am to pm with product, batch and order details so the complaint can be investigated.',
+      'Contact amtopm with product, batch and order details so the complaint can be investigated.',
       'This Policy does not replace medical advice or limit mandatory legal rights.',
     ],
   },
@@ -182,14 +182,6 @@ const policySections: PolicySection[] = [
   },
   {
     number: '19',
-    title: 'Shipping Charges',
-    content: [
-      'Original shipping charges are generally non-refundable for voluntary cancellation or change-of-mind requests.',
-      'Where am to pm is responsible for a confirmed wrong product, eligible damage or fulfilment error, shipping-related remedies will be handled appropriately under applicable law.',
-    ],
-  },
-  {
-    number: '20',
     title: 'Discounts & Promotions',
     content: [
       'Orders using coupons, discounts, bundles or promotional pricing remain subject to this Policy.',
@@ -197,7 +189,7 @@ const policySections: PolicySection[] = [
     ],
   },
   {
-    number: '21',
+    number: '20',
     title: 'Gifts & Samples',
     content: [
       'Free gifts, samples and bonus products are not independently returnable for cash.',
@@ -205,32 +197,32 @@ const policySections: PolicySection[] = [
     ],
   },
   {
-    number: '22',
+    number: '21',
     title: 'Purchases Through Third Parties',
     content: [
       'For purchases made through an authorised marketplace, pharmacy, dermatologist, retailer or distributor, the purchase channel’s return or refund process may apply.',
       'Customers should first follow the process of the seller through whom the purchase was made.',
-      'am to pm may assist with genuine product-quality or safety complaints.',
+      'amtopm may assist with genuine product-quality or safety complaints.',
     ],
   },
   {
-    number: '23',
+    number: '22',
     title: 'Unauthorised Returns',
     content: [
-      'Do not send products to am to pm without prior approval or instructions.',
+      'Do not send products to amtopm without prior approval or instructions.',
       'Unauthorised parcels may not be accepted or may be returned to the sender, subject to applicable law.',
     ],
   },
   {
-    number: '24',
+    number: '23',
     title: 'Fraud & Abuse',
     content: [
-      'am to pm may investigate repeated or suspicious exchange or refund requests, false damage claims, manipulated evidence, product substitution, chargeback abuse or other fraudulent activity.',
+      'amtopm may investigate repeated or suspicious exchange or refund requests, false damage claims, manipulated evidence, product substitution, chargeback abuse or other fraudulent activity.',
       'Where lawful, service may be restricted and appropriate action taken.',
     ],
   },
   {
-    number: '25',
+    number: '24',
     title: 'Consumer Rights',
     content: [
       'This Policy does not remove or restrict consumer rights, guarantees or remedies that cannot lawfully be excluded.',
@@ -238,7 +230,7 @@ const policySections: PolicySection[] = [
     ],
   },
   {
-    number: '26',
+    number: '25',
     title: 'Governing Law & Jurisdiction',
     content: [
       'This Policy is governed by the laws of India.',
@@ -246,10 +238,10 @@ const policySections: PolicySection[] = [
     ],
   },
   {
-    number: '27',
+    number: '26',
     title: 'Changes',
     content: [
-      'am to pm may update this Policy to reflect changes in products, operations, payment systems or law.',
+      'amtopm may update this Policy to reflect changes in products, operations, payment systems or law.',
       'The latest version will be published with an updated effective date.',
     ],
   },

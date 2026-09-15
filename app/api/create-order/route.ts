@@ -115,7 +115,7 @@ function parseWeightToGrams(
 
 
   /*
-    Current AMTOPM data:
+    Current amtopm data:
 
     50 ml  → approximately 50g
     50 gm  → 50g

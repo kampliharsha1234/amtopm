@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { products } from './data/products'
 import { useCart } from './context/CartContext'
@@ -62,28 +63,23 @@ const heroSlides: HeroSlide[] = [
 
 const beforeAfterImages = [
   {
-    id: 'bfaf5',
-    image: '/images/before-after/bfaf5.png',
+    id: 'before-after-1',
+    image: '/images/before-after/before%20after%20(1).jpeg',
     alt: 'Customer before and after skincare results',
   },
   {
-    id: 'bfaf4',
-    image: '/images/before-after/bfaf4.png',
+    id: 'before-after-2',
+    image: '/images/before-after/before%20after%20(2).jpeg',
     alt: 'Customer before and after skincare results',
   },
   {
-    id: 'bfaf1',
-    image: '/images/before-after/bfaf1.png',
+    id: 'before-after-3',
+    image: '/images/before-after/before%20after%20(3).jpeg',
     alt: 'Customer before and after skincare results',
   },
   {
-    id: 'bfaf2',
-    image: '/images/before-after/bfaf2.png',
-    alt: 'Customer before and after skincare results',
-  },
-  {
-    id: 'bfaf3',
-    image: '/images/before-after/bfaf3.png',
+    id: 'before-after-4',
+    image: '/images/before-after/before%20after%20(4).jpeg',
     alt: 'Customer before and after skincare results',
   },
 ]
@@ -95,25 +91,25 @@ const beforeAfterImages = [
 const doctorReviews = [
   {
     id: 'doctor-1',
-    name: 'Dr. Your Name',
+    name: 'Dr Shloka Mehta',
     designation: 'Dermatologist',
-    image: '/images/doctors/doctor1.png',
+    image: '/images/doctors-review/Dr%20Shloka%20Mehta.jpeg',
     review:
       'amtopm takes a thoughtful approach to skincare, with a clear focus on purposeful formulations and skin health.',
   },
   {
     id: 'doctor-2',
-    name: 'Dr. Your Name',
+    name: 'Dr Ramesh Gaurav',
     designation: 'Consultant Dermatologist',
-    image: '/images/doctors/doctor2.png',
+    image: '/images/doctors-review/Dr%20Ramesh%20Gaurav.jpeg',
     review:
       'Good skincare starts with understanding the skin. amtopm keeps that principle at the centre of its approach.',
   },
   {
     id: 'doctor-3',
-    name: 'Dr. Your Name',
+    name: 'Dr R Sharma',
     designation: 'Dermatology Expert',
-    image: '/images/doctors/doctor3.png',
+    image: '/images/doctors-review/Dr%20R%20Sharma.jpeg',
     review:
       'A simple, science-led routine can make a meaningful difference without unnecessary complexity.',
   },
@@ -166,6 +162,18 @@ function HeroCarousel() {
               xl:min-h-[800px]
             "
           >
+            <Image
+              src="/images/hero_orange.PNG"
+              alt=""
+              aria-hidden="true"
+              fill
+              priority
+              sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1280px) calc(100vw - 48px), 1600px"
+              className="object-cover object-center"
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/75 via-[#1A1A1A]/20 to-[#E85D2C]/10" />
+
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(255,255,255,0.18),transparent_30%),radial-gradient(circle_at_15%_85%,rgba(0,0,0,0.12),transparent_35%)]" />
 
             <div className="absolute -right-28 -top-28 h-[330px] w-[330px] rounded-full border border-white/10 sm:h-[480px] sm:w-[480px]" />
@@ -187,23 +195,23 @@ function HeroCarousel() {
               "
             >
               <p className="mb-3 text-[9px] font-semibold lowercase tracking-[0.2em] text-white/80 sm:text-[10px]">
-                am · pm · every day
+                amtopm · every day
               </p>
 
               <h1
                 className="
                   max-w-[920px]
                   font-sans
-                  text-[35px]
+                  text-[32px]
                   font-bold
                   leading-[0.96]
                   tracking-[-0.03em]
                   text-white
-                  sm:text-[62px]
+                  sm:text-[56px]
                   sm:leading-[0.92]
                   sm:tracking-[-0.04em]
-                  lg:text-[74px]
-                  xl:text-[86px]
+                  lg:text-[66px]
+                  xl:text-[76px]
                 "
               >
                 Specialised
@@ -286,19 +294,15 @@ function HeroCarousel() {
               xl:min-h-[800px]
             "
           >
-            <img
-              src="/images/barrier.png"
-              alt="amtopm free skin consultation"
-              className="absolute inset-0 h-full w-full object-cover"
+            <Image
+              src="/images/doctors-review/Dr%20Anand%20Patil.jpeg"
+              alt="Dr Anand Patil consultation"
+              fill
+              sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1280px) calc(100vw - 48px), 1600px"
+              className="object-cover"
             />
 
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/90 via-[#1A1A1A]/30 to-[#1A1A1A]/5" />
-
-            <div className="absolute left-5 top-5 z-10 sm:left-7 sm:top-7">
-              <span className="rounded-full bg-[#FCE6D9] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#1A1A1A]">
-                Free consultation
-              </span>
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/65 via-[#1A1A1A]/15 to-transparent" />
 
             <div
               className="
@@ -324,13 +328,13 @@ function HeroCarousel() {
                   mt-3
                   max-w-[850px]
                   font-sans
-                  text-[34px]
+                  text-[29px]
                   font-bold
                   leading-[0.96]
                   tracking-[-0.03em]
                   text-white
-                  sm:text-[56px]
-                  lg:text-[70px]
+                  sm:text-[46px]
+                  lg:text-[58px]
                 "
               >
                 Fix your skin health with our specialised skin expert and dermat.
@@ -396,12 +400,6 @@ function HeroCarousel() {
             </video>
 
             <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/95 via-[#1A1A1A]/30 to-transparent" />
-
-            <div className="absolute left-5 top-5 z-10 sm:left-7 sm:top-7">
-              <span className="rounded-full bg-[#FCE6D9] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#1A1A1A]">
-                Ingredient science
-              </span>
-            </div>
 
             <div
               className="
@@ -638,23 +636,11 @@ function BestSellerSection() {
                       onClick={() =>
                         handleAddToCart(product)
                       }
-                      className={`
-                        flex
-                        min-h-[42px]
-                        w-full
-                        items-center
-                        justify-center
-                        rounded-full
-                        px-5
-                        text-[14px]
-                        font-medium
-                        transition-all
-                        ${
-                          addedId === product.id
-                            ? 'bg-[#E85D2C] text-white'
-                            : 'bg-[#1A1A1A] text-white hover:bg-[#E85D2C]'
-                        }
-                      `}
+                      className={`flex min-h-[42px] w-full items-center justify-center rounded-full px-5 text-[14px] font-medium transition-all ${
+                        addedId === product.id
+                          ? 'bg-[#E85D2C] text-white'
+                          : 'bg-[#1A1A1A] text-white hover:bg-[#E85D2C]'
+                      }`}
                     >
                       {addedId === product.id
                         ? '✓ Added to cart'
@@ -665,12 +651,6 @@ function BestSellerSection() {
               </article>
             ))}
           </div>
-        </div>
-
-        <div className="mt-2 flex justify-center gap-1.5 sm:hidden">
-          <span className="h-1.5 w-6 rounded-full bg-[#1A1A1A]" />
-          <span className="h-1.5 w-1.5 rounded-full bg-[#1A1A1A]/20" />
-          <span className="h-1.5 w-1.5 rounded-full bg-[#1A1A1A]/20" />
         </div>
 
         <div className="px-4 pt-4 sm:hidden">
@@ -772,13 +752,6 @@ function ConcernSection() {
               </Link>
             ))}
           </div>
-        </div>
-
-        <div className="mt-4 flex justify-center gap-1.5">
-          <span className="h-1.5 w-6 rounded-full bg-[#1A1A1A]" />
-          <span className="h-1.5 w-1.5 rounded-full bg-[#1A1A1A]/20" />
-          <span className="h-1.5 w-1.5 rounded-full bg-[#1A1A1A]/20" />
-          <span className="h-1.5 w-1.5 rounded-full bg-[#1A1A1A]/20" />
         </div>
       </div>
     </section>
@@ -907,34 +880,17 @@ function BeforeAfterSection() {
                   lg:min-w-[720px]
                 "
               >
-                <div className="overflow-hidden rounded-[24px] bg-[#E8DFD3]">
+                <div className="relative aspect-square overflow-hidden rounded-[24px] bg-[#E8DFD3]">
                   <img
                     src={item.image}
                     alt={item.alt}
-                    className="block h-auto w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover"
                     loading={index === 0 ? 'eager' : 'lazy'}
                   />
                 </div>
               </article>
             ))}
           </div>
-        </div>
-
-        <div className="mt-4 flex justify-center gap-1.5">
-          {beforeAfterImages.map((item, index) => (
-            <span
-              key={item.id}
-              className={`
-                h-1.5
-                rounded-full
-                ${
-                  index === 0
-                    ? 'w-6 bg-[#1A1A1A]'
-                    : 'w-1.5 bg-[#1A1A1A]/20'
-                }
-              `}
-            />
-          ))}
         </div>
       </div>
     </section>
@@ -953,7 +909,7 @@ function EditorialPromo() {
           <div className="flex flex-col justify-between rounded-t-[22px] bg-[#E85D2C] p-6 sm:rounded-l-[22px] sm:rounded-tr-none sm:p-10">
             <div>
               <p className="text-[10px] font-semibold lowercase tracking-[0.2em] text-white/70">
-                am · pm · every day
+                amtopm · every day
               </p>
 
               <h2 className="mt-6 font-sans text-[39px] font-bold leading-[0.9] tracking-[-0.05em] text-white sm:text-[60px]">
@@ -997,7 +953,7 @@ function EditorialPromo() {
 
           <div className="relative min-h-[370px] overflow-hidden rounded-b-[22px] bg-[#E8DFD3] sm:min-h-[540px] sm:rounded-b-none sm:rounded-r-[22px]">
             <img
-              src="/images/barrier.png"
+              src="/images/labelled.PNG"
               alt="amtopm skincare"
               className="absolute inset-0 h-full w-full object-cover"
             />
@@ -1048,7 +1004,7 @@ function TrustSection() {
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-5 sm:grid-cols-[0.9fr_1.1fr] sm:items-end">
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#6B6B6B]">
+            <p className="text-[10px] font-semibold lowercase tracking-[0.28em] text-[#6B6B6B]">
               WHY amtopm
             </p>
 
@@ -1081,7 +1037,9 @@ function TrustSection() {
                 ${
                   index === 1
                     ? 'bg-[#E85D2C] text-white'
-                    : 'bg-[#F7F2EB] text-[#1A1A1A]'
+                    : index === 0
+                      ? 'border border-[#D7A184] bg-[#FFF7F0] text-[#1A1A1A] shadow-[0_12px_30px_rgba(232,93,44,0.12)]'
+                      : 'border border-[#9EAFA5] bg-[#EEF5F0] text-[#1A1A1A] shadow-[0_12px_30px_rgba(61,93,74,0.12)]'
                 }
               `}
             >
@@ -1245,12 +1203,156 @@ function DoctorReviewsSection() {
             ))}
           </div>
         </div>
+      </div>
+    </section>
+  )
+}
 
-        <div className="mt-4 flex justify-center gap-1.5 sm:hidden">
-          <span className="h-1.5 w-6 rounded-full bg-[#1A1A1A]" />
-          <span className="h-1.5 w-1.5 rounded-full bg-[#1A1A1A]/20" />
-          <span className="h-1.5 w-1.5 rounded-full bg-[#1A1A1A]/20" />
+/* ============================================================
+   CERTIFICATIONS — COMPACT LOGO-ONLY VERSION
+============================================================ */
+
+function CertificationsSection() {
+  const certifications = [
+    {
+      image: '/images/certificates/iso.svg',
+      alt: 'ISO certification logo',
+    },
+    {
+      image: '/images/certificates/fda.jpg',
+      alt: 'FDA certification logo',
+    },
+    {
+      image: '/images/certificates/gmp.avif',
+      alt: 'GMP certification logo',
+    },
+    {
+      image: '/images/certificates/leaping-bunny.png',
+      alt: 'Leaping Bunny certification logo',
+    },
+    {
+      image: '/images/certificates/who.svg',
+      alt: 'WHO logo',
+    },
+  ]
+
+  return (
+    <section className="relative overflow-hidden bg-[#1A1A1A] px-4 py-9 sm:px-6 sm:py-11">
+      {/* ======================================================
+          SUBTLE BACKGROUND DETAILS
+      ====================================================== */}
+
+      <div className="pointer-events-none absolute -right-24 top-1/2 h-[280px] w-[280px] -translate-y-1/2 rounded-full border border-white/[0.05]" />
+
+      <div className="pointer-events-none absolute -left-32 bottom-[-170px] h-[360px] w-[360px] rounded-full border border-[#E85D2C]/10" />
+
+
+      <div className="relative mx-auto max-w-7xl">
+
+        {/* ====================================================
+            HEADER
+        ==================================================== */}
+
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+
+          <div>
+
+            <p className="text-[9px] font-semibold uppercase tracking-[0.3em] text-[#E85D2C]">
+              CERTIFICATION &amp; CARE
+            </p>
+
+            <h2 className="mt-2 font-sans text-[31px] font-bold leading-[0.92] tracking-[-0.04em] text-white sm:text-[40px]">
+              Made with{' '}
+              <span className="font-fahkwang font-normal italic text-[#E85D2C]">
+                standards.
+              </span>
+            </h2>
+
+          </div>
+
+          <p className="max-w-[340px] text-[11px] font-light leading-[1.5] text-white/35 sm:text-right">
+            Thoughtful formulation. Responsible care.
+          </p>
+
         </div>
+
+
+        {/* ====================================================
+            LOGO STRIP
+        ==================================================== */}
+
+        <div className="mt-6 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+
+          <div className="flex min-w-max items-center">
+
+            {certifications.map(
+              (certification, index) => (
+
+                <div
+                  key={certification.image}
+                  className="
+                    flex
+                    min-w-[145px]
+                    items-center
+                    justify-center
+                    border-r
+                    border-white/10
+                    px-5
+                    first:pl-0
+                    last:border-r-0
+                    last:pr-0
+                    sm:min-w-[175px]
+                    sm:px-7
+                  "
+                >
+
+                  <div className="flex h-[62px] w-[105px] items-center justify-center">
+
+                    <Image
+                        src={certification.image}
+                        alt={certification.alt}
+                        width={120}
+                        height={70}
+                        className="
+                          max-h-[60px]
+                          w-auto
+                          max-w-[105px]
+                          object-contain
+                          opacity-85
+                          transition-all
+                          duration-300
+                          hover:opacity-100
+                        "
+                      />
+
+                  </div>
+
+                </div>
+
+              )
+            )}
+
+          </div>
+
+        </div>
+
+
+        {/* ====================================================
+            BOTTOM LINE
+        ==================================================== */}
+
+        <div className="mt-6 flex items-center gap-3">
+
+          <span className="h-px flex-1 bg-white/10" />
+
+          <span className="text-[8px] font-semibold lowercase tracking-[0.24em] text-white/25">
+            amtopm
+          </span>
+
+          <span className="h-px flex-1 bg-white/10" />
+
+        </div>
+
       </div>
     </section>
   )
@@ -1286,12 +1388,13 @@ function DoctorImage({
   }
 
   return (
-    <img
+    <Image
       src={src}
       alt={alt}
       onError={() => setFailed(true)}
-      className="h-full w-full object-cover"
-      loading="lazy"
+      fill
+      sizes="(max-width: 640px) 86vw, (max-width: 1024px) 30vw, 390px"
+      className="object-cover"
     />
   )
 }
@@ -1303,37 +1406,34 @@ function DoctorImage({
 export default function Home() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#F7F2EB] text-[#1A1A1A]">
-      {/* 01 — HERO */}
 
+      {/* 01 — HERO */}
       <HeroCarousel />
 
       {/* 02 — OUR PRODUCTS */}
-
       <BestSellerSection />
 
       {/* 03 — SHOP BY CONCERN */}
-
       <ConcernSection />
 
       {/* 04 — FREE CONSULTATION */}
-
       <FreeConsultationSection />
 
       {/* 05 — BEFORE / AFTER */}
-
       <BeforeAfterSection />
 
       {/* 06 — EFFORTLESS BEAUTY */}
-
       <EditorialPromo />
 
       {/* 07 — WHY amtopm */}
-
       <TrustSection />
 
       {/* 08 — DOCTOR REVIEWS */}
-
       <DoctorReviewsSection />
+
+      {/* 09 — CERTIFICATIONS */}
+      <CertificationsSection />
+
     </main>
   )
 }

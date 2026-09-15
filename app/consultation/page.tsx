@@ -121,7 +121,7 @@ REQUEST RECEIVED </p>
         </h1>
 
         <p className="mx-auto mt-7 max-w-[460px] font-sans text-[14px] font-extralight leading-[1.7] text-[#6B6B6B]">
-          Thank you for reaching out to AM:PM. Your consultation request
+          Thank you for reaching out to amtopm. Your consultation request
           has been received successfully.
         </p>
 
@@ -166,7 +166,7 @@ SKIN CONSULTATION </p>
         <div className="relative hidden overflow-hidden bg-[#E85D2C] p-8 lg:flex lg:min-h-[720px] lg:flex-col lg:justify-between lg:p-12">
           <div>
             <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-white/70">
-              AM · PM
+              amtopm
             </p>
 
             <h2 className="mt-8 max-w-[430px] font-sans text-[50px] font-semibold leading-[0.95] tracking-[-0.04em] text-white">

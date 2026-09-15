@@ -102,9 +102,9 @@ return ( <footer className="bg-[#1A1A1A] text-[#FBF8F3]"> <div
              className="
                block
                h-auto
-               w-[82px]
+               w-[68px]
                object-contain
-               sm:w-[92px]
+               sm:w-[76px]
              "
            /> </Link>
 
@@ -300,7 +300,7 @@ return ( <footer className="bg-[#1A1A1A] text-[#FBF8F3]"> <div
           
           <li>
             <Link
-              href="/support"
+              href="/support#talk-to-us"
               className="
                 transition-colors
                 hover:text-[#E85D2C]
@@ -331,6 +331,18 @@ return ( <footer className="bg-[#1A1A1A] text-[#FBF8F3]"> <div
               "
             >
               Returns & Refunds
+            </Link>
+          </li>
+
+          <li>
+            <Link
+              href="/shipping"
+              className="
+                transition-colors
+                hover:text-[#E85D2C]
+              "
+            >
+              Shipping &amp; Delivery
             </Link>
           </li>
 

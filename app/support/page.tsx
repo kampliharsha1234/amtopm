@@ -109,7 +109,7 @@ return ( <main className="min-h-screen overflow-x-hidden bg-[#F7F2EB] text-[#1A1
     <div className="mx-auto max-w-7xl">
 
       <p className="text-[8px] font-medium uppercase tracking-[0.3em] text-[#E85D2C]">
-        SUPPORT · AM:PM
+        SUPPORT · amtopm
       </p>
 
       <h1 className="mt-3 max-w-[750px] font-serif text-[52px] leading-[0.84] tracking-[-0.06em] sm:text-[76px] lg:text-[88px]">
@@ -336,7 +336,7 @@ return ( <main className="min-h-screen overflow-x-hidden bg-[#F7F2EB] text-[#1A1
 
       </div>
 
-      <div className="border border-[#E8DFD3]">
+      <div id="talk-to-us" className="border border-[#E8DFD3]">
 
         <div className="bg-[#FBF8F3] p-6 sm:p-8">
 
@@ -396,7 +396,7 @@ return ( <main className="min-h-screen overflow-x-hidden bg-[#F7F2EB] text-[#1A1
         <div>
 
           <p className="max-w-[390px] text-[10px] leading-[1.7] text-white/80 sm:text-[11px]">
-            Join the AM:PM list for skincare tips,
+            Join the amtopm list for skincare tips,
             product updates, and early access.
           </p>
 

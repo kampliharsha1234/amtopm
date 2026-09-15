@@ -21,15 +21,15 @@ const terms: TermSection[] = [
     number: '01',
     title: 'Introduction',
     content: [
-      'These Terms and Conditions (“Terms”) govern access to and use of the AM TO PM website, online store, content, products and services. By accessing the website, creating an account, placing an order, or otherwise using the website, you agree to these Terms.',
-      '“am to pm”, “we”, “us” and “our” refer to the business/entity operating the website. “You”, “your” and “customer” refer to the person accessing the website or purchasing products.',
+      'These Terms and Conditions (“Terms”) govern access to and use of the amtopm website, online store, content, products and services. By accessing the website, creating an account, placing an order, or otherwise using the website, you agree to these Terms.',
+      '“amtopm”, “we”, “us” and “our” refer to the business/entity operating the website. “You”, “your” and “customer” refer to the person accessing the website or purchasing products.',
     ],
   },
   {
     number: '02',
     title: 'Business Information',
     content: [
-      'Brand: AM TO PM',
+      'Brand: amtopm',
       'Owner/Proprietor: Veetarag Kasar',
       'Legal entity: Veetarag Kasar',
       'Business address: Kalpadrum Arcade, 4th floor, CTS 1966, Kore Galli, Shahapur, Belgavi - 590003',
@@ -97,15 +97,6 @@ const terms: TermSection[] = [
   },
   {
     number: '10',
-    title: 'Shipping and Delivery',
-    content: [
-      'Orders are shipped to the address supplied by you, subject to availability and serviceability.',
-      'Delivery estimates are indicative unless expressly guaranteed. Delays may arise from courier disruption, weather, strikes, public events, remote-area restrictions, incorrect addresses or force majeure.',
-      'You are responsible for accurate delivery details.',
-    ],
-  },
-  {
-    number: '11',
     title: 'Damaged, Wrong or Missing Orders',
     content: [
       'Contact support promptly with the order number and relevant evidence such as photographs and, where available, an unboxing video.',
@@ -113,7 +104,7 @@ const terms: TermSection[] = [
     ],
   },
   {
-    number: '12',
+    number: '11',
     title: 'Returns, Refunds and Cancellations',
     content: [
       'Because skincare products are hygiene-sensitive, returns may not be possible where a product has been opened, used and is unsafe to restock.',
@@ -121,7 +112,7 @@ const terms: TermSection[] = [
     ],
   },
   {
-    number: '13',
+    number: '12',
     title: 'Promotions and Offers',
     content: [
       'Coupons and offers may have validity periods, eligibility criteria, minimum order values, exclusions and usage limits.',
@@ -130,24 +121,24 @@ const terms: TermSection[] = [
     ],
   },
   {
-    number: '14',
+    number: '13',
     title: 'Intellectual Property',
     content: [
-      'The “am to pm” brand, logos, product names, packaging artwork, photographs, graphics, website design, text, videos and educational materials are owned by or licensed to us.',
+      'The “amtopm” brand, logos, product names, packaging artwork, photographs, graphics, website design, text, videos and educational materials are owned by or licensed to us.',
       'No ownership is transferred. Reproduction, modification, distribution or commercial use requires permission unless permitted by law.',
     ],
   },
   {
-    number: '15',
+    number: '14',
     title: 'Reviews and User Content',
     content: [
       'You confirm that reviews, photographs, testimonials and comments submitted by you are lawful and do not infringe third-party rights.',
-      'You grant “am to pm” a non-exclusive, worldwide, royalty-free licence to use submitted content for legitimate website, marketing and educational purposes, subject to applicable law and privacy rights.',
+      'You grant “amtopm” a non-exclusive, worldwide, royalty-free licence to use submitted content for legitimate website, marketing and educational purposes, subject to applicable law and privacy rights.',
       'We may moderate unlawful or violating content.',
     ],
   },
   {
-    number: '16',
+    number: '15',
     title: 'Privacy and Personal Data',
     content: [
       'Personal information may be processed to operate the website, fulfil orders, provide support, prevent fraud and comply with law.',
@@ -156,7 +147,7 @@ const terms: TermSection[] = [
     ],
   },
   {
-    number: '17',
+    number: '16',
     title: 'Cookies and Analytics',
     content: [
       'We may use cookies, pixels and similar technologies for essential functionality, security, preferences, analytics and marketing.',
@@ -164,7 +155,7 @@ const terms: TermSection[] = [
     ],
   },
   {
-    number: '18',
+    number: '17',
     title: 'Third-Party Services and Links',
     content: [
       'Third-party payment, logistics, social-media and other services may have their own terms and privacy policies.',
@@ -172,7 +163,7 @@ const terms: TermSection[] = [
     ],
   },
   {
-    number: '19',
+    number: '18',
     title: 'Disclaimers',
     content: [
       'To the maximum extent permitted by law, the website and content are provided on an available basis.',
@@ -180,22 +171,22 @@ const terms: TermSection[] = [
     ],
   },
   {
-    number: '20',
+    number: '19',
     title: 'Limitation of Liability',
     content: [
-      'To the maximum extent permitted by law, “am to pm” will not be liable for indirect, incidental, special or consequential losses arising from website use or products.',
+      'To the maximum extent permitted by law, “amtopm” will not be liable for indirect, incidental, special or consequential losses arising from website use or products.',
       'This does not limit mandatory statutory rights or liability that cannot lawfully be limited.',
     ],
   },
   {
-    number: '21',
+    number: '20',
     title: 'Indemnity',
     content: [
-      'To the extent permitted by law, you agree to indemnify “am to pm” against claims, losses and reasonable expenses arising from unlawful website use, violation of these Terms, infringement of third-party rights or fraudulent information supplied by you, except where caused by our own unlawful conduct or non-excludable liability.',
+      'To the extent permitted by law, you agree to indemnify “amtopm” against claims, losses and reasonable expenses arising from unlawful website use, violation of these Terms, infringement of third-party rights or fraudulent information supplied by you, except where caused by our own unlawful conduct or non-excludable liability.',
     ],
   },
   {
-    number: '22',
+    number: '21',
     title: 'Fraud and Abuse',
     content: [
       'We may investigate suspicious transactions, repeated chargebacks, coupon abuse, false claims, identity misuse and other fraud.',
@@ -203,7 +194,7 @@ const terms: TermSection[] = [
     ],
   },
   {
-    number: '23',
+    number: '22',
     title: 'Product Safety and Adverse Reactions',
     content: [
       'For suspected adverse reactions, stop use and contact us with product name, batch number, order details and a description of the issue.',
@@ -212,23 +203,23 @@ const terms: TermSection[] = [
     ],
   },
   {
-    number: '24',
+    number: '23',
     title: 'Recalls and Regulatory Action',
     content: [
       'If a product is subject to a recall, withdrawal, safety notice or regulatory corrective action, we may contact affected customers and provide instructions or remedies required by applicable law.',
     ],
   },
   {
-    number: '25',
+    number: '24',
     title: 'Cosmetic Regulatory Compliance',
     content: [
-      'AM TO PM products are intended to comply with applicable Indian cosmetic requirements for manufacture, labelling, quality and safety.',
+      'amtopm products are intended to comply with applicable Indian cosmetic requirements for manufacture, labelling, quality and safety.',
       'The Cosmetics Rules, 2020 regulate cosmetics in India and prohibit false or misleading cosmetic claims.',
       'Final labels, claims, manufacturing arrangements and regulatory permissions should be verified before sale.',
     ],
   },
   {
-    number: '26',
+    number: '25',
     title: 'Consumer Rights',
     content: [
       'These Terms do not remove rights available under mandatory Indian consumer law.',
@@ -236,7 +227,7 @@ const terms: TermSection[] = [
     ],
   },
   {
-    number: '27',
+    number: '26',
     title: 'Governing Law and Jurisdiction',
     content: [
       'These Terms are governed by the laws of India.',
@@ -245,15 +236,15 @@ const terms: TermSection[] = [
     note: 'The supplied document recommends obtaining legal review of this clause for the actual business structure and place of business.',
   },
   {
-    number: '28',
+    number: '27',
     title: 'Dispute Resolution',
     content: [
-      'Customers should first contact AM TO PM through the published support/grievance contact so the issue can be investigated and resolved.',
+      'Customers should first contact amtopm through the published support/grievance contact so the issue can be investigated and resolved.',
       'Nothing prevents a consumer from using a statutory forum, authority or other legal remedy available under applicable law.',
     ],
   },
   {
-    number: '29',
+    number: '28',
     title: 'Changes to Terms',
     content: [
       'We may update these Terms to reflect changes in products, business practices, technology or law.',
@@ -261,21 +252,21 @@ const terms: TermSection[] = [
     ],
   },
   {
-    number: '30',
+    number: '29',
     title: 'Severability',
     content: [
       'If any provision is invalid or unenforceable, it will be modified or severed only to the extent necessary and the remaining provisions will continue to apply.',
     ],
   },
   {
-    number: '31',
+    number: '30',
     title: 'Waiver',
     content: [
       'Failure to enforce a provision on one occasion does not waive the right to enforce it later.',
     ],
   },
   {
-    number: '32',
+    number: '31',
     title: 'Entire Agreement',
     content: [
       'These Terms, together with the Privacy Policy, Shipping Policy, Return/Refund/Cancellation Policy and other expressly incorporated policies, govern website use subject to applicable law.',
@@ -327,7 +318,7 @@ export default function TermsPage() {
               </p>
 
               <p className="mt-3 font-fahkwang text-[19px] leading-[1.2]">
-                AM TO PM
+                amtopm
               </p>
 
               <p className="mt-1 text-[11px] font-light text-[#6B6B6B]">

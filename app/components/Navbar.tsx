@@ -86,7 +86,7 @@ export default function Navbar() {
 
           <Link
             href="/"
-            aria-label="am:pm Home"
+            aria-label="amtopm Home"
             onClick={() => setIsOpen(false)}
             className="
               flex
@@ -98,15 +98,15 @@ export default function Navbar() {
           >
             <Image
               src="/images/logo.png"
-              alt="am:pm"
+              alt="amtopm"
               width={88}
               height={28}
               priority
               className="
                 h-auto
-                w-[62px]
+                w-[52px]
                 object-contain
-                sm:w-[68px]
+                sm:w-[58px]
               "
             />
           </Link>
@@ -280,6 +280,13 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
               >
                 Returns &amp; Refunds
+              </MenuItem>
+
+              <MenuItem
+                href="/shipping"
+                onClick={() => setIsOpen(false)}
+              >
+                Shipping &amp; Delivery
               </MenuItem>
 
               <MenuItem

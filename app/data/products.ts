@@ -116,8 +116,6 @@ export const products: Product[] = [
     image:
       '/images/products/cotton-moisturizer.png',
 
-    imagePlaceholder: true,
-
     inStock: true,
   },
 
@@ -351,7 +349,8 @@ export const products: Product[] = [
       'Wet your face with water. Apply a small amount of cleanser and gently massage over the face, avoiding the eye area. Rinse thoroughly and pat dry. Use as part of your daily cleansing routine. If irritation occurs, reduce frequency.',
 
     image:
-      '/images/products/acnowell-facewash.png',
+      '/images/products/acnowell-facewash.png'
+      ,
 
     inStock: true,
   },
@@ -432,8 +431,6 @@ export const products: Product[] = [
     image:
       '/images/products/acnowell-cream.png',
 
-    imagePlaceholder: true,
-
     inStock: true,
   },
 
@@ -448,7 +445,7 @@ export const products: Product[] = [
     name: 'Faeden Cream',
 
     tagline:
-      'Even tone. Refine texture. Restore radiance.',
+      'Even tone. Refine texture.',
 
     price: 785,
 
@@ -510,8 +507,6 @@ export const products: Product[] = [
 
     image:
       '/images/products/faeden-cream.png',
-
-    imagePlaceholder: true,
 
     inStock: true,
   },
