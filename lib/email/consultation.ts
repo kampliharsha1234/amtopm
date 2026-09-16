@@ -45,7 +45,7 @@ html: ` <!DOCTYPE html> <html> <body style="margin:0;padding:0;background:#F5F1E
 
 
         <div style="padding:32px;border-bottom:1px solid #E8DFD3;">
-          <div style="font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#E85D2C;">
+          <div style="font-size:12px;letter-spacing:3px;color:#E85D2C;">
             amtopm
           </div>
 
@@ -146,7 +146,7 @@ html: ` <!DOCTYPE html> <html> <body style="margin:0;padding:0;background:#F5F1E
 
 
         <div style="padding:36px 32px;border-bottom:1px solid #E8DFD3;">
-          <div style="font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#E85D2C;">
+          <div style="font-size:12px;letter-spacing:3px;color:#E85D2C;">
             amtopm
           </div>
         </div>

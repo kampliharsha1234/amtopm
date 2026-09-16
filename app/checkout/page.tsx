@@ -845,7 +845,7 @@ export default function CheckoutPage() {
 
             <div className="mt-4">
 
-              <p className="text-xs uppercase tracking-[0.18em] text-[#E85D2C]">
+              <p className="text-xs tracking-[0.18em] text-[#E85D2C]">
                 amtopm
               </p>
 

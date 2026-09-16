@@ -9,6 +9,12 @@ html: string
 replyTo?: string
 }
 
+export function normalizeSender(sender: string) {
+return sender
+.replace(/am\s*:\s*pm/gi, 'amtopm')
+.replace(/amtopm/gi, 'amtopm')
+}
+
 export async function sendEmail({
 to,
 subject,
@@ -26,7 +32,7 @@ throw new Error('RESEND_API_KEY is not configured.')
 }
 
 const { data, error } = await resend.emails.send({
-from,
+from: normalizeSender(from),
 to,
 subject,
 html,

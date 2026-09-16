@@ -276,7 +276,8 @@ export default function CartPage() {
                   className="
                     border
                     border-[#E8DFD3]
-                    bg-[#FBF8F3]
+                    bg-white
+                    shadow-[0_10px_28px_rgba(26,26,26,0.06)]
                     p-3
                     sm:p-4
                   "
@@ -488,8 +489,9 @@ export default function CartPage() {
 
               <div className="
                 border
-                border-[#E8DFD3]
-                bg-[#FBF8F3]
+                border-[#E85D2C]/35
+                bg-white
+                shadow-[0_14px_34px_rgba(232,93,44,0.1)]
                 p-5
                 sm:p-6
               ">

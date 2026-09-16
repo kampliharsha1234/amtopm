@@ -1,6 +1,7 @@
 import { Resend } from 'resend'
 
 import { Order } from './orders'
+import { normalizeSender } from './email/sendEmail'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -98,7 +99,7 @@ export async function sendOrderConfirmationEmail({
   `
 
   const { error } = await resend.emails.send({
-    from,
+    from: normalizeSender(from),
     to: recipient,
     subject,
     html,

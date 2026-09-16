@@ -5,6 +5,7 @@ import {
   findUserByEmail,
   createPasswordResetToken,
 } from '../../../../lib/users'
+import { normalizeSender } from '../../../../lib/email/sendEmail'
 
 const resend =
   new Resend(
@@ -66,8 +67,10 @@ export async function POST(
       `${baseUrl}/auth/reset-password?token=${token}`
 
     const fromEmail =
-      process.env.RESEND_FROM_EMAIL ||
-      'amtopm <onboarding@resend.dev>'
+      normalizeSender(
+        process.env.RESEND_FROM_EMAIL ||
+        'amtopm <onboarding@resend.dev>'
+      )
 
     const { error } =
       await resend.emails.send({

@@ -27,8 +27,8 @@ export default async function OrdersPage() {
         </Link>
 
         <div className="mt-5 mb-8">
-          <p className="text-xs uppercase tracking-[0.18em] text-[#E85D2C]">
-            amtopm ACCOUNT
+            <p className="text-xs tracking-[0.18em] text-[#E85D2C]">
+            amtopm account
           </p>
 
           <h1 className="text-3xl sm:text-4xl font-semibold text-[#171717] mt-1">

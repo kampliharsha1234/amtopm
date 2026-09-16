@@ -24,12 +24,12 @@ const concerns = [
   {
     name: 'SPF',
     description: 'The last step. Every day.',
-    image: '/images/sunscreen.png',
+    image: '/images/spf-concern.png',
   },
   {
     name: 'Barrier',
     description: 'Repair. Restore. Protect.',
-    image: '/images/barrier.png',
+    image: '/images/barrier-concern.png',
   },
 ]
 
@@ -95,23 +95,23 @@ const doctorReviews = [
     designation: 'Dermatologist',
     image: '/images/doctors-review/Dr%20Shloka%20Mehta.jpeg',
     review:
-      'amtopm takes a thoughtful approach to skincare, with a clear focus on purposeful formulations and skin health.',
+      'I appreciate the ingredient-focused approach. The formulations are designed around concerns rather than unnecessary complexity.',
   },
   {
     id: 'doctor-2',
     name: 'Dr Ramesh Gaurav',
-    designation: 'Consultant Dermatologist',
+    designation: 'Consultant and Dermatologist',
     image: '/images/doctors-review/Dr%20Ramesh%20Gaurav.jpeg',
     review:
-      'Good skincare starts with understanding the skin. amtopm keeps that principle at the centre of its approach.',
+      'amtopm takes a sensible approach to everyday skincare, well-selected actives, purposeful formulations and a strong focus on skin comfort.',
   },
   {
     id: 'doctor-3',
     name: 'Dr R Sharma',
-    designation: 'Dermatology Expert',
+    designation: 'Dermatology expert',
     image: '/images/doctors-review/Dr%20R%20Sharma.jpeg',
     review:
-      'A simple, science-led routine can make a meaningful difference without unnecessary complexity.',
+      'A promising science-led skincare approach with formulations built around commonly encountered concerns such as acne, pigmentation and barrier care.',
   },
 ]
 
@@ -163,7 +163,7 @@ function HeroCarousel() {
             "
           >
             <Image
-              src="/images/hero_orange.PNG"
+              src="/images/orangehero.PNG"
               alt=""
               aria-hidden="true"
               fill
@@ -214,16 +214,7 @@ function HeroCarousel() {
                   xl:text-[76px]
                 "
               >
-                Specialised
-                <br />
-                Cosmeceutical
-                <br className="hidden sm:block" />
-                <span className="sm:inline">
-                  {' '}
-                  &amp; Dermacare
-                </span>
-                <br />
-                Products.
+                Skin Health, Simply Done
               </h1>
 
               <div className="mt-6 flex flex-wrap gap-3 sm:mt-7">
@@ -295,7 +286,7 @@ function HeroCarousel() {
             "
           >
             <Image
-              src="/images/doctors-review/Dr%20Anand%20Patil.jpeg"
+              src="/images/doctors-review/dr%20anand%20patil.PNG"
               alt="Dr Anand Patil consultation"
               fill
               sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1280px) calc(100vw - 48px), 1600px"
@@ -466,25 +457,6 @@ function HeroCarousel() {
           </div>
         )}
 
-        {/* ==================================================
-            HERO DOTS
-        ================================================== */}
-
-        <div className="absolute bottom-4 left-1/2 z-30 flex -translate-x-1/2 gap-1.5 sm:bottom-5">
-          {heroSlides.map((item, index) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setCurrent(index)}
-              aria-label={`Hero slide ${index + 1}`}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                current === index
-                  ? 'w-6 bg-white'
-                  : 'w-1.5 bg-white/50'
-              }`}
-            />
-          ))}
-        </div>
       </div>
     </section>
   )

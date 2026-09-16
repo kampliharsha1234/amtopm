@@ -1394,8 +1394,9 @@ export default function QuizPage() {
 
       <div
         className="
+          aspect-square
           h-[72px]
-          w-[64px]
+          w-[72px]
           shrink-0
           overflow-hidden
           rounded-[14px]
@@ -1420,7 +1421,8 @@ export default function QuizPage() {
             className="
               h-full
               w-full
-              object-contain
+              object-cover
+              object-[78%_center]
               transition-transform
               duration-500
               group-hover:scale-105

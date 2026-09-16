@@ -11,13 +11,13 @@ export default async function AccountPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F7F2EB] px-5 py-12 sm:px-8 md:px-12">
+    <main className="min-h-screen bg-[#F7F2EB] px-5 pb-12 pt-32 sm:px-8 sm:pb-12 sm:pt-36 md:px-12">
       <div className="mx-auto w-full max-w-4xl">
 
         <div className="border border-[#E8DFD3] bg-[#FBF8F3] p-6 sm:p-8">
 
-          <p className="text-[8px] font-medium uppercase tracking-[0.25em] text-[#E85D2C]">
-            amtopm ACCOUNT
+          <p className="text-[8px] font-medium tracking-[0.25em] text-[#E85D2C]">
+            amtopm account
           </p>
 
           <h1 className="mt-3 font-serif text-[42px] leading-none tracking-[-0.045em] sm:text-[54px]">
