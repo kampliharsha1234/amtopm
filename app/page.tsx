@@ -214,7 +214,7 @@ function HeroCarousel() {
                   Skin Health,
                 </span>
                 <span className="mt-3 block font-fahkwang text-[0.72em] font-normal italic leading-none tracking-[-0.02em] text-[#FCE6D9] sm:mt-5">
-                  Simply Done
+                  Simply Done!
                 </span>
               </h1>
 
@@ -1183,7 +1183,8 @@ function DoctorReviewsSection() {
                   </div>
 
                   <p className="font-fahkwang text-[20px] leading-[1.35] text-[#1A1A1A]">
-                    {doctor.review}
+                    {doctor.review}{' '}
+                    <span className="text-[#E85D2C]">”</span>
                   </p>
 
                   <div className="mt-6 border-t border-[#E8DFD3] pt-4">
