@@ -14,12 +14,12 @@ const concerns = [
   {
     name: 'Acne',
     description: 'Clarify, calm, keep clear.',
-    image: '/images/acne.png',
+    image: '/images/acne-concern.png',
   },
   {
     name: 'Dark Spots',
     description: 'Even tone. Softer marks.',
-    image: '/images/darkspots.png',
+    image: '/images/darkspot-concern.png',
   },
   {
     name: 'SPF',
