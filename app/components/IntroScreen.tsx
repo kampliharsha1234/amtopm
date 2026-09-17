@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { products } from "../data/products";
 
 const homepageImages = [
@@ -32,21 +33,19 @@ export default function IntroScreen() {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    const imagePreloaders = [
+    [
       ...homepageImages,
       ...products.map((product) => product.image),
     ].map((src) => {
       const image = new window.Image();
       image.src = src;
-      return image;
     });
 
-    const videoPreloaders = homepageVideos.map((src) => {
+    homepageVideos.forEach((src) => {
       const video = document.createElement("video");
       video.preload = "auto";
       video.src = src;
       video.load();
-      return video;
     });
 
     // Start fade out after 2.5 seconds
@@ -62,25 +61,44 @@ export default function IntroScreen() {
     return () => {
       clearTimeout(fadeTimer);
       clearTimeout(removeTimer);
-      imagePreloaders.forEach((image) => {
-        image.src = "";
-      });
-      videoPreloaders.forEach((video) => {
-        video.pause();
-        video.removeAttribute("src");
-        video.load();
-      });
     };
   }, []);
 
   if (!visible) return null;
 
   return (
-    <section
-      className={`fixed inset-0 z-[999] flex items-center justify-center bg-[#171717] transition-opacity duration-1000 ${
-        fadeOut ? "opacity-0" : "opacity-100"
-      }`}
-    >
+    <>
+      <div className="pointer-events-none fixed left-0 top-0 z-[-1] h-px w-px overflow-hidden opacity-0" aria-hidden="true">
+        <Image
+          src="/images/orangehero.PNG"
+          alt=""
+          width={1600}
+          height={800}
+          priority
+          sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1280px) calc(100vw - 48px), 1600px"
+        />
+        <Image
+          src="/images/doctors-review/dr%20anand%20patil.PNG"
+          alt=""
+          width={1600}
+          height={800}
+          priority
+          sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1280px) calc(100vw - 48px), 1600px"
+        />
+        <video
+          autoPlay
+          muted
+          playsInline
+          preload="auto"
+          src="/videos/skinschool.mp4"
+        />
+      </div>
+
+      <section
+        className={`fixed inset-0 z-[999] flex items-center justify-center bg-[#171717] transition-opacity duration-1000 ${
+          fadeOut ? "opacity-0" : "opacity-100"
+        }`}
+      >
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#171717] via-[#2A2A2A] to-[#171717]" />
         <div className="absolute inset-0 bg-black/70" />
@@ -183,6 +201,7 @@ export default function IntroScreen() {
         </div>
 
       </div>
-    </section>
+      </section>
+    </>
   );
 }

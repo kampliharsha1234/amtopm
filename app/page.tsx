@@ -386,7 +386,7 @@ function HeroCarousel() {
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="auto"
               className="absolute inset-0 h-full w-full object-cover"
             >
               <source
