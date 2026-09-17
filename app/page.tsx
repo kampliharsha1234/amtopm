@@ -386,7 +386,8 @@ function HeroCarousel() {
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="none"
+              poster="/images/labelled.PNG"
               className="absolute inset-0 h-full w-full object-cover"
             >
               <source
@@ -589,9 +590,12 @@ function BestSellerSection() {
                       bg-[#E8DFD3]
                     "
                   >
-                    <img
+                    <Image
                       src={product.image}
                       alt={product.name}
+                      fill
+                      sizes="(max-width: 640px) 78vw, (max-width: 1024px) 45vw, 25vw"
+                      quality={90}
                       className="
                         h-full
                         w-full
@@ -719,14 +723,13 @@ function ConcernSection() {
                 "
               >
                 <div className="relative aspect-[0.82]">
-                  <img
+                  <Image
                     src={item.image}
                     alt={`${item.name} skincare`}
+                    fill
+                    sizes="(max-width: 640px) 76vw, (max-width: 1024px) 330px, 300px"
+                    quality={90}
                     className="
-                      absolute
-                      inset-0
-                      h-full
-                      w-full
                       object-cover
                       transition-transform
                       duration-700
@@ -780,7 +783,8 @@ function FreeConsultationSection() {
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="none"
+              poster="/images/labelled.PNG"
               className="absolute inset-0 h-full w-full object-cover"
             >
               <source
@@ -867,7 +871,7 @@ function BeforeAfterSection() {
           }}
         >
           <div className="flex gap-4 pr-[8vw] sm:gap-5 sm:pr-0">
-            {beforeAfterImages.map((item, index) => (
+            {beforeAfterImages.map((item) => (
               <article
                 key={item.id}
                 className="
@@ -878,11 +882,13 @@ function BeforeAfterSection() {
                 "
               >
                 <div className="relative aspect-square overflow-hidden rounded-[24px] bg-[#E8DFD3]">
-                  <img
+                  <Image
                     src={item.image}
                     alt={item.alt}
+                    fill
+                    sizes="(max-width: 640px) 86vw, (max-width: 1024px) 620px, 720px"
+                    quality={90}
                     className="absolute inset-0 h-full w-full object-cover"
-                    loading={index === 0 ? 'eager' : 'lazy'}
                   />
                 </div>
               </article>
@@ -949,9 +955,12 @@ function EditorialPromo() {
           </div>
 
           <div className="relative min-h-[370px] overflow-hidden rounded-b-[22px] bg-[#E8DFD3] sm:min-h-[540px] sm:rounded-b-none sm:rounded-r-[22px]">
-            <img
+            <Image
               src="/images/labelled.PNG"
               alt="amtopm skincare"
+              fill
+              sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1024px) 55vw, 700px"
+              quality={90}
               className="absolute inset-0 h-full w-full object-cover"
             />
 
@@ -1279,7 +1288,7 @@ function CertificationsSection() {
           <div className="flex min-w-max items-center">
 
             {certifications.map(
-              (certification, index) => (
+              (certification) => (
 
                 <div
                   key={certification.image}
