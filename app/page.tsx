@@ -176,10 +176,6 @@ function HeroCarousel() {
 
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(255,255,255,0.18),transparent_30%),radial-gradient(circle_at_15%_85%,rgba(0,0,0,0.12),transparent_35%)]" />
 
-            <div className="absolute -right-28 -top-28 h-[330px] w-[330px] rounded-full border border-white/10 sm:h-[480px] sm:w-[480px]" />
-
-            <div className="absolute -bottom-32 -left-32 h-[300px] w-[300px] rounded-full border border-black/10 sm:h-[450px] sm:w-[450px]" />
-
             <div
               className="
                 absolute
@@ -214,7 +210,12 @@ function HeroCarousel() {
                   xl:text-[76px]
                 "
               >
-                Skin Health, Simply Done
+                <span className="block text-[1.18em] leading-[0.82]">
+                  Skin Health,
+                </span>
+                <span className="mt-3 block font-fahkwang text-[0.72em] font-normal italic leading-none tracking-[-0.02em] text-[#FCE6D9] sm:mt-5">
+                  Simply Done
+                </span>
               </h1>
 
               <div className="mt-6 flex flex-wrap gap-3 sm:mt-7">
@@ -317,18 +318,22 @@ function HeroCarousel() {
               <h2
                 className="
                   mt-3
-                  max-w-[850px]
+                  max-w-[700px]
                   font-sans
                   text-[29px]
                   font-bold
                   leading-[0.96]
                   tracking-[-0.03em]
                   text-white
-                  sm:text-[46px]
-                  lg:text-[58px]
+                  sm:text-[50px]
+                  lg:text-[64px]
                 "
               >
-                Fix your skin health with our specialised skin expert and dermat.
+                Understand your skin.
+                <br />
+                <span className="font-fahkwang font-normal italic text-[#FCE6D9]">
+                  Get expert direction.
+                </span>
               </h2>
 
               <Link
@@ -354,7 +359,7 @@ function HeroCarousel() {
                   sm:px-7
                 "
               >
-                Book your free consultation →
+                Book a consultation →
               </Link>
             </div>
           </div>
@@ -414,18 +419,22 @@ function HeroCarousel() {
               <h2
                 className="
                   mt-3
-                  max-w-[900px]
+                  max-w-[720px]
                   font-sans
                   text-[34px]
                   font-bold
                   leading-[0.96]
                   tracking-[-0.03em]
                   text-white
-                  sm:text-[56px]
-                  lg:text-[70px]
+                  sm:text-[58px]
+                  lg:text-[72px]
                 "
               >
-                How our formulations work on your skin.
+                Science for better skin.
+                <br />
+                <span className="font-fahkwang font-normal italic text-[#E85D2C]">
+                  See how it works.
+                </span>
               </h2>
 
               <Link
@@ -451,11 +460,27 @@ function HeroCarousel() {
                   sm:px-7
                 "
               >
-                Explore ingredient science →
+                Explore the science →
               </Link>
             </div>
           </div>
         )}
+
+        <div className="absolute bottom-4 left-1/2 z-30 flex -translate-x-1/2 gap-1.5 sm:bottom-5">
+          {heroSlides.map((item, index) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setCurrent(index)}
+              aria-label={`Hero slide ${index + 1}`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                current === index
+                  ? 'w-6 bg-white'
+                  : 'w-1.5 bg-white/50'
+              }`}
+            />
+          ))}
+        </div>
 
       </div>
     </section>
