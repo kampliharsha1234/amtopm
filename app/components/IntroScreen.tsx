@@ -31,22 +31,8 @@ export default function IntroScreen() {
         fadeOut ? "opacity-0" : "opacity-100"
       }`}
     >
-      {/* =====================================================
-          VIDEO BACKGROUND
-      ===================================================== */}
-
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#171717] via-[#2A2A2A] to-[#171717]" />
-
-        <video
-          autoPlay
-          muted
-          playsInline
-          className="absolute inset-0 h-full w-full object-cover opacity-50"
-        >
-          <source src="/videos/intro-bg.mp4" type="video/mp4" />
-        </video>
-
         <div className="absolute inset-0 bg-black/70" />
       </div>
 
