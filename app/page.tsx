@@ -1176,13 +1176,8 @@ function DoctorReviewsSection() {
                 </div>
 
                 <div className="p-5 sm:p-6">
-                  <div className="mb-4 text-[#E85D2C]">
-                    <span className="text-[26px] leading-none">
-                      “
-                    </span>
-                  </div>
-
                   <p className="font-fahkwang text-[20px] leading-[1.35] text-[#1A1A1A]">
+                    <span className="text-[#E85D2C]">“</span>{' '}
                     {doctor.review}{' '}
                     <span className="text-[#E85D2C]">”</span>
                   </p>
