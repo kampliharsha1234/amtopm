@@ -1,12 +1,54 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { products } from "../data/products";
+
+const homepageImages = [
+  "/images/orangehero.PNG",
+  "/images/doctors-review/dr%20anand%20patil.PNG",
+  "/images/acne-concern.png",
+  "/images/darkspot-concern.png",
+  "/images/spf-concern.png",
+  "/images/barrier-concern.png",
+  "/images/before-after/before%20after%20(1).jpeg",
+  "/images/before-after/before%20after%20(2).jpeg",
+  "/images/before-after/before%20after%20(3).jpeg",
+  "/images/before-after/before%20after%20(4).jpeg",
+  "/images/doctors-review/Dr%20Shloka%20Mehta.jpeg",
+  "/images/doctors-review/Dr%20Ramesh%20Gaurav.jpeg",
+  "/images/doctors-review/Dr%20R%20Sharma.jpeg",
+  "/images/labelled.PNG",
+  "/images/certificates/iso.svg",
+  "/images/certificates/fda.jpg",
+  "/images/certificates/gmp.avif",
+  "/images/certificates/leaping-bunny.png",
+  "/images/certificates/who.svg",
+];
+
+const homepageVideos = ["/videos/skinschool.mp4"];
 
 export default function IntroScreen() {
   const [visible, setVisible] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
+    const imagePreloaders = [
+      ...homepageImages,
+      ...products.map((product) => product.image),
+    ].map((src) => {
+      const image = new window.Image();
+      image.src = src;
+      return image;
+    });
+
+    const videoPreloaders = homepageVideos.map((src) => {
+      const video = document.createElement("video");
+      video.preload = "auto";
+      video.src = src;
+      video.load();
+      return video;
+    });
+
     // Start fade out after 2.5 seconds
     const fadeTimer = setTimeout(() => {
       setFadeOut(true);
@@ -20,6 +62,14 @@ export default function IntroScreen() {
     return () => {
       clearTimeout(fadeTimer);
       clearTimeout(removeTimer);
+      imagePreloaders.forEach((image) => {
+        image.src = "";
+      });
+      videoPreloaders.forEach((video) => {
+        video.pause();
+        video.removeAttribute("src");
+        video.load();
+      });
     };
   }, []);
 
