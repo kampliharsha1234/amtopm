@@ -7,14 +7,15 @@ export default function IntroScreen() {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    // Keep the intro brief so it does not delay the first useful content.
+    // Start fade out after 2.5 seconds
     const fadeTimer = setTimeout(() => {
       setFadeOut(true);
-    }, 900);
+    }, 2500);
 
+    // Remove component after 3.5 seconds
     const removeTimer = setTimeout(() => {
       setVisible(false);
-    }, 1500);
+    }, 3500);
 
     return () => {
       clearTimeout(fadeTimer);
