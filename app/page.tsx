@@ -211,7 +211,7 @@ function HeroCarousel() {
                 "
               >
                 <span className="block text-[1.18em] leading-[0.82]">
-                  Skin Health,
+                  Skin health,
                 </span>
                 <span className="mt-3 block font-fahkwang text-[0.72em] font-normal italic leading-none tracking-[-0.02em] text-[#FCE6D9] sm:mt-5">
                   Simply Done!

@@ -392,7 +392,7 @@ export default function Navbar() {
                       sm:text-[18px]
                     "
                   >
-                    Skin Health, Simply Done!
+                    Skin health, Simply Done!
                   </p>
 
                 </div>
