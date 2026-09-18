@@ -591,13 +591,8 @@ function drawProductTable(
   const columns = [
     {
       label: 'Product',
-      width: 200,
+      width: 248,
       align: 'left' as const,
-    },
-    {
-      label: 'SKU',
-      width: 48,
-      align: 'center' as const,
     },
     {
       label: 'Qty',
@@ -864,34 +859,6 @@ function drawProductTable(
         columns[0].width
 
 
-      /* SKU */
-
-      doc
-        .font('Helvetica')
-        .fontSize(7.5)
-        .fillColor(
-          COLORS.black
-        )
-        .text(
-          item.sku ||
-            item.productId ||
-            '—',
-          cellX + 4,
-          currentY + 9,
-          {
-            width:
-              columns[1].width -
-              8,
-            align:
-              'center',
-          }
-        )
-
-
-      cellX +=
-        columns[1].width
-
-
       /* Qty */
 
       doc
@@ -908,7 +875,7 @@ function drawProductTable(
           currentY + 9,
           {
             width:
-              columns[2].width -
+              columns[1].width -
               6,
             align:
               'center',
@@ -917,7 +884,7 @@ function drawProductTable(
 
 
       cellX +=
-        columns[2].width
+        columns[1].width
 
 
       /* Taxable */
@@ -936,7 +903,7 @@ function drawProductTable(
           currentY + 9,
           {
             width:
-              columns[3].width -
+              columns[2].width -
               8,
             align:
               'right',
@@ -945,7 +912,7 @@ function drawProductTable(
 
 
       cellX +=
-        columns[3].width
+        columns[2].width
 
 
       /* GST */
@@ -964,7 +931,7 @@ function drawProductTable(
           currentY + 9,
           {
             width:
-              columns[4].width -
+              columns[3].width -
               8,
             align:
               'right',
@@ -973,7 +940,7 @@ function drawProductTable(
 
 
       cellX +=
-        columns[4].width
+        columns[3].width
 
 
       /* Line total */
@@ -994,7 +961,7 @@ function drawProductTable(
           currentY + 9,
           {
             width:
-              columns[5].width -
+              columns[4].width -
               8,
             align:
               'right',

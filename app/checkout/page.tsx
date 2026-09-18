@@ -91,6 +91,18 @@ export default function CheckoutPage() {
   ] = useState('')
 
 
+  const [
+    locationLoading,
+    setLocationLoading,
+  ] = useState(false)
+
+
+  const [
+    locationError,
+    setLocationError,
+  ] = useState('')
+
+
   /* ==========================================================
      PAYMENT
   ========================================================== */
@@ -138,6 +150,8 @@ export default function CheckoutPage() {
     if (field === 'pincode') {
       setShippingRate(null)
       setShippingError('')
+      setLocationError('')
+      setLocationLoading(false)
     }
   }
 
@@ -292,6 +306,69 @@ export default function CheckoutPage() {
     hydrated,
     items,
   ])
+
+
+  /* ==========================================================
+     LOOK UP CITY AND STATE
+  ========================================================== */
+
+  useEffect(() => {
+    const pincode = formData.pincode.trim()
+
+
+    if (!/^\d{6}$/.test(pincode)) {
+      return
+    }
+
+
+    let cancelled = false
+
+    const timer = setTimeout(
+      async () => {
+        try {
+          setLocationLoading(true)
+          setLocationError('')
+
+          const response = await fetch(
+            `/api/pincode?pincode=${pincode}`
+          )
+          const data = await response.json()
+
+          if (!response.ok || !data.success) {
+            throw new Error(
+              data.error || 'Unable to find this pincode.'
+            )
+          }
+
+          if (!cancelled) {
+            setFormData(previous => ({
+              ...previous,
+              city: data.city,
+              state: data.state,
+            }))
+          }
+        } catch (lookupError) {
+          if (!cancelled) {
+            setLocationError(
+              lookupError instanceof Error
+                ? lookupError.message
+                : 'Unable to find this pincode.'
+            )
+          }
+        } finally {
+          if (!cancelled) {
+            setLocationLoading(false)
+          }
+        }
+      },
+      350
+    )
+
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
+    }
+  }, [formData.pincode])
 
 
   /* ==========================================================
@@ -1058,64 +1135,6 @@ export default function CheckoutPage() {
                     </div>
 
 
-                    {/* CITY / STATE */}
-
-                    <div className="grid grid-cols-2 gap-3">
-
-                      <div>
-
-                        <label className="block text-xs font-medium text-[#171717] mb-1.5">
-                          City
-                        </label>
-
-                        <input
-                          type="text"
-                          required
-                          value={
-                            formData.city
-                          }
-                          onChange={
-                            e =>
-                              updateField(
-                                'city',
-                                e.target.value
-                              )
-                          }
-                          className="w-full px-4 py-3 bg-[#F7F2EB] rounded-xl border border-[#E8DFD3] text-sm text-[#171717] placeholder:text-[#999] focus:outline-none focus:border-[#E85D2C] transition"
-                          placeholder="City"
-                        />
-
-                      </div>
-
-
-                      <div>
-
-                        <label className="block text-xs font-medium text-[#171717] mb-1.5">
-                          State
-                        </label>
-
-                        <input
-                          type="text"
-                          required
-                          value={
-                            formData.state
-                          }
-                          onChange={
-                            e =>
-                              updateField(
-                                'state',
-                                e.target.value
-                              )
-                          }
-                          className="w-full px-4 py-3 bg-[#F7F2EB] rounded-xl border border-[#E8DFD3] text-sm text-[#171717] placeholder:text-[#999] focus:outline-none focus:border-[#E85D2C] transition"
-                          placeholder="State"
-                        />
-
-                      </div>
-
-                    </div>
-
-
                     {/* PINCODE */}
 
                     <div>
@@ -1146,6 +1165,86 @@ export default function CheckoutPage() {
                         className="w-full px-4 py-3 bg-[#F7F2EB] rounded-xl border border-[#E8DFD3] text-sm text-[#171717] placeholder:text-[#999] focus:outline-none focus:border-[#E85D2C] transition"
                         placeholder="6-digit PIN"
                       />
+
+                    </div>
+
+
+                    {locationLoading && (
+                      <p className="text-xs text-[#6B6B6B]">
+                        Looking up city and state...
+                      </p>
+                    )}
+
+
+                    {locationError && (
+                      <p className="text-xs text-red-700">
+                        {locationError}
+                      </p>
+                    )}
+
+
+                    {/* CITY / STATE */}
+
+                    <div className="grid grid-cols-2 gap-3">
+
+                      <div>
+
+                        <label className="block text-xs font-medium text-[#171717] mb-1.5">
+                          City
+                        </label>
+
+                        <input
+                          type="text"
+                          required
+                          value={
+                            formData.city
+                          }
+                          onChange={
+                            e =>
+                              updateField(
+                                'city',
+                                e.target.value
+                              )
+                          }
+                          className="w-full px-4 py-3 bg-[#F7F2EB] rounded-xl border border-[#E8DFD3] text-sm text-[#171717] placeholder:text-[#999] focus:outline-none focus:border-[#E85D2C] transition"
+                          placeholder={
+                            locationLoading
+                              ? 'Finding city...'
+                              : 'City'
+                          }
+                        />
+
+                      </div>
+
+
+                      <div>
+
+                        <label className="block text-xs font-medium text-[#171717] mb-1.5">
+                          State
+                        </label>
+
+                        <input
+                          type="text"
+                          required
+                          value={
+                            formData.state
+                          }
+                          onChange={
+                            e =>
+                              updateField(
+                                'state',
+                                e.target.value
+                              )
+                          }
+                          className="w-full px-4 py-3 bg-[#F7F2EB] rounded-xl border border-[#E8DFD3] text-sm text-[#171717] placeholder:text-[#999] focus:outline-none focus:border-[#E85D2C] transition"
+                          placeholder={
+                            locationLoading
+                              ? 'Finding state...'
+                              : 'State'
+                          }
+                        />
+
+                      </div>
 
                     </div>
 

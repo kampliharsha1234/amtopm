@@ -106,5 +106,74 @@
       "error": "SKU cannot be repeated.",
       "updatedAt": "2026-09-17T18:30:32.481Z"
     }
+  },
+  {
+    "userId": "1789669366458",
+    "items": [
+      {
+        "productId": "cotton-moisturizer",
+        "name": "Cotton Moisturizer",
+        "price": 595,
+        "priceExcludingGst": 488,
+        "sku": "500",
+        "quantity": 1,
+        "image": "/images/products/cotton-moisturizer.png"
+      },
+      {
+        "productId": "thinshield-sunscreen",
+        "name": "Thinshield Sunscreen",
+        "price": 718,
+        "priceExcludingGst": 589,
+        "sku": "500",
+        "quantity": 1,
+        "image": "/images/products/thinshield-sunscreen.png"
+      },
+      {
+        "productId": "mild-cleanser",
+        "name": "Mild Cleanser",
+        "price": 462,
+        "priceExcludingGst": 379,
+        "sku": "500",
+        "quantity": 1,
+        "image": "/images/products/mild-cleanser.png"
+      }
+    ],
+    "subtotal": 1775,
+    "shippingCharge": 61.72,
+    "shipmentWeight": 0.5,
+    "packageDimensions": {
+      "length": 13,
+      "breadth": 10,
+      "height": 18
+    },
+    "total": 1836.72,
+    "shipping": {
+      "name": "tester",
+      "email": "kampliharsha1234@gmail.com",
+      "phone": "9152493660",
+      "address": "tester",
+      "city": "Dharwad",
+      "state": "Karnataka",
+      "pincode": "580008"
+    },
+    "payment": {
+      "status": "paid",
+      "razorpayOrderId": "order_Tdb0fnFivWVpV3",
+      "razorpayPaymentId": "pay_Tdb1DAFSJDHGC3"
+    },
+    "status": "confirmed",
+    "id": "AMPM-1789755505975",
+    "createdAt": "2026-09-18T18:18:25.975Z",
+    "invoice": {
+      "invoiceNumber": "AMPM/2026/55585916",
+      "generatedAt": "2026-09-18T18:19:46.108Z",
+      "status": "generated",
+      "invoiceFileName": "amtopm-invoice-AMPM-2026-55585916.pdf"
+    },
+    "shiprocket": {
+      "status": "failed",
+      "error": "SKU cannot be repeated.",
+      "updatedAt": "2026-09-18T18:19:49.012Z"
+    }
   }
 ]
