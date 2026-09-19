@@ -55,7 +55,7 @@ export const products: Product[] = [
 
     priceExcludingGst: 488,
 
-    sku: '500',
+    sku: 'AMPM-COTTON-MOISTURIZER',
 
     weight: '50 ml',
 
@@ -136,7 +136,7 @@ export const products: Product[] = [
 
     priceExcludingGst: 589,
 
-    sku: '500',
+    sku: 'AMPM-THINSHIELD-SUNSCREEN',
 
     weight: '50 gm',
 
@@ -215,7 +215,7 @@ export const products: Product[] = [
 
     priceExcludingGst: 379,
 
-    sku: '500',
+    sku: 'AMPM-MILD-CLEANSER',
 
     weight: '100 ml',
 
@@ -295,7 +295,7 @@ export const products: Product[] = [
 
     priceExcludingGst: 373,
 
-    sku: '500',
+    sku: 'AMPM-ACNOWELL-FACEWASH',
 
     weight: '100 ml',
 
@@ -372,7 +372,7 @@ export const products: Product[] = [
 
     priceExcludingGst: 598,
 
-    sku: '500',
+    sku: 'AMPM-ACNOWELL-CREAM',
 
     weight: '30 gm',
 
@@ -451,7 +451,7 @@ export const products: Product[] = [
 
     priceExcludingGst: 644,
 
-    sku: '500',
+    sku: 'AMPM-FAEDEN-CREAM',
 
     weight: '30 gm',
 

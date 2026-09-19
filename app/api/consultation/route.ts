@@ -54,6 +54,29 @@ if (!emailRegex.test(cleanEmail)) {
   )
 }
 
+if (
+  cleanName.length < 2 ||
+  cleanName.length > 100 ||
+  cleanPhone.length < 7 ||
+  cleanPhone.length > 20 ||
+  !/^[0-9+()\s-]+$/.test(cleanPhone) ||
+  cleanEmail.length > 254 ||
+  cleanGender.length < 1 ||
+  cleanGender.length > 50 ||
+  cleanProblem.length < 1 ||
+  cleanProblem.length > 200 ||
+  cleanDescription.length < 10 ||
+  cleanDescription.length > 2000
+) {
+  return NextResponse.json(
+    {
+      success: false,
+      error: 'Please check the length and format of your details.',
+    },
+    { status: 400 }
+  )
+}
+
 const numericAge = Number(cleanAge)
 
 if (

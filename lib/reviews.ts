@@ -1,5 +1,6 @@
-import fs from 'fs/promises'
-import path from 'path'
+import crypto from 'crypto'
+
+import { prisma } from './prisma'
 
 export type Review = {
   id: string
@@ -10,117 +11,55 @@ export type Review = {
   createdAt: string
 }
 
-const dataDirectory = path.join(
-  process.cwd(),
-  'data'
-)
-
-const reviewsFile = path.join(
-  dataDirectory,
-  'reviews.json'
-)
-
-
-/* ============================================================
-   ENSURE REVIEW FILE EXISTS
-============================================================ */
-
-async function ensureReviewsFile() {
-  try {
-    await fs.access(reviewsFile)
-  } catch {
-    await fs.mkdir(dataDirectory, {
-      recursive: true,
-    })
-
-    await fs.writeFile(
-      reviewsFile,
-      '[]',
-      'utf8'
-    )
+function toReview(review: {
+  id: string
+  productId: string
+  name: string
+  rating: number
+  review: string
+  createdAt: Date
+}): Review {
+  return {
+    id: review.id,
+    productId: review.productId,
+    name: review.name,
+    rating: review.rating,
+    review: review.review,
+    createdAt: review.createdAt.toISOString(),
   }
 }
-
-
-/* ============================================================
-   READ REVIEWS
-============================================================ */
 
 export async function getReviews(): Promise<Review[]> {
-  await ensureReviewsFile()
+  const reviews = await prisma.review.findMany({
+    orderBy: { createdAt: 'desc' },
+  })
 
-  try {
-    const raw = await fs.readFile(
-      reviewsFile,
-      'utf8'
-    )
-
-    const parsed = JSON.parse(raw)
-
-    if (!Array.isArray(parsed)) {
-      return []
-    }
-
-    return parsed as Review[]
-  } catch {
-    return []
-  }
+  return reviews.map(toReview)
 }
-
-
-/* ============================================================
-   GET REVIEWS FOR PRODUCT
-============================================================ */
 
 export async function getProductReviews(
   productId: string
 ): Promise<Review[]> {
-  const reviews = await getReviews()
+  const reviews = await prisma.review.findMany({
+    where: { productId },
+    orderBy: { createdAt: 'desc' },
+  })
 
-  return reviews
-    .filter(
-      (review) =>
-        review.productId === productId
-    )
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() -
-        new Date(a.createdAt).getTime()
-    )
+  return reviews.map(toReview)
 }
-
-
-/* ============================================================
-   CREATE REVIEW
-============================================================ */
 
 export async function createReview(
   review: Omit<Review, 'id' | 'createdAt'>
 ): Promise<Review> {
-  const reviews = await getReviews()
+  const createdReview = await prisma.review.create({
+    data: {
+      id: `${Date.now()}-${crypto.randomUUID().slice(0, 8)}`,
+      productId: review.productId,
+      name: review.name,
+      rating: review.rating,
+      review: review.review,
+    },
+  })
 
-  const newReview: Review = {
-    ...review,
-
-    id: `${Date.now()}-${Math.random()
-      .toString(36)
-      .slice(2, 10)}`,
-
-    createdAt:
-      new Date().toISOString(),
-  }
-
-  reviews.push(newReview)
-
-  await fs.writeFile(
-    reviewsFile,
-    JSON.stringify(
-      reviews,
-      null,
-      2
-    ),
-    'utf8'
-  )
-
-  return newReview
+  return toReview(createdReview)
 }

@@ -100,6 +100,13 @@ export async function POST(
         ? body.productId.trim()
         : ''
 
+    if (productId.length > 100) {
+      return NextResponse.json(
+        { error: 'Product ID is invalid.' },
+        { status: 400 }
+      )
+    }
+
 
     const name =
       typeof body.name ===

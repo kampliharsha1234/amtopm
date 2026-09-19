@@ -1,4 +1,5 @@
 import { sendEmail } from './sendEmail'
+import { escapeHtml } from './escapeHtml'
 
 type ConsultationData = {
 name: string
@@ -8,17 +9,6 @@ age: number
 gender: string
 problem: string
 description: string
-}
-
-function escapeHtml(value: string) {
-return value
-.replace(/&/g, '&')
-.replace(/</g, '<')
-.replace(/>/g, '>')
-.replace(/"/g, '"')
-.replace(/'/g, ''
-    
-)
 }
 
 export async function sendConsultationEmails(data: ConsultationData) {

@@ -2,11 +2,9 @@ import { Resend } from 'resend'
 
 import { Order } from './orders'
 import { normalizeSender } from './email/sendEmail'
+import { escapeHtml } from './email/escapeHtml'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
-
-const defaultAdminEmail =
-  process.env.ADMIN_EMAIL || 'amtopmformulation@gmail.com'
 
 export async function sendOrderConfirmationEmail({
   order,
@@ -34,12 +32,15 @@ export async function sendOrderConfirmationEmail({
   const subtotal = order.subtotal ?? order.total
   const shipping = order.shippingCharge ?? 0
   const total = order.total
+  const safeOrderId = escapeHtml(orderId)
+  const safeInvoiceNumber = escapeHtml(invoiceNumber)
+  const safeRecipientName = escapeHtml(recipientName)
 
   const itemsHtml = order.items
     .map(
       item => `
         <tr>
-          <td style="padding: 10px 12px; border-bottom: 1px solid #E8DFD3; color: #171717; font-size: 14px;">${item.name}</td>
+          <td style="padding: 10px 12px; border-bottom: 1px solid #E8DFD3; color: #171717; font-size: 14px;">${escapeHtml(item.name)}</td>
           <td style="padding: 10px 12px; border-bottom: 1px solid #E8DFD3; color: #6B6B6B; font-size: 14px; text-align: center;">${item.quantity}</td>
           <td style="padding: 10px 12px; border-bottom: 1px solid #E8DFD3; color: #171717; font-size: 14px; text-align: right;">₹${item.price.toLocaleString('en-IN')}</td>
         </tr>
@@ -58,9 +59,9 @@ export async function sendOrderConfirmationEmail({
         </div>
 
         <div style="padding: 32px;">
-          <p style="margin: 0; font-size: 16px; color: #171717;">Hello ${recipientName},</p>
+          <p style="margin: 0; font-size: 16px; color: #171717;">Hello ${safeRecipientName},</p>
           <p style="margin: 16px 0 0; font-size: 15px; line-height: 1.7; color: #454545;">
-            Thank you for your order. Your amtopm order #${orderId} has been confirmed and your payment has been received.
+            Thank you for your order. Your amtopm order #${safeOrderId} has been confirmed and your payment has been received.
           </p>
 
           <p style="margin: 20px 0; font-size: 15px; line-height: 1.7; color: #171717; font-weight: 600;">
@@ -87,11 +88,11 @@ export async function sendOrderConfirmationEmail({
             <p style="margin: 0 0 8px; font-size: 14px; color: #6B6B6B;">Subtotal: <strong style="color: #171717;">₹${subtotal.toLocaleString('en-IN')}</strong></p>
             <p style="margin: 0 0 8px; font-size: 14px; color: #6B6B6B;">Shipping: <strong style="color: #171717;">₹${shipping.toLocaleString('en-IN')}</strong></p>
             <p style="margin: 0; font-size: 18px; color: #171717; font-weight: 700;">Total: ₹${total.toLocaleString('en-IN')}</p>
-            <p style="margin: 14px 0 0; font-size: 14px; color: #6B6B6B;">Invoice number: <strong style="color: #171717;">${invoiceNumber}</strong></p>
+            <p style="margin: 14px 0 0; font-size: 14px; color: #6B6B6B;">Invoice number: <strong style="color: #171717;">${safeInvoiceNumber}</strong></p>
           </div>
 
           <div style="margin-top: 30px;">
-            <a href="${process.env.NEXTAUTH_URL || 'https://amtopm.net'} /orders" style="display: inline-block; background: #E85D2C; color: #ffffff; text-decoration: none; padding: 14px 22px; border-radius: 999px; font-size: 14px; font-weight: 600;">View order</a>
+            <a href="${process.env.NEXTAUTH_URL ? `${escapeHtml(process.env.NEXTAUTH_URL)}/orders` : '/orders'}" style="display: inline-block; background: #E85D2C; color: #ffffff; text-decoration: none; padding: 14px 22px; border-radius: 999px; font-size: 14px; font-weight: 600;">View order</a>
           </div>
         </div>
       </div>
@@ -126,7 +127,7 @@ export async function sendAdminOrderEmail({
   order: Order
   invoicePdf: Buffer
 }) {
-  const adminEmail = process.env.ADMIN_EMAIL || defaultAdminEmail
+  const adminEmail = getAdminEmail()
   const recipientName = 'amtopm team'
 
   await sendOrderConfirmationEmail({
@@ -138,5 +139,11 @@ export async function sendAdminOrderEmail({
 }
 
 export function getAdminEmail() {
-  return process.env.ADMIN_EMAIL || 'amtopmformulation@gmail.com'
+  const adminEmail = process.env.ADMIN_EMAIL
+
+  if (!adminEmail) {
+    throw new Error('ADMIN_EMAIL is not configured.')
+  }
+
+  return adminEmail
 }

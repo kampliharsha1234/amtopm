@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { products } from './data/products'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://amtopm.com'
+  const baseUrl = 'https://amtopm.net'
 
   // Static pages
   const staticPages = [
@@ -10,7 +10,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/shop',
     '/quiz',
     '/science',
-    '/school',
     '/about',
     '/support',
     '/cart',

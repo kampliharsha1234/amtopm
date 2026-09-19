@@ -8,7 +8,7 @@ const body = await request.json()
 
 const email = String(body?.email ?? '').trim().toLowerCase()
 
-if (!email) {
+if (!email || email.length > 254) {
   return NextResponse.json(
     {
       success: false,

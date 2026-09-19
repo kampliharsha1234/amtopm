@@ -1,22 +1,8 @@
-import fs from 'fs'
-import path from 'path'
+import crypto from 'crypto'
 
+import { Prisma } from '@prisma/client'
 
-/* ============================================================
-   FILE
-============================================================ */
-
-const ordersFilePath =
-  path.join(
-    process.cwd(),
-    'data',
-    'orders.json'
-  )
-
-
-/* ============================================================
-   ORDER TYPES
-============================================================ */
+import { prisma } from './prisma'
 
 export type OrderItem = {
   productId: string
@@ -24,11 +10,9 @@ export type OrderItem = {
   price: number
   quantity: number
   image: string
-
   sku?: string
   priceExcludingGst?: number
 }
-
 
 export type ShippingDetails = {
   name: string
@@ -40,7 +24,6 @@ export type ShippingDetails = {
   pincode: string
 }
 
-
 export type ShiprocketDetails = {
   status:
     | 'pending'
@@ -48,451 +31,383 @@ export type ShiprocketDetails = {
     | 'awb_assigned'
     | 'pickup_generated'
     | 'failed'
-
   orderId?: number
   shipmentId?: number
-
   awbCode?: string
-
   courierCompanyId?: number
-
   courierName?: string
-
   pickupScheduledDate?: string | null
-
   pickupToken?: string | null
-
   pickupStatus?: number | null
-
   manifestGenerated?: boolean
-
   manifestUrl?: string | null
-
   error?: string
-
   updatedAt: string
 }
 
-
 export type InvoiceDetails = {
   invoiceNumber: string
-
   generatedAt: string
-
-  status:
-    | 'generated'
-    | 'draft'
-
+  status: 'generated' | 'draft'
   invoiceFileName?: string
 }
 
-
-/* ============================================================
-   ORDER
-============================================================ */
-
 export type Order = {
   id: string
-
   userId: string
-
   items: OrderItem[]
-
   subtotal?: number
-
   shippingCharge?: number
-
   shipmentWeight?: number
-
   packageDimensions?: {
     length: number
     breadth: number
     height: number
   }
-
   total: number
-
   shipping: ShippingDetails
-
   payment: {
-    status:
-      | 'pending'
-      | 'paid'
-      | 'failed'
-
+    status: 'pending' | 'paid' | 'failed'
     razorpayOrderId: string
-
     razorpayPaymentId?: string
   }
-
   invoice?: InvoiceDetails
-
   shiprocket?: ShiprocketDetails
-
-  status:
-    | 'pending'
-    | 'confirmed'
-    | 'processing'
-    | 'shipped'
-    | 'delivered'
-
+  status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered'
   createdAt: string
 }
 
+type DatabaseOrder = Prisma.OrderGetPayload<{
+  include: { items: true }
+}>
 
-/* ============================================================
-   ENSURE FILE
-============================================================ */
+const includeItems = { items: true } as const
 
-function ensureOrdersFile() {
-  const dataDirectory =
-    path.dirname(
-      ordersFilePath
-    )
+function decimalToNumber(value: Prisma.Decimal | null): number | undefined {
+  return value === null ? undefined : Number(value)
+}
 
+function toOrder(order: DatabaseOrder): Order {
+  const packageDimensions =
+    order.packageLength !== null &&
+    order.packageBreadth !== null &&
+    order.packageHeight !== null
+      ? {
+          length: Number(order.packageLength),
+          breadth: Number(order.packageBreadth),
+          height: Number(order.packageHeight),
+        }
+      : undefined
 
-  if (
-    !fs.existsSync(
-      dataDirectory
-    )
-  ) {
-    fs.mkdirSync(
-      dataDirectory,
-      {
-        recursive: true,
-      }
-    )
-  }
+  const invoice =
+    order.invoiceNumber &&
+    order.invoiceGeneratedAt &&
+    order.invoiceStatus
+      ? {
+          invoiceNumber: order.invoiceNumber,
+          generatedAt: order.invoiceGeneratedAt.toISOString(),
+          status: order.invoiceStatus,
+          invoiceFileName: order.invoiceFileName ?? undefined,
+        }
+      : undefined
 
+  const shiprocket =
+    order.shiprocketStatus && order.shiprocketUpdatedAt
+      ? {
+          status: order.shiprocketStatus,
+          orderId: order.shiprocketOrderId ?? undefined,
+          shipmentId: order.shipmentId ?? undefined,
+          awbCode: order.awbCode ?? undefined,
+          courierCompanyId: order.courierCompanyId ?? undefined,
+          courierName: order.courierName ?? undefined,
+          pickupScheduledDate:
+            order.pickupScheduledDate?.toISOString() ?? null,
+          pickupToken: order.pickupToken ?? null,
+          pickupStatus: order.pickupStatus ?? null,
+          manifestGenerated: order.manifestGenerated ?? undefined,
+          manifestUrl: order.manifestUrl ?? null,
+          error: order.shiprocketError ?? undefined,
+          updatedAt: order.shiprocketUpdatedAt.toISOString(),
+        }
+      : undefined
 
-  if (
-    !fs.existsSync(
-      ordersFilePath
-    )
-  ) {
-    fs.writeFileSync(
-      ordersFilePath,
-      '[]',
-      'utf-8'
-    )
+  return {
+    id: order.id,
+    userId: order.userId,
+    items: order.items.map(item => ({
+      productId: item.productId,
+      name: item.name,
+      price: Number(item.price),
+      quantity: item.quantity,
+      image: item.image,
+      sku: item.sku ?? undefined,
+      priceExcludingGst: decimalToNumber(item.priceExcludingGst),
+    })),
+    subtotal: decimalToNumber(order.subtotal),
+    shippingCharge: decimalToNumber(order.shippingCharge),
+    shipmentWeight: decimalToNumber(order.shipmentWeight),
+    packageDimensions,
+    total: Number(order.total),
+    shipping: {
+      name: order.shippingName,
+      email: order.shippingEmail,
+      phone: order.shippingPhone,
+      address: order.shippingAddress,
+      city: order.shippingCity,
+      state: order.shippingState,
+      pincode: order.shippingPincode,
+    },
+    payment: {
+      status: order.paymentStatus,
+      razorpayOrderId: order.razorpayOrderId,
+      razorpayPaymentId: order.razorpayPaymentId ?? undefined,
+    },
+    invoice,
+    shiprocket,
+    status: order.status,
+    createdAt: order.createdAt.toISOString(),
   }
 }
 
+function orderFields(order: Order) {
+  return {
+    subtotal: order.subtotal,
+    shippingCharge: order.shippingCharge,
+    shipmentWeight: order.shipmentWeight,
+    packageLength: order.packageDimensions?.length,
+    packageBreadth: order.packageDimensions?.breadth,
+    packageHeight: order.packageDimensions?.height,
+    total: order.total,
+    shippingName: order.shipping.name,
+    shippingEmail: order.shipping.email,
+    shippingPhone: order.shipping.phone,
+    shippingAddress: order.shipping.address,
+    shippingCity: order.shipping.city,
+    shippingState: order.shipping.state,
+    shippingPincode: order.shipping.pincode,
+    paymentStatus: order.payment.status,
+    razorpayOrderId: order.payment.razorpayOrderId,
+    razorpayPaymentId: order.payment.razorpayPaymentId,
+    invoiceNumber: order.invoice?.invoiceNumber,
+    invoiceGeneratedAt: order.invoice
+      ? new Date(order.invoice.generatedAt)
+      : undefined,
+    invoiceStatus: order.invoice?.status,
+    invoiceFileName: order.invoice?.invoiceFileName,
+    shiprocketStatus: order.shiprocket?.status,
+    shiprocketOrderId: order.shiprocket?.orderId,
+    shipmentId: order.shiprocket?.shipmentId,
+    awbCode: order.shiprocket?.awbCode,
+    courierCompanyId: order.shiprocket?.courierCompanyId,
+    courierName: order.shiprocket?.courierName,
+    pickupScheduledDate: order.shiprocket?.pickupScheduledDate
+      ? new Date(order.shiprocket.pickupScheduledDate)
+      : order.shiprocket?.pickupScheduledDate,
+    pickupToken: order.shiprocket?.pickupToken,
+    pickupStatus: order.shiprocket?.pickupStatus,
+    manifestGenerated: order.shiprocket?.manifestGenerated,
+    manifestUrl: order.shiprocket?.manifestUrl,
+    shiprocketError: order.shiprocket?.error,
+    shiprocketUpdatedAt: order.shiprocket
+      ? new Date(order.shiprocket.updatedAt)
+      : undefined,
+    status: order.status,
+    createdAt: new Date(order.createdAt),
+  }
+}
 
-/* ============================================================
-   GET ORDERS
-============================================================ */
+function itemFields(orderId: string, item: OrderItem) {
+  return {
+    orderId,
+    productId: item.productId,
+    name: item.name,
+    price: item.price,
+    quantity: item.quantity,
+    image: item.image,
+    sku: item.sku,
+    priceExcludingGst: item.priceExcludingGst,
+  }
+}
 
-export function getOrders(): Order[] {
+export async function getOrders(): Promise<Order[]> {
   try {
-    ensureOrdersFile()
+    const orders = await prisma.order.findMany({
+      include: includeItems,
+      orderBy: { createdAt: 'desc' },
+    })
 
-
-    const data =
-      fs.readFileSync(
-        ordersFilePath,
-        'utf-8'
-      )
-
-
-    const parsed =
-      JSON.parse(data)
-
-
-    return Array.isArray(
-      parsed
-    )
-      ? parsed
-      : []
-
+    return orders.map(toOrder)
   } catch (error) {
-
-    console.error(
-      'Failed to read orders:',
-      error
-    )
-
+    console.error('Failed to read orders:', error)
     return []
   }
 }
 
+export async function saveOrders(orders: Order[]): Promise<void> {
+  await prisma.$transaction(async transaction => {
+    for (const order of orders) {
+      await transaction.order.upsert({
+        where: { id: order.id },
+        create: {
+          id: order.id,
+          ...orderFields(order),
+          user: { connect: { id: order.userId } },
+        },
+        update: orderFields(order),
+      })
 
-/* ============================================================
-   SAVE ORDERS
-============================================================ */
+      await transaction.orderItem.deleteMany({
+        where: { orderId: order.id },
+      })
 
-export function saveOrders(
-  orders: Order[]
-) {
-  ensureOrdersFile()
-
-
-  fs.writeFileSync(
-    ordersFilePath,
-    JSON.stringify(
-      orders,
-      null,
-      2
-    ),
-    'utf-8'
-  )
+      if (order.items.length > 0) {
+        await transaction.orderItem.createMany({
+          data: order.items.map(item => itemFields(order.id, item)),
+        })
+      }
+    }
+  })
 }
 
+export async function createOrder(
+  orderData: Omit<Order, 'id' | 'createdAt'>
+): Promise<Order> {
+  const order = await prisma.order.create({
+    data: {
+      ...orderFields({
+        ...orderData,
+        id: '',
+        createdAt: new Date().toISOString(),
+      }),
+      id: `AMPM-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`,
+      user: { connect: { id: orderData.userId } },
+      items: {
+        create: orderData.items.map(item => ({
+          productId: item.productId,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image,
+          sku: item.sku,
+          priceExcludingGst: item.priceExcludingGst,
+        })),
+      },
+    },
+    include: includeItems,
+  })
 
-/* ============================================================
-   CREATE ORDER
-============================================================ */
-
-export function createOrder(
-  orderData:
-    Omit<
-      Order,
-      'id' | 'createdAt'
-    >
-): Order {
-
-  const orders =
-    getOrders()
-
-
-  const order: Order = {
-    ...orderData,
-
-    id:
-      `AMPM-${Date.now()}`,
-
-    createdAt:
-      new Date().toISOString(),
-  }
-
-
-  orders.push(order)
-
-
-  saveOrders(
-    orders
-  )
-
-
-  return order
+  return toOrder(order)
 }
 
-
-/* ============================================================
-   UPDATE PAYMENT
-============================================================ */
-
-export function updateOrderPayment(
+export async function updateOrderPayment(
   razorpayOrderId: string,
-  paymentData: {
-    razorpayPaymentId: string
-  }
-): Order | null {
+  paymentData: { razorpayPaymentId: string }
+): Promise<Order | null> {
+  const updated = await prisma.order.updateMany({
+    where: {
+      razorpayOrderId,
+      paymentStatus: 'pending',
+    },
+    data: {
+      paymentStatus: 'paid',
+      razorpayPaymentId: paymentData.razorpayPaymentId,
+      status: 'confirmed',
+    },
+  })
 
-  const orders =
-    getOrders()
-
-
-  const orderIndex =
-    orders.findIndex(
-      order =>
-        order.payment
-          .razorpayOrderId ===
-        razorpayOrderId
-    )
-
-
-  if (
-    orderIndex === -1
-  ) {
+  if (updated.count !== 1) {
     return null
   }
 
+  const order = await prisma.order.update({
+    where: { razorpayOrderId },
+    data: {},
+    include: includeItems,
+  })
 
-  const order =
-    orders[
-      orderIndex
-    ]
-
-
-  const updatedOrder:
-    Order = {
-      ...order,
-
-      payment: {
-        ...order.payment,
-
-        status:
-          'paid',
-
-        razorpayPaymentId:
-          paymentData
-            .razorpayPaymentId,
-      },
-
-      status:
-        'confirmed',
-    }
-
-
-  orders[
-    orderIndex
-  ] =
-    updatedOrder
-
-
-  saveOrders(
-    orders
-  )
-
-
-  return updatedOrder
+  return toOrder(order)
 }
 
-
-/* ============================================================
-   UPDATE INVOICE
-============================================================ */
-
-export function updateOrderInvoice(
+export async function updateOrderInvoice(
   orderId: string,
   invoice: InvoiceDetails
-): Order | null {
+): Promise<Order | null> {
+  const existing = await prisma.order.findUnique({
+    where: { id: orderId },
+  })
 
-  const orders =
-    getOrders()
-
-
-  const orderIndex =
-    orders.findIndex(
-      order =>
-        order.id ===
-        orderId
-    )
-
-
-  if (
-    orderIndex === -1
-  ) {
+  if (!existing) {
     return null
   }
 
+  const order = await prisma.order.update({
+    where: { id: orderId },
+    data: {
+      invoiceNumber: invoice.invoiceNumber,
+      invoiceGeneratedAt: new Date(invoice.generatedAt),
+      invoiceStatus: invoice.status,
+      invoiceFileName: invoice.invoiceFileName,
+    },
+    include: includeItems,
+  })
 
-  const updatedOrder:
-    Order = {
-      ...orders[
-        orderIndex
-      ],
-
-      invoice,
-    }
-
-
-  orders[
-    orderIndex
-  ] =
-    updatedOrder
-
-
-  saveOrders(
-    orders
-  )
-
-
-  return updatedOrder
+  return toOrder(order)
 }
 
-
-/* ============================================================
-   UPDATE SHIPROCKET
-============================================================ */
-
-export function updateOrderShiprocket(
+export async function updateOrderShiprocket(
   orderId: string,
   shiprocket: ShiprocketDetails
-): Order | null {
+): Promise<Order | null> {
+  const existing = await prisma.order.findUnique({
+    where: { id: orderId },
+  })
 
-  const orders =
-    getOrders()
-
-
-  const orderIndex =
-    orders.findIndex(
-      order =>
-        order.id ===
-        orderId
-    )
-
-
-  if (
-    orderIndex === -1
-  ) {
+  if (!existing) {
     return null
   }
 
+  const order = await prisma.order.update({
+    where: { id: orderId },
+    data: {
+      shiprocketStatus: shiprocket.status,
+      shiprocketOrderId: shiprocket.orderId,
+      shipmentId: shiprocket.shipmentId,
+      awbCode: shiprocket.awbCode,
+      courierCompanyId: shiprocket.courierCompanyId,
+      courierName: shiprocket.courierName,
+      pickupScheduledDate: shiprocket.pickupScheduledDate
+        ? new Date(shiprocket.pickupScheduledDate)
+        : shiprocket.pickupScheduledDate,
+      pickupToken: shiprocket.pickupToken,
+      pickupStatus: shiprocket.pickupStatus,
+      manifestGenerated: shiprocket.manifestGenerated,
+      manifestUrl: shiprocket.manifestUrl,
+      shiprocketError: shiprocket.error,
+      shiprocketUpdatedAt: new Date(shiprocket.updatedAt),
+    },
+    include: includeItems,
+  })
 
-  const updatedOrder:
-    Order = {
-      ...orders[
-        orderIndex
-      ],
-
-      shiprocket,
-    }
-
-
-  orders[
-    orderIndex
-  ] =
-    updatedOrder
-
-
-  saveOrders(
-    orders
-  )
-
-
-  return updatedOrder
+  return toOrder(order)
 }
 
+export async function getOrdersByUserId(userId: string): Promise<Order[]> {
+  const orders = await prisma.order.findMany({
+    where: { userId },
+    include: includeItems,
+    orderBy: { createdAt: 'desc' },
+  })
 
-/* ============================================================
-   GET USER ORDERS
-============================================================ */
-
-export function getOrdersByUserId(
-  userId: string
-): Order[] {
-
-  return getOrders()
-    .filter(
-      order =>
-        order.userId ===
-        userId
-    )
-    .sort(
-      (a, b) =>
-        new Date(
-          b.createdAt
-        ).getTime() -
-        new Date(
-          a.createdAt
-        ).getTime()
-    )
+  return orders.map(toOrder)
 }
 
-
-/* ============================================================
-   GET ORDER
-============================================================ */
-
-export function getOrderById(
+export async function getOrderById(
   orderId: string
-): Order | undefined {
+): Promise<Order | undefined> {
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    include: includeItems,
+  })
 
-  return getOrders().find(
-    order =>
-      order.id ===
-      orderId
-  )
+  return order ? toOrder(order) : undefined
 }

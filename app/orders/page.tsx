@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import { authOptions } from '../api/auth/[...nextauth]/route'
+import { authOptions } from '../../lib/auth-options'
 import { getOrdersByUserId } from '../../lib/orders'
 
 export default async function OrdersPage() {
@@ -13,7 +13,7 @@ export default async function OrdersPage() {
     redirect('/auth/signin')
   }
 
-  const orders = getOrdersByUserId(session.user.id)
+  const orders = await getOrdersByUserId(session.user.id)
 
   return (
     <main className="min-h-screen bg-[#F7F2EB] pt-24 sm:pt-28 pb-20">

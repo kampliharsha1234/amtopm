@@ -53,7 +53,7 @@ export async function POST(
     }
 
     const success =
-      resetPassword(
+      await resetPassword(
         token,
         password
       )

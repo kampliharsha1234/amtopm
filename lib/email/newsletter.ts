@@ -1,4 +1,5 @@
 import { sendEmail } from './sendEmail'
+import { escapeHtml } from './escapeHtml'
 
 type NewsletterData = {
 email: string
@@ -25,7 +26,7 @@ New Newsletter Subscriber </h2>
 
     <div style="margin-top: 24px; padding: 20px; background: #F5F1E9; border-radius: 8px;">
       <p style="margin: 0 0 8px;">
-        <strong>Email:</strong> ${email}
+        <strong>Email:</strong> ${escapeHtml(email)}
       </p>
     </div>
 

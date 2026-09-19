@@ -11,7 +11,7 @@ import {
 
 import {
   authOptions,
-} from '../auth/[...nextauth]/route'
+} from '../../../lib/auth-options'
 
 import {
   getOrders,
@@ -159,7 +159,7 @@ export async function POST(
     ======================================================== */
 
     const order =
-      getOrders().find(
+      (await getOrders()).find(
         item =>
           item.payment
             .razorpayOrderId ===
@@ -277,7 +277,7 @@ export async function POST(
     ======================================================== */
 
     const updatedOrder =
-      updateOrderPayment(
+      await updateOrderPayment(
         razorpay_order_id,
         {
           razorpayPaymentId:
@@ -287,6 +287,20 @@ export async function POST(
 
 
     if (!updatedOrder) {
+      const currentOrder =
+        (await getOrders()).find(
+          item =>
+            item.payment.razorpayOrderId ===
+            razorpay_order_id
+        )
+
+      if (currentOrder?.payment.status === 'paid') {
+        return NextResponse.json({
+          success: true,
+          message: 'Payment was already verified.',
+          order_id: currentOrder.id,
+        })
+      }
 
       return NextResponse.json(
         {
@@ -336,7 +350,7 @@ export async function POST(
     }
 
     const invoiceRecord =
-      updateOrderInvoice(
+      await updateOrderInvoice(
         updatedOrder.id,
         {
           invoiceNumber,
@@ -495,7 +509,7 @@ export async function POST(
             created.shipmentId,
         })
 
-      updateOrderShiprocket(
+      await updateOrderShiprocket(
         updatedOrder.id,
         {
           status:
@@ -532,7 +546,7 @@ export async function POST(
         shiprocketError
       )
 
-      updateOrderShiprocket(
+      await updateOrderShiprocket(
         updatedOrder.id,
         {
           status:

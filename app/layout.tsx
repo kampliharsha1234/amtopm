@@ -26,6 +26,10 @@ export const metadata: Metadata = {
   title: 'amtopm – Skincare for Morning & Night',
   description:
     'Dermatologist-inspired, science-first skincare. Simple, honest products for AM and PM routines.',
+  metadataBase: new URL('https://amtopm.net'),
+  alternates: {
+    canonical: 'https://amtopm.net',
+  },
 }
 
 export default function RootLayout({

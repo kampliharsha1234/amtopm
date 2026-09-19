@@ -3,4 +3,4 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 
-Sitemap: https://amtopm.com/sitemap.xml
+Sitemap: https://amtopm.net/sitemap.xml

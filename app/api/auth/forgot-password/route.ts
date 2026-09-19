@@ -6,6 +6,7 @@ import {
   createPasswordResetToken,
 } from '../../../../lib/users'
 import { normalizeSender } from '../../../../lib/email/sendEmail'
+import { escapeHtml } from '../../../../lib/email/escapeHtml'
 
 const resend =
   new Resend(
@@ -20,8 +21,10 @@ export async function POST(
       await request.json()
 
     if (
-      !email ||
-      typeof email !== 'string'
+      typeof email !== 'string' ||
+      email.trim().length === 0 ||
+      email.trim().length > 254 ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
     ) {
       return NextResponse.json(
         {
@@ -37,7 +40,7 @@ export async function POST(
       email.trim().toLowerCase()
 
     const user =
-      findUserByEmail(
+      await findUserByEmail(
         normalizedEmail
       )
 
@@ -54,23 +57,37 @@ export async function POST(
       })
     }
 
+    const baseUrl = process.env.NEXTAUTH_URL
+
+    if (!baseUrl) {
+      throw new Error('NEXTAUTH_URL is not configured.')
+    }
+
+    const parsedBaseUrl = new URL(baseUrl)
+
+    if (
+      process.env.NODE_ENV === 'production' &&
+      (parsedBaseUrl.protocol !== 'https:' ||
+        parsedBaseUrl.hostname !== 'amtopm.net')
+    ) {
+      throw new Error('NEXTAUTH_URL must be https://amtopm.net in production.')
+    }
+
     const token =
-      createPasswordResetToken(
+      await createPasswordResetToken(
         user.id
       )
-
-    const baseUrl =
-      process.env.NEXTAUTH_URL ||
-      'http://localhost:3000'
 
     const resetUrl =
       `${baseUrl}/auth/reset-password?token=${token}`
 
-    const fromEmail =
-      normalizeSender(
-        process.env.RESEND_FROM_EMAIL ||
-        'amtopm <onboarding@resend.dev>'
-      )
+    const configuredSender = process.env.RESEND_FROM_EMAIL
+
+    if (!configuredSender) {
+      throw new Error('RESEND_FROM_EMAIL is not configured.')
+    }
+
+    const fromEmail = normalizeSender(configuredSender)
 
     const { error } =
       await resend.emails.send({
@@ -91,7 +108,7 @@ export async function POST(
               </h1>
 
               <p style="font-size: 15px; line-height: 1.6; color: #6B6B6B;">
-                Hi ${user.name || 'there'},
+                Hi ${escapeHtml(user.name || 'there')},
               </p>
 
               <p style="font-size: 15px; line-height: 1.6; color: #6B6B6B;">

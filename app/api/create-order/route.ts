@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Razorpay from 'razorpay'
 import { getServerSession } from 'next-auth'
 
-import { authOptions } from '../auth/[...nextauth]/route'
+import { authOptions } from '../../../lib/auth-options'
 
 import { products } from '../../data/products'
 
@@ -183,10 +183,6 @@ function calculateShipment(
   let productWeightGrams =
     0
 
-  let totalUnits =
-    0
-
-
   const packageProducts: Array<{
     length: number
     width: number
@@ -266,10 +262,6 @@ function calculateShipment(
 
     productWeightGrams +=
       productWeight *
-      quantity
-
-
-    totalUnits +=
       quantity
 
 
@@ -487,7 +479,8 @@ export async function POST(
 
     if (
       !Array.isArray(items) ||
-      items.length === 0
+      items.length === 0 ||
+      items.length > 50
     ) {
       return NextResponse.json(
         {
@@ -500,19 +493,42 @@ export async function POST(
       )
     }
 
+    if (
+      items.some(
+        item =>
+          !item ||
+          typeof item !== 'object' ||
+          typeof item.id !== 'string'
+      )
+    ) {
+      return NextResponse.json(
+        { error: 'Invalid cart items.' },
+        { status: 400 }
+      )
+    }
+
 
     /* ========================================================
        VALIDATE DELIVERY
     ======================================================== */
 
     if (
-      !shipping?.name ||
-      !shipping?.email ||
-      !shipping?.phone ||
-      !shipping?.address ||
-      !shipping?.city ||
-      !shipping?.state ||
-      !shipping?.pincode
+      !shipping ||
+      typeof shipping !== 'object' ||
+      typeof shipping.name !== 'string' ||
+      typeof shipping.email !== 'string' ||
+      typeof shipping.phone !== 'string' ||
+      typeof shipping.address !== 'string' ||
+      typeof shipping.city !== 'string' ||
+      typeof shipping.state !== 'string' ||
+      typeof shipping.pincode !== 'string' ||
+      !shipping.name.trim() ||
+      !shipping.email.trim() ||
+      !shipping.phone.trim() ||
+      !shipping.address.trim() ||
+      !shipping.city.trim() ||
+      !shipping.state.trim() ||
+      !shipping.pincode.trim()
     ) {
       return NextResponse.json(
         {
@@ -522,6 +538,23 @@ export async function POST(
         {
           status: 400,
         }
+      )
+    }
+
+    if (
+      shipping.name.length > 100 ||
+      shipping.email.length > 254 ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(shipping.email.trim()) ||
+      shipping.phone.length < 7 ||
+      shipping.phone.length > 20 ||
+      !/^[0-9+()\s-]+$/.test(shipping.phone) ||
+      shipping.address.length > 300 ||
+      shipping.city.length > 100 ||
+      shipping.state.length > 100
+    ) {
+      return NextResponse.json(
+        { error: 'Please enter valid delivery details.' },
+        { status: 400 }
       )
     }
 
@@ -749,7 +782,7 @@ export async function POST(
     ======================================================== */
 
     const order =
-      createOrder({
+      await createOrder({
         userId:
           session.user.id,
 
@@ -844,9 +877,7 @@ export async function POST(
         shippingRate.courier,
     })
 
-  } catch (
-    error: any
-  ) {
+  } catch (error: unknown) {
 
     console.error(
       'Error creating Razorpay order:',
@@ -857,8 +888,9 @@ export async function POST(
     return NextResponse.json(
       {
         error:
-          error?.error?.description ||
-          error?.message ||
+          error instanceof Error
+            ? error.message
+            :
           'Failed to create order.',
       },
       {

@@ -500,23 +500,6 @@ export default function TermsPage() {
 
           <div className="mt-7 grid gap-3 sm:grid-cols-3">
             <Link
-              href="/privacy"
-              className="rounded-[20px] border border-[#E8DFD3] bg-[#FBF8F3] p-5 transition-transform hover:-translate-y-0.5"
-            >
-              <p className="text-[9px] uppercase tracking-[0.2em] text-[#E85D2C]">
-                PRIVACY
-              </p>
-
-              <p className="mt-3 font-fahkwang text-[20px]">
-                Privacy Policy
-              </p>
-
-              <p className="mt-2 text-[11px] font-light leading-[1.6] text-[#6B6B6B]">
-                How personal information may be handled.
-              </p>
-            </Link>
-
-            <Link
               href="/shipping"
               className="rounded-[20px] border border-[#E8DFD3] bg-[#FBF8F3] p-5 transition-transform hover:-translate-y-0.5"
             >

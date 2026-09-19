@@ -490,7 +490,8 @@ export async function POST(
 
     if (
       !Array.isArray(items) ||
-      items.length === 0
+      items.length === 0 ||
+      items.length > 50
     ) {
       return NextResponse.json(
         {
@@ -501,6 +502,20 @@ export async function POST(
         {
           status: 400,
         }
+      )
+    }
+
+    if (
+      items.some(
+        item =>
+          !item ||
+          typeof item !== 'object' ||
+          typeof item.id !== 'string'
+      )
+    ) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid cart items.' },
+        { status: 400 }
       )
     }
 
